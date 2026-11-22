@@ -1,4 +1,4 @@
-<!doctype html><html lang="kk"><head><meta charset="utf-8"><meta name="theme-color" content="#F3F7FB"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Ұлттық мектеп лигасы DIGITAL v25</title>
+<!doctype html><html lang="kk"><head><meta charset="utf-8"><meta name="theme-color" content="#F3F7FB"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Ұлттық мектеп лигасы DIGITAL v26</title>
 <style>
 :root{color-scheme:light;
 --canvas:#F3F7FB;--surface:#fff;--ink:#12263A;--ink-2:#2A425A;--muted:#52667A;--line:#DCE5EE;--line-2:#C3D1DE;
@@ -1065,6 +1065,48 @@ window.renderArchive=function(){
   const _del=window.deleteCompetition;
   window.deleteCompetition=function(id){if(String(id).startsWith('20261123'))try{localStorage.setItem('uml_seed_'+id,'deleted')}catch(e){}return _del(id)};
 })();
+})();
+/* v26: мектепішілік тіркеу — мектеп аты есте қалады, туған жыл сұралмайды */
+(function(){
+  const isIn=()=>comp&&comp.level==='Мектепішілік';
+  const prevForm=window.entryForm;
+  window.entryForm=function(){
+    prevForm();
+    if(!comp)return;
+    const sch=document.getElementById('school');
+    if(sch&&!sch.value)sch.value=comp.lastSchool||(isIn()?(comp.organizer||''):'');
+    if(isIn()&&comp.kind!=='team'){
+      const b=document.getElementById('birth');
+      if(b){const w=b.parentElement;if(w)w.style.display='none';}
+    }
+    const nm=document.getElementById('entryName');
+    if(nm){nm.setAttribute('autocomplete','off');if(window.__umlFocus){nm.focus();window.__umlFocus=false}}
+  };
+  const prevAdd=window.addEntry;
+  window.addEntry=function(){
+    if(!comp)return prevAdd();
+    const sch=document.getElementById('school');
+    const school=sch?sch.value.trim():'';
+    const before=comp.entries.length;
+    let tmp=null;
+    if(isIn()&&comp.kind!=='team'){
+      const b=document.getElementById('birth');
+      if(b)b.value=String(new Date().getFullYear()-10);
+    }
+    prevAdd();
+    if(comp.entries.length>before){
+      if(school)comp.lastSchool=school;
+      if(isIn()&&comp.kind!=='team')comp.entries[comp.entries.length-1].birth='';
+      persist();
+      window.__umlFocus=true;
+      window.entryForm();
+    }
+  };
+  document.addEventListener('keydown',e=>{
+    if(e.key==='Enter'&&e.target&&e.target.closest&&e.target.closest('#entryForm')&&e.target.tagName==='INPUT'){
+      e.preventDefault();window.addEntry();
+    }
+  });
 })();
 </script>
 </body></html>
