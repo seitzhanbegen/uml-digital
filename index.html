@@ -1,0 +1,1070 @@
+<!doctype html><html lang="kk"><head><meta charset="utf-8"><meta name="theme-color" content="#F3F7FB"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Ұлттық мектеп лигасы DIGITAL v25</title>
+<style>
+:root{color-scheme:light;
+--canvas:#F3F7FB;--surface:#fff;--ink:#12263A;--ink-2:#2A425A;--muted:#52667A;--line:#DCE5EE;--line-2:#C3D1DE;
+--accent:#0A74A8;--accent-d:#085C86;--accent-soft:#E3F2FA;--gold:#F5B71A;--ok:#167A4A;--ok-soft:#E2F5EA;--warn:#8A5A00;--warn-soft:#FFF1CC;--bad:#B4362E;
+--r-s:10px;--r-m:14px;--r-l:20px;--sh:0 1px 3px rgba(15,39,66,.06);--sh-h:0 6px 18px rgba(15,39,66,.08);
+--font:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+*{box-sizing:border-box;font-family:var(--font)}
+html,body{margin:0;background:var(--canvas);color:var(--ink);font-size:15px;line-height:1.5;-webkit-text-size-adjust:100%}
+h1,h2,h3{letter-spacing:-.01em;line-height:1.2;color:var(--ink)}
+h2{font-size:20px;margin:0 0 14px;font-weight:700}
+h3{font-size:16px;margin:16px 0 8px;font-weight:700}
+p{margin:6px 0}
+.muted,small{color:var(--muted)!important;font-size:13px}
+
+/* Hero */
+header{position:relative;overflow:hidden;background:linear-gradient(180deg,#fff 0%,#EAF4FA 100%);border-bottom:1px solid var(--line);padding:30px 20px 26px}
+header:before{content:"";position:absolute;right:-70px;top:-90px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(245,183,26,.28),rgba(245,183,26,0) 68%)}
+.hero{position:relative;max-width:1150px;margin:auto;display:flex;align-items:center;gap:18px}
+.logo{flex:0 0 auto;width:68px;height:68px;border-radius:20px;background:linear-gradient(145deg,#2EB6DC,#0A74A8);display:grid;place-items:center;box-shadow:0 6px 16px rgba(10,116,168,.25),inset 0 1px 0 rgba(255,255,255,.5)}
+.logo svg{width:46px;height:46px}
+.hero h1{margin:0;font-size:30px;font-weight:800;color:var(--ink)}
+.hero h1 span{display:inline-block;vertical-align:middle;margin-left:10px;padding:3px 10px;border-radius:20px;background:var(--ink);color:#fff;font-size:12px;font-weight:700;letter-spacing:.06em}
+.hero p{margin:6px 0 0;color:var(--ink-2);font-size:16px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.chips b{font-weight:600;font-size:13px;color:var(--ink-2);background:#fff;border:1px solid var(--line);border-radius:20px;padding:5px 12px}
+.chips b:before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--gold);margin-right:7px}
+
+main{max-width:1150px;margin:auto;padding:18px 16px 8px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-l);padding:20px;margin:14px 0;box-shadow:var(--sh);overflow-x:auto}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+
+/* Deңгейлер */
+.level-grid{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-l);padding:18px;text-align:left;cursor:pointer;color:var(--ink);box-shadow:var(--sh);transition:border-color .18s,box-shadow .18s,transform .18s;font-weight:400}
+.tile b{display:block;margin:6px 0 2px;font-size:17px;color:var(--ink)}
+.tile span{font-size:13px;color:var(--muted)}
+.tile:hover{border-color:var(--accent);box-shadow:var(--sh-h);transform:translateY(-2px)}
+.level-tile{display:flex;flex-direction:column;align-items:flex-start;gap:6px;min-height:200px}
+.level-tile:before,.level-shade{display:none}
+.level-art{flex:0 0 auto;width:88px;height:88px;border-radius:24px;display:block;padding:6px;overflow:hidden;background:linear-gradient(145deg,#F4FAFE,#D3E8F6);border:1px solid #C2DAEA;box-shadow:inset 0 1px 0 #fff;margin-bottom:6px}
+.ico{display:block;width:100%;height:100%;overflow:visible;transition:transform .25s ease}
+
+/* Спорт карточкалары */
+.sports-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:16px}
+.sport-card{min-height:116px;width:100%;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-l);padding:14px;text-align:left;display:flex;align-items:center;gap:16px;cursor:pointer;box-shadow:var(--sh);transition:border-color .18s,box-shadow .18s,transform .18s;color:var(--ink);font-weight:400}
+.sport-card:hover{transform:translateY(-2px);border-color:var(--accent);box-shadow:var(--sh-h)}
+.sport-card:hover .ico,.level-tile:hover .ico{transform:translateY(-3px) scale(1.06)}
+.sport-art{flex:0 0 88px;width:88px;height:88px;padding:6px;border-radius:24px;overflow:hidden;display:block;background:linear-gradient(145deg,var(--c1,#EAF4FB),var(--c2,#D3E8F6));border:1px solid rgba(15,39,66,.08);box-shadow:inset 0 1px 0 rgba(255,255,255,.8)}
+.sport-copy{display:flex;flex-direction:column;align-items:flex-start;gap:3px;min-width:0}
+.sport-card b{font-size:17px;line-height:1.25;color:var(--ink);font-weight:700}
+.sport-card small{font-size:13px;line-height:1.3}
+.sport-card em{display:block;font-style:normal;font-size:12px;font-weight:600;color:var(--accent);text-transform:lowercase;margin-top:3px}
+.sport-card em::first-letter{text-transform:uppercase}
+
+/* Форма */
+label{display:block;font-size:14px;font-weight:600;margin:10px 0 5px;color:var(--ink-2)}
+input,select,textarea{width:100%;min-height:44px;padding:10px 12px;border:1px solid var(--line-2);border-radius:var(--r-s);font-size:16px;background:#fff;color:var(--ink)}
+input:focus,select:focus,textarea:focus,button:focus-visible,summary:focus-visible{outline:3px solid rgba(10,116,168,.35);outline-offset:1px;border-color:var(--accent)}
+input::placeholder{color:#6B7F94}
+button,.dl{min-height:44px;padding:10px 18px;border:1px solid var(--accent);border-radius:var(--r-s);background:var(--accent);color:#fff;font-size:15px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px;transition:background .15s,border-color .15s}
+button:hover,.dl:hover{background:var(--accent-d);border-color:var(--accent-d)}
+button.tile,button.sport-card{min-height:0;display:flex;background:var(--surface);color:var(--ink);border:1px solid var(--line);justify-content:flex-start}
+button.tile{flex-direction:column;align-items:flex-start}
+button.tile:hover,button.sport-card:hover{background:var(--surface);border-color:var(--accent)}
+.alt,button.alt,.dl.alt{background:#fff;color:var(--accent-d);border:1px solid var(--line-2)}
+.alt:hover,button.alt:hover,.dl.alt:hover{background:var(--accent-soft);border-color:var(--accent);color:var(--accent-d)}
+.danger,button.danger{background:#fff;color:var(--bad);border:1px solid #E7B4B0}
+.danger:hover,button.danger:hover{background:#FDECEA;border-color:var(--bad);color:var(--bad)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.screen{display:none}.screen.on{display:block}.hidden{display:none}
+
+.notice,.sport-config{background:var(--accent-soft);border:1px solid #C4E1F0;border-left:4px solid var(--accent);padding:12px 14px;border-radius:var(--r-s);margin:12px 0;color:var(--ink)}
+.pill{display:inline-block;background:var(--accent-soft);color:var(--accent-d);border-radius:20px;padding:4px 10px;margin:2px;font-size:13px;font-weight:600}
+
+/* Кесте */
+table{width:100%;border-collapse:separate;border-spacing:0;font-size:14px;margin:10px 0;border:1px solid var(--line);border-radius:var(--r-m);overflow:hidden;background:#fff}
+td,th{padding:10px 12px;text-align:left;color:var(--ink);background:#fff;border-bottom:1px solid var(--line);border-right:0}
+tr:last-child td{border-bottom:0}
+th{background:#EEF4F9;color:var(--ink-2);font-weight:700;font-size:13px}
+tbody tr:hover td{background:#F8FBFD}
+
+.match-card{background:#F8FBFD;border:1px solid var(--line);border-radius:var(--r-m);padding:14px;margin:12px 0;color:var(--ink)}
+.match-card h3{margin-top:0}
+.match-card table{min-width:640px}.match-card select{min-width:220px}
+.stage-title{font-weight:700;color:var(--ink);margin:16px 0 6px}
+.color-tag{display:inline-flex;align-items:center;justify-content:center;min-width:44px;padding:3px 10px;border-radius:8px;font-weight:700;font-size:13px;line-height:1.3}
+.white-tag{background:#fff;border:1px solid #7C8EA1;color:#111}
+.black-tag{background:#25313E;border:1px solid #25313E;color:#fff}
+.board-outcome{display:block;margin-top:4px;font-weight:700;color:var(--ok)}
+.team-total{font-size:1.1rem;font-weight:700;color:var(--ink)}
+.ath-card{background:#F8FBFD;border:1px solid var(--line);border-radius:var(--r-m);padding:14px;margin:12px 0}
+.ath-row{display:grid;grid-template-columns:minmax(120px,1.4fr) minmax(100px,1fr) 80px;gap:8px;align-items:center;margin:8px 0}
+.ath-result-head{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+/* Турлар */
+details.round{border:1px solid var(--line);border-radius:var(--r-m);margin:12px 0;background:#fff;overflow:hidden}
+details.round>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 16px;font-weight:700;font-size:16px;color:var(--ink);background:#F3F8FC;min-height:48px}
+details.round>summary::-webkit-details-marker{display:none}
+details.round>summary::after{content:'';margin-left:4px;width:9px;height:9px;border-right:2px solid var(--accent);border-bottom:2px solid var(--accent);transform:rotate(45deg);transition:transform .2s;flex:0 0 auto}
+details.round:not([open])>summary::after{transform:rotate(-45deg)}
+details.round[open]>summary{background:var(--accent-soft);border-bottom:1px solid var(--line)}
+details.round>*:not(summary){margin-left:14px;margin-right:14px}
+details.round>.match-card:last-child,details.round>table:last-child{margin-bottom:14px}
+.rd-badge{margin-left:auto;font-size:12px;font-weight:700;padding:4px 10px;border-radius:20px;white-space:nowrap}
+.rd-done{background:var(--ok-soft);color:var(--ok)}.rd-now{background:var(--warn-soft);color:var(--warn)}.rd-wait{background:#E8EEF4;color:var(--muted)}
+details.why{margin:14px 0;border:1px solid var(--line);border-radius:var(--r-m);background:#fff}
+details.why>summary{cursor:pointer;padding:13px 16px;font-weight:700;color:var(--ink);background:#F3F8FC;border-radius:var(--r-m);min-height:48px}
+details.why[open]>summary{border-bottom:1px solid var(--line);border-radius:var(--r-m) var(--r-m) 0 0}
+details.why .wbody{padding:6px 16px 14px}
+details.why li{margin:8px 0}
+
+.foot{text-align:center;color:var(--muted);font-size:13px;padding:26px 12px 30px}
+.foot span{font-size:12px}
+
+@media(max-width:600px){
+header{padding:22px 14px 20px}.hero{gap:13px}.logo{width:54px;height:54px;border-radius:16px}.logo svg{width:36px;height:36px}
+.hero h1{font-size:23px}.hero h1 span{display:block;margin:6px 0 0;width:max-content}.hero p{font-size:14px}
+main{padding:12px 10px 6px}.card{padding:15px;border-radius:var(--r-m)}
+table{font-size:12px}td,th{padding:8px 7px}
+.sports-grid{grid-template-columns:1fr}.sport-card{min-height:104px;padding:12px;gap:13px}.sport-art{flex-basis:78px;width:78px;height:78px}
+.level-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.level-tile{min-height:168px;padding:13px}.level-art{width:70px;height:70px}.tile b{font-size:15px}
+.ath-row{grid-template-columns:1fr 1fr}.ath-result-head{grid-template-columns:1fr}
+.actions button,.actions .dl{flex:1 1 calc(50% - 10px)}.arch-row .actions{width:100%}}
+.arch-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;border:1px solid var(--line);border-radius:var(--r-m);padding:12px 14px;margin:10px 0;background:#fff;transition:border-color .15s}
+.arch-row:hover{border-color:var(--accent)}.arch-row b{display:block;font-size:16px;color:var(--ink)!important}.arch-row .actions{margin:0}.arch-row button{min-height:40px;padding:8px 16px}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style></head><body><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><radialGradient id="i-or" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#ffb877"/><stop offset=".5" stop-color="#f26a1b"/><stop offset="1" stop-color="#b4400a"/></radialGradient><radialGradient id="i-wh" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#fff"/><stop offset=".55" stop-color="#e4ebf3"/><stop offset="1" stop-color="#a9b8c9"/></radialGradient><radialGradient id="i-red" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#ff7a7a"/><stop offset=".55" stop-color="#d8262f"/><stop offset="1" stop-color="#7d0f16"/></radialGradient><linearGradient id="i-gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe58a"/><stop offset=".5" stop-color="#f5b301"/><stop offset="1" stop-color="#b87400"/></linearGradient><linearGradient id="i-bone" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff6dc"/><stop offset=".55" stop-color="#e6c88e"/><stop offset="1" stop-color="#a8803f"/></linearGradient><linearGradient id="i-wood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dfae72"/><stop offset=".55" stop-color="#a8703a"/><stop offset="1" stop-color="#6e4118"/></linearGradient><linearGradient id="i-blue" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6fb4ff"/><stop offset=".5" stop-color="#2a6fe0"/><stop offset="1" stop-color="#173f97"/></linearGradient></defs></svg>
+<header><div class="hero"><div class="logo"><svg viewBox="0 0 46 46" aria-hidden="true"><g stroke="#FFD25A" stroke-width="2.2" stroke-linecap="round"><line x1="33.5" y1="23.0" x2="37.5" y2="23.0"/><line x1="32.7" y1="27.0" x2="36.4" y2="28.5"/><line x1="30.4" y1="30.4" x2="33.3" y2="33.3"/><line x1="27.0" y1="32.7" x2="28.5" y2="36.4"/><line x1="23.0" y1="33.5" x2="23.0" y2="37.5"/><line x1="19.0" y1="32.7" x2="17.5" y2="36.4"/><line x1="15.6" y1="30.4" x2="12.7" y2="33.3"/><line x1="13.3" y1="27.0" x2="9.6" y2="28.5"/><line x1="12.5" y1="23.0" x2="8.5" y2="23.0"/><line x1="13.3" y1="19.0" x2="9.6" y2="17.5"/><line x1="15.6" y1="15.6" x2="12.7" y2="12.7"/><line x1="19.0" y1="13.3" x2="17.5" y2="9.6"/><line x1="23.0" y1="12.5" x2="23.0" y2="8.5"/><line x1="27.0" y1="13.3" x2="28.5" y2="9.6"/><line x1="30.4" y1="15.6" x2="33.3" y2="12.7"/><line x1="32.7" y1="19.0" x2="36.4" y2="17.5"/></g><circle cx="23" cy="23" r="8" fill="#FFD25A"/><circle cx="23" cy="23" r="8" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="1.2"/></svg></div><div><h1>Ұлттық мектеп лигасы<span>DIGITAL</span></h1><p>Мектеп жарыстарын жоспарлау, жүргізу және хаттамалау платформасы</p><div class="chips"><b>10 спорт түрі</b><b>4 деңгей</b><b>Автоматты жеребе мен кесте</b><b>Word хаттамалар</b></div></div></div></header>
+<main>
+<section id="home" class="screen on">
+<div class="card level-panel"><h2>Жарыс өткізілетін деңгей</h2><div class="grid level-grid">
+<button class="tile level-tile" onclick="newCompetition('Республикалық')"><span class="level-art" data-ico="lv-rep" aria-hidden="true"></span><b>Республикалық кезең</b><span>Облыс командалары мен спортшылары</span></button>
+<button class="tile level-tile" onclick="newCompetition('Облыстық')"><span class="level-art" data-ico="lv-obl" aria-hidden="true"></span><b>Облыстық кезең</b><span>Аудан/қала өкілдері</span></button>
+<button class="tile level-tile" onclick="newCompetition('Аудандық / қалалық')"><span class="level-art" data-ico="lv-dist" aria-hidden="true"></span><b>Аудандық / қалалық кезең</b><span>Мектептер арасындағы жарыс</span></button>
+<button class="tile level-tile" onclick="newCompetition('Мектепішілік')"><span class="level-art" data-ico="lv-school" aria-hidden="true"></span><b>Мектепішілік кезең</b><span>Бір мектеп ішіндегі жарыс</span></button>
+</div></div>
+<div class="card"><h2>Жарыстар мұрағаты</h2><div id="archive" class="muted">Әзірге сақталған жарыс жоқ.</div><div class="actions"><button class="alt" onclick="exportAll()">Барлық деректі экспорттау</button><label class="dl alt" for="importAll">Деректерді импорттау</label><input id="importAll" type="file" class="hidden" accept=".json"></div></div>
+<div class="card"><h2>Бос хаттама үлгілері</h2><a class="dl" href="UML_Universal_Hattama_Ulgileri.docx" download>Word үлгілері</a> <a class="dl alt" href="UML_Universal_Hattama_Ulgileri.pdf" download>PDF үлгілері</a></div>
+</section>
+<section id="sports" class="screen"><div class="card"><button class="alt" onclick="show('home')">← Басты бет</button><h2 id="sportsTitle">Спорт түрін таңдаңыз</h2><p class="muted">Әр спорт түрінің жеке тіркеу, жарыс өткізу және хаттама бөлімі бар.</p><div id="sportsGrid" class="sports-grid"></div></div></section>
+<section id="setup" class="screen"><div class="card"><button class="alt" onclick="show('sports')">← Спорт түрлері</button><h2 id="level"></h2>
+<div class="grid"><div><label>Маусым / оқу жылы (міндетті емес)</label><input id="season" placeholder="Мысалы: 2026–2027 немесе 2027 маусымы"></div><div><label>Жарыс атауы</label><input id="cname" placeholder="Жарыс атауы"></div><div><label>Ел</label><input id="country" value="Қазақстан Республикасы"></div><div><label>Облыс</label><input id="region" placeholder="Облыс атауы"></div><div><label>Аудан / қала</label><input id="district" placeholder="Аудан немесе қала"></div><div><label>Ұйымдастырушы ұйым</label><input id="organizer" placeholder="Ұйым атауы"></div><div><label>Спорт түрі</label><select id="sport"></select></div><div><label>Жас санаты</label><select id="age"></select></div><div><label>Қатысу форматы</label><select id="kind"><option value="team">Командалық</option><option value="individual">Жекелей</option></select></div><div><label>Жыныс санаты</label><select id="gender"><option>Ұлдар</option><option>Қыздар</option><option>Аралас</option></select></div><div><label>Жарыс жүйесі</label><select id="system"></select></div><div><label>Өткізу күні</label><input id="date" type="date"></div></div>
+<div id="rules" class="notice"></div><div id="sportConfig" class="sport-config"></div><div id="chessTeamRules" class="notice hidden"><b>Шахмат командалық тай-брейк реті</b><label>2:2 тең матчтан кейінгі басымдық</label><select id="chessTieRule"><option value="regulation">Өзара кездесу → 1-тақта → қыздар тақтасы (4-тақта) → 2-тақта → 3-тақта → қосымша блиц тек регламентте болса</option><option value="girls">Қыздар тақтасы (4-тақта) → өзара кездесу → 1-тақта → 2-тақта → 3-тақта</option></select><small>Бұл — ұйымдастырушы бекітетін параметр. Ресми жарыс регламенті басқа тәртіп белгілесе, соны таңдаңыз. Автоматты түрде ереже ойдан қолданылмайды.</small></div><div class="actions"><button onclick="createCompetition()">Жарысты ашу</button></div></div></section>
+<section id="competition" class="screen"><div class="card"><button class="alt" onclick="home()">← Басты бет</button><h2 id="ctitle"></h2><div id="cmeta" class="muted"></div></div>
+<div class="card"><h2>1. Мектеп / команда / спортшыны тіркеу</h2><div id="entryForm"></div><div class="actions"><button onclick="addEntry()">Тіркеу</button><button class="alt" onclick="downloadRoster()">Тізімді Word жүктеу</button></div><div id="entries"></div></div>
+<div class="card"><h2>2. Жеребе және ойын кестесі</h2><div class="grid"><div><label>Топ саны</label><input id="groupNum" type="number" min="1" value="2"></div><div><label>Тур саны</label><input id="roundNum" type="number" min="1" max="15" value="7"></div></div><div class="actions"><button onclick="makeDraw()">Жеребе құру</button><button class="alt" onclick="downloadSchedule()">Кестені Word жүктеу</button></div><div id="fixtures"></div></div>
+<div class="card"><h2>3. Нәтижелерді енгізу</h2><p class="muted">Нәтижені белгілеген сайын кесте мен хаттама жаңарады.</p><div id="results"></div></div>
+<div class="card"><h2>4. Турнир кестесі және қорытынды</h2><div id="standings"></div><div class="actions"><button onclick="downloadMatchProtocol()">Ойын хаттамасын Word</button><button class="alt" onclick="downloadFinalProtocol()">Қорытынды хаттаманы Word</button><button class="alt" onclick="exportCompetition()">Жарысты резервке сақтау</button></div></div>
+</section>
+</main><footer class="foot">Ұлттық мектеп лигасы · Бірыңғай платформа<br><span>ҰМЛ DIGITAL платформасын әзірлеуші: Бегенов Сейітжан Аманкелдіұлы</span></footer>
+<script>
+const SPORTS=[{"id": "basketball", "name": "Баскетбол «Алтын доп»", "type": "team", "ages": ["5–6 сынып", "7–8 сынып", "9–11 сынып"], "note": "Командалық жарыс. Топтық кезең, айналым және плей-офф үлгілері. Ойын уақыты, сет/кезең және тең ұпайдағы басымдық жарыстың бекітілген регламентімен нақтыланады."}, {"id": "volleyball", "name": "Волейбол «Шұбар доп»", "type": "team", "ages": ["5–6 сынып", "7–8 сынып", "9–11 сынып"], "note": "Командалық жарыс. Сет есебі мен партия айырмасы тіркеледі. Топтық кезең және плей-офф."}, {"id": "handball", "name": "Гандбол «Ұшқыр доп»", "type": "team", "ages": ["5–6 сынып", "7–8 сынып", "9–11 сынып"], "note": "Командалық жарыс. Матч есебі, гол айырмасы және топтық/плей-офф кезеңдері."}, {"id": "football", "name": "Футбол «Былғары доп»", "type": "team", "ages": ["5–6 сынып", "7–8 сынып", "9–11 сынып"], "note": "Командалық жарыс. Топтық кезең және плей-офф. Тең ұпайдағы орын бекітілген регламент бойынша анықталады."}, {"id": "futsal", "name": "Футзал «Теңбіл доп»", "type": "team", "ages": ["9–11 сынып"], "note": "Командалық жарыс. 9–11 сынып санаты. Топтық кезең және плей-офф."}, {"id": "togyz", "name": "Тоғызқұмалақ", "type": "both", "ages": ["5–6 сынып", "7–8 сынып", "9–11 сынып"], "note": "Жекелей және командалық жарыс. Командалық құрам 2 ұл + 2 қыз. Ереже үлгісінде 7 немесе 9 турлық швейцариялық жүйе көрсетілген."}, {"id": "tabletennis", "name": "Үстел теннисі", "type": "both", "ages": ["5–6 сынып", "7–8 сынып", "9–11 сынып"], "note": "Жекелей және командалық жарыс. Командалық кездесулер жеке партиялардан құралады; есеп жеке матч хаттамасына енгізіледі."}, {"id": "asyk", "name": "Асық ату / Бес асық", "type": "both", "ages": ["5–6 сынып", "7–8 сынып", "9–11 сынып"], "note": "Асық ату – ұлдар, бес асық – қыздар. Командалық және жеке нәтиже режимдері жарыс регламентіне сай таңдалады."}, {"id": "chess", "name": "Шахмат «Ақбозат»", "type": "both", "ages": ["5–6 сынып", "7–8 сынып", "9–11 сынып"], "note": "Жекелей және командалық жарыс. Командалық құрам 3 ұл + 1 қыз; тақта нәтижелері жеке тіркеледі."}, {"id": "athletics", "name": "Жеңіл атлетика", "type": "both", "ages": ["5–6 сынып", "7–8 сынып", "9–11 сынып"], "note": "Жекелей нәтижелер уақыт/қашықтықпен тіркеледі; командалық қорытынды бөлек есептеледі."}];let level='',comp=null,archive=JSON.parse(localStorage.getItem('uml_universal_archive')||'[]');const $=id=>document.getElementById(id);
+function persist(){localStorage.setItem('uml_universal_archive',JSON.stringify(archive));renderArchive()}
+function show(id){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('on'));$(id).classList.add('on')}
+function home(){if(comp)persist();show('home')}
+const ICO=(()=>{const K='#1B2B44',SW=2.6;
+const st=(c,w)=>' stroke="'+(c||K)+'" stroke-width="'+(w||SW)+'" stroke-linejoin="round" stroke-linecap="round"';
+const pent=(cx,cy,r,rot)=>Array.from({length:5},(_,k)=>{const a=(rot+k*72)*Math.PI/180;return (cx+r*Math.cos(a)).toFixed(1)+','+(cy+r*Math.sin(a)).toFixed(1)}).join(' ');
+function ballPatch(id,cx,cy,r,col){
+  let s='<clipPath id="'+id+'"><circle cx="'+cx+'" cy="'+cy+'" r="'+r+'"/></clipPath><circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="#fff"/><g clip-path="url(#'+id+')"><g'+st(col,2.4)+' fill="none">';
+  for(let k=0;k<5;k++){const a=(-90+k*72)*Math.PI/180;s+='<path d="M'+(cx+r*.36*Math.cos(a)).toFixed(1)+' '+(cy+r*.36*Math.sin(a)).toFixed(1)+'L'+(cx+r*1.1*Math.cos(a)).toFixed(1)+' '+(cy+r*1.1*Math.sin(a)).toFixed(1)+'"/>'}
+  s+='</g><polygon points="'+pent(cx,cy,r*.36,-90)+'" fill="'+col+'"/>';
+  for(let k=0;k<5;k++){const a=(-54+k*72)*Math.PI/180;s+='<polygon points="'+pent(cx+r*1.16*Math.cos(a),cy+r*1.16*Math.sin(a),r*.4,(-54+k*72)+180)+'" fill="'+col+'"/>'}
+  return s+'</g><circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="none"'+st()+'/><ellipse cx="'+(cx-r*.35)+'" cy="'+(cy-r*.45)+'" rx="'+r*.28+'" ry="'+r*.14+'" fill="#fff" opacity=".7" transform="rotate(-35 '+(cx-r*.35)+' '+(cy-r*.45)+')"/>'}
+const _I={
+basketball:
+ '<rect x="48" y="7" width="40" height="28" rx="4" fill="#fff"'+st()+'/><rect x="59" y="16" width="18" height="12" rx="1.5" fill="none"'+st('#E5484D',2.4)+'/>'
+ +'<path d="M58 37L62 53M65 39L66 54M71 39L70 54M78 37L74 53M60 44H76M62 49H74" fill="none"'+st('#8FA0B3',1.5)+'/><ellipse cx="68" cy="36" rx="11" ry="3.6" fill="none"'+st('#E5484D',3.2)+'/>'
+ +'<circle cx="35" cy="62" r="23" fill="#F97316"'+st()+'/><path d="M35 39V85M12 62H58M19 46C30 55 30 69 19 78M51 46C40 55 40 69 51 78" fill="none"'+st('#3B1A05',2.2)+'/><ellipse cx="26" cy="50" rx="7" ry="3.6" fill="#fff" opacity=".4" transform="rotate(-35 26 50)"/>',
+volleyball:
+ '<rect x="6" y="10" width="84" height="6" rx="3" fill="#fff"'+st()+'/><path d="M14 16V50M26 16V50M38 16V50M50 16V50M62 16V50M74 16V50M84 16V50M8 26H88M8 36H88M8 46H88" fill="none"'+st('#9CB0C4',1.3)+'/>'
+ +'<clipPath id="i-vb"><circle cx="50" cy="61" r="27"/></clipPath><circle cx="50" cy="61" r="27" fill="#fff"/><g clip-path="url(#i-vb)" fill="none" stroke-linecap="round"><path d="M18 56C38 48 62 58 68 90" stroke="#2563EB" stroke-width="11"/><path d="M48 30C50 48 66 60 86 62" stroke="#FACC15" stroke-width="11"/><path d="M22 84C34 70 54 70 70 84" stroke="#2563EB" stroke-width="9"/><path d="M18 56C38 48 62 58 68 90M48 30C50 48 66 60 86 62" stroke="'+K+'" stroke-width="1.6"/></g><circle cx="50" cy="61" r="27" fill="none"'+st()+'/><ellipse cx="39" cy="46" rx="8" ry="3.8" fill="#fff" opacity=".7" transform="rotate(-35 39 46)"/>',
+handball:
+ '<path d="M10 84V28H86V84" fill="none"'+st('#475569',4.2)+'/><path d="M16 34H80M16 44H80M16 54H80M16 64H80M16 74H80M26 30V84M38 30V84M50 30V84M62 30V84M74 30V84" fill="none"'+st('#CBD5E1',1.2)+'/>'
+ +'<clipPath id="i-hb"><circle cx="54" cy="64" r="21"/></clipPath><circle cx="54" cy="64" r="21" fill="#2563EB"/><g clip-path="url(#i-hb)" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"><path d="M30 54C44 62 64 62 78 54M30 74C44 66 64 66 78 74M54 40V90"/></g><path d="M36 64C36 52 44 44 54 44" fill="none" stroke="#FACC15" stroke-width="4" stroke-linecap="round" clip-path="url(#i-hb)"/><circle cx="54" cy="64" r="21" fill="none"'+st()+'/><ellipse cx="45" cy="52" rx="6" ry="3" fill="#fff" opacity=".5" transform="rotate(-35 45 52)"/>',
+football:
+ '<path d="M4 76Q48 62 92 76V90H4Z" fill="#4ADE80"'+st()+'/><path d="M4 84Q48 72 92 84" fill="none"'+st('#22C55E',3)+'/>'+ballPatch('i-fb',48,46,28,'#1B2B44'),
+futsal:
+ '<ellipse cx="48" cy="80" rx="42" ry="10" fill="#FCE3B4"'+st()+'/><ellipse cx="48" cy="80" rx="26" ry="5.5" fill="none"'+st('#E5484D',2.2)+'/><path d="M4 30H17M0 42H14M5 54H18" stroke="#0E9AA7" stroke-width="3.4" stroke-linecap="round" fill="none"/>'+ballPatch('i-fs',54,46,24,'#F97316'),
+togyz:
+ '<rect x="6" y="24" width="84" height="50" rx="11" fill="#D9A066"'+st()+'/><rect x="11" y="29" width="74" height="40" rx="7" fill="#C58B4E" stroke="#8A5A2B" stroke-width="1.5"/>'
+ +'<g fill="#6F4219"><circle cx="21" cy="38" r="6"/><circle cx="34" cy="38" r="6"/><circle cx="47" cy="38" r="6"/><circle cx="60" cy="38" r="6"/><circle cx="21" cy="60" r="6"/><circle cx="34" cy="60" r="6"/><circle cx="47" cy="60" r="6"/><circle cx="60" cy="60" r="6"/><circle cx="76" cy="49" r="10"/></g>'
+ +'<g fill="#FFF6DD" stroke="#1B2B44" stroke-width=".9"><circle cx="19" cy="37" r="2.3"/><circle cx="23.5" cy="39.5" r="2.3"/><circle cx="34" cy="37" r="2.3"/><circle cx="47" cy="37.5" r="2.3"/><circle cx="58" cy="38" r="2.3"/><circle cx="62" cy="40" r="2.3"/><circle cx="21" cy="60" r="2.3"/><circle cx="33" cy="61" r="2.3"/><circle cx="37" cy="58.5" r="2.3"/><circle cx="47" cy="60" r="2.3"/><circle cx="60" cy="60" r="2.3"/><circle cx="72" cy="46" r="2.3"/><circle cx="78" cy="46" r="2.3"/><circle cx="75" cy="52" r="2.3"/><circle cx="80" cy="52" r="2.3"/><circle cx="70" cy="52" r="2.3"/></g>',
+tabletennis:
+ '<g transform="rotate(25 36 46)"><rect x="31.5" y="62" width="9" height="22" rx="4.5" fill="#D9A066"'+st()+'/><circle cx="36" cy="42" r="24" fill="#E5484D"'+st()+'/><circle cx="36" cy="42" r="19" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="1.5"/><ellipse cx="27" cy="31" rx="9" ry="4.4" fill="#fff" opacity=".4" transform="rotate(-30 27 31)"/></g>'
+ +'<path d="M58 16Q64 9 72 11" fill="none" stroke="#94A3B8" stroke-width="2" stroke-linecap="round" stroke-dasharray="1 5"/><circle cx="76" cy="26" r="9" fill="#fff"'+st()+'/><ellipse cx="73" cy="23" rx="3" ry="1.6" fill="#E2E8F0" transform="rotate(-35 73 23)"/>',
+asyk:
+ '<g transform="translate(42 44) rotate(-14) scale(1.6)"><path d="M-12 -20C-6 -16 6 -16 12 -20C18 -20 20 -16 17 -10C14 -3 14 3 17 10C20 16 18 20 12 20C6 16 -6 16 -12 20C-18 20 -20 16 -17 10C-14 3 -14 -3 -17 -10C-20 -16 -18 -20 -12 -20Z" fill="#F6E7C6" stroke="#5B4020" stroke-width="1.7" stroke-linejoin="round"/><ellipse cx="0" cy="0" rx="7" ry="9" fill="#E9D3A2" stroke="#B48A47" stroke-width="1.2"/><path d="M-3 -5C0 -2 0 2 -3 5" fill="none" stroke="#B48A47" stroke-width="1.2" stroke-linecap="round"/><ellipse cx="-9" cy="-13" rx="4.5" ry="1.6" fill="#fff" opacity=".8"/></g>'
+ +'<g transform="translate(70 70) rotate(22) scale(.95)"><path d="M-12 -20C-6 -16 6 -16 12 -20C18 -20 20 -16 17 -10C14 -3 14 3 17 10C20 16 18 20 12 20C6 16 -6 16 -12 20C-18 20 -20 16 -17 10C-14 3 -14 -3 -17 -10C-20 -16 -18 -20 -12 -20Z" fill="#EBD3A1" stroke="#5B4020" stroke-width="2.3" stroke-linejoin="round"/><ellipse cx="0" cy="0" rx="7" ry="9" fill="#DDBF86" stroke="#B48A47" stroke-width="1.6"/></g>',
+chess:
+ '<path d="M30 77C30 64 37 58 41 50L26 55C20 56 18 49 23 44L36 29 37 19 43 24C47 17 56 17 62 21 72 28 74 48 70 77Z" fill="#2B3A55"'+st()+'/><path d="M50 23C60 27 65 43 63 69" fill="none" stroke="#94A3B8" stroke-width="2.4" stroke-linecap="round" opacity=".7"/><path d="M42 29C46 25 52 25 56 28" fill="none" stroke="#F5B71A" stroke-width="2.6" stroke-linecap="round"/><circle cx="38" cy="35" r="2.6" fill="#fff"/><path d="M24 47l4 1.2" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>'
+ +'<rect x="24" y="76" width="52" height="10" rx="5" fill="#2B3A55"'+st()+'/><rect x="28" y="79" width="44" height="2.4" rx="1.2" fill="#F5B71A"/>',
+athletics:
+ '<path d="M6 80Q48 74 90 80M6 87Q48 81 90 87" fill="none" stroke="#F58B7C" stroke-width="2.6" stroke-linecap="round"/><path d="M4 36H17M0 48H12M6 60H16" stroke="#E5484D" stroke-width="3" stroke-linecap="round" fill="none" opacity=".55"/>'
+ +'<g fill="none" stroke="#1B2B44" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"><path d="M52 36L44 57"/><path d="M52 38L66 46L74 38"/><path d="M52 38L40 40L33 50"/><path d="M44 57L58 63L57 78"/><path d="M44 57L31 66L18 62"/></g><circle cx="58" cy="22" r="8" fill="#1B2B44"/><path d="M50 34L45 54" stroke="#E5484D" stroke-width="6" stroke-linecap="round"/>',
+'lv-rep':
+ '<path d="M32 15H64V37C64 52 56 58 48 58C40 58 32 52 32 37Z" fill="#FBBF24"'+st()+'/><path d="M32 22H21C21 34 27 40 34 42M64 22H75C75 34 69 40 62 42" fill="none"'+st('#E0A100',4)+'/><rect x="44" y="58" width="8" height="10" fill="#F59E0B"'+st(K,2.2)+'/><rect x="29" y="68" width="38" height="11" rx="3" fill="#2563EB"'+st()+'/><path d="M48 22l3.4 6.8 7.4 1.1-5.4 5.2 1.3 7.4L48 39l-6.7 3.5 1.3-7.4-5.4-5.2 7.4-1.1z" fill="#fff" opacity=".95"/><ellipse cx="40" cy="26" rx="3" ry="8" fill="#fff" opacity=".4" transform="rotate(8 40 26)"/>',
+'lv-obl':
+ '<path d="M9 42L31 34L52 42L74 34L87 38V82L65 88L43 80L21 86L9 82Z" fill="#DBEAFE"'+st()+'/><path d="M31 34V80M52 42V84M74 34V86" fill="none"'+st('#93B4DD',1.6)+'/><path d="M48 9C36 9 28 18 28 29C28 43 48 61 48 61C48 61 68 43 68 29C68 18 60 9 48 9Z" fill="#E5484D"'+st()+'/><circle cx="48" cy="29" r="8.5" fill="#fff"'+st(K,2)+'/>',
+'lv-dist':
+ '<path d="M6 84H90" stroke="'+K+'" stroke-width="2.6" stroke-linecap="round"/><rect x="12" y="44" width="22" height="40" rx="2" fill="#7DB5F5"'+st()+'/><rect x="36" y="16" width="24" height="68" rx="2" fill="#2563EB"'+st()+'/><rect x="62" y="50" width="22" height="34" rx="2" fill="#7DB5F5"'+st()+'/>'
+ +'<g fill="#FDE68A"><rect x="17" y="50" width="5" height="6"/><rect x="25" y="50" width="5" height="6"/><rect x="17" y="62" width="5" height="6"/><rect x="25" y="62" width="5" height="6"/><rect x="42" y="23" width="5" height="6"/><rect x="50" y="23" width="5" height="6"/><rect x="42" y="36" width="5" height="6"/><rect x="50" y="36" width="5" height="6"/><rect x="42" y="49" width="5" height="6"/><rect x="50" y="49" width="5" height="6"/><rect x="67" y="56" width="5" height="6"/><rect x="75" y="56" width="5" height="6"/><rect x="67" y="68" width="5" height="6"/><rect x="75" y="68" width="5" height="6"/></g><rect x="44" y="70" width="8" height="14" fill="#1E40AF"/>',
+'lv-school':
+ '<path d="M48 8V22" stroke="'+K+'" stroke-width="2.4" stroke-linecap="round"/><path d="M48 8H63L59 12.5L63 17H48Z" fill="#E5484D"'+st(K,1.8)+'/><path d="M11 44L48 22L85 44Z" fill="#E5484D"'+st()+'/><rect x="18" y="44" width="60" height="38" fill="#FCE7B8"'+st()+'/><rect x="41" y="58" width="14" height="24" rx="2" fill="#B07B3C"'+st(K,2)+'/><rect x="24" y="51" width="11" height="11" fill="#7DB5F5"'+st(K,1.8)+'/><rect x="61" y="51" width="11" height="11" fill="#7DB5F5"'+st(K,1.8)+'/><path d="M6 84H90" stroke="'+K+'" stroke-width="2.6" stroke-linecap="round"/>'
+};
+return _I})();
+const ICO_LABEL={basketball:'Баскетбол',volleyball:'Волейбол',handball:'Гандбол',football:'Футбол',futsal:'Футзал',togyz:'Тоғызқұмалақ',tabletennis:'Үстел теннисі',asyk:'Асық','chess':'Шахмат',athletics:'Жеңіл атлетика','lv-rep':'Республикалық кезең','lv-obl':'Облыстық кезең','lv-dist':'Аудандық / қалалық кезең','lv-school':'Мектепішілік кезең'};
+const SPORT_CLR={basketball:['#FFEBD6','#FFD3A8'],volleyball:['#E3EEFF','#C5DBFF'],handball:['#E4E9FF','#C9D2FF'],football:['#DDF7E6','#B9ECCB'],futsal:['#D6F4F2','#B2E8E4'],togyz:['#F2E8DA','#E3D0B5'],tabletennis:['#FFF3CC','#FFE59A'],asyk:['#FBE3D8','#F4C7B3'],chess:['#E8E4FA','#CFC8F2'],athletics:['#FFE1E3','#FFC4C9']};
+function icoSvg(id){return '<svg class="ico" viewBox="6 5 84 84" role="img" aria-label="'+(ICO_LABEL[id]||'Спорт')+'"><ellipse cx="48" cy="87" rx="24" ry="2.6" fill="#12263A" opacity=".12"/>'+(ICO[id]||ICO.basketball)+'</svg>'}
+function sportSvg(id){return icoSvg(id)}
+document.querySelectorAll('[data-ico]').forEach(e=>{e.innerHTML=icoSvg(e.dataset.ico)});
+
+const SPORT_LABELS={basketball:['Баскетбол','Алтын доп'],volleyball:['Волейбол','Шұбар доп'],handball:['Гандбол','Ұшқыр доп'],football:['Футбол','Былғары доп'],futsal:['Футзал','Теңбіл доп'],togyz:['Тоғызқұмалақ','Ұлттық зияткерлік ойын'],tabletennis:['Үстел теннисі','Үстел теннисі жарысы'],asyk:['Асық ату / Бес асық','Ұлттық асық ойындары'],chess:['Шахмат','Ақбозат'],athletics:['Жеңіл атлетика','Жеңіл атлетика жарысы']};
+function newCompetition(l){level=l;$('sportsTitle').textContent=l+' кезеңі · спорт түрін таңдаңыз';$('sportsGrid').innerHTML=SPORTS.map(s=>{let label=SPORT_LABELS[s.id]||[s.name,'Спорт жарысы'];return `<button type="button" class="sport-card" onclick="chooseSport('${s.id}')"><span class="sport-art" style="--c1:${(SPORT_CLR[s.id]||['#4a7dff','#1c3f9e'])[0]};--c2:${(SPORT_CLR[s.id]||['#4a7dff','#1c3f9e'])[1]}">${sportSvg(s.id)}</span><span class="sport-copy"><b>${label[0]}</b><small>${label[1]}</small><em>${s.type==='team'?'КОМАНДАЛЫҚ':s.type==='individual'?'ЖЕКЕЛЕЙ':'КОМАНДАЛЫҚ / ЖЕКЕЛЕЙ'} · ТІРКЕУ · ХАТТАМА</em></span></button>`}).join('');show('sports')}
+function chooseSport(id){show('setup');$('level').textContent=level+' кезеңінің параметрлері';$('sport').innerHTML=SPORTS.map(s=>`<option value="${s.id}">${s.name}</option>`).join('');$('sport').value=id;updateSport();$('sport').disabled=true}
+
+function systems(s){if(s.id==='athletics')return [['performance','Уақыт / қашықтық нәтижесі'],['manual','Төреші бекіткен орындар']];if(s.id==='chess'||s.id==='togyz')return [['swiss','Швейцариялық жүйе'],['round','Айналмалы жүйе'],['ko','Олимпиадалық жүйе']];if(s.id==='tabletennis')return [['round','Айналмалы жүйе'],['groups','Топтық + плей-офф'],['ko','Олимпиадалық жүйе']];return [['groups','Топтық кезең + плей-офф'],['round','Айналмалы жүйе'],['ko','Олимпиадалық жүйе']]}
+function updateSport(){let s=SPORTS.find(x=>x.id===$('sport').value)||SPORTS[0];$('age').innerHTML=s.ages.map(a=>`<option>${a}</option>`).join('');[...$('kind').options].forEach(o=>o.disabled=(s.type==='team'&&o.value==='individual')||(s.type==='individual'&&o.value==='team'));if(s.type==='team')$('kind').value='team';if(s.id==='athletics'){$('kind').value='individual';$('kind').disabled=true}else $('kind').disabled=false;$('system').innerHTML=systems(s).map(x=>`<option value="${x[0]}">${x[1]}</option>`).join('');$('rules').innerHTML='<b>Өткізу тәртібі:</b> '+s.note+'<br><span class="muted">Жарыс параметрлері ұйымдастырушы бекіткен регламентпен сәйкестендіріледі. Ресми норматив көрсетілмесе, жүйе оны ойдан есептемейді.</span>';
+let cfg={basketball:'Ойын есебі: ұпай · кезең есебі · тең есепті қосымша уақыт/регламент бойынша шешу',volleyball:'Партия есебі: сеттер · партия ұпайы · матч жеңімпазы',handball:'Матч есебі: гол · гол айырмасы · жеңіс/тең/жеңіліс',football:'Матч есебі: гол · гол айырмасы · пенальти нәтижесі бөлек тіркеледі',futsal:'Матч есебі: гол · гол айырмасы · пенальти нәтижесі бөлек тіркеледі',togyz:'Тақта нәтижесі: жеңіс / тең / жеңіліс · тур саны · швейцариялық/айналмалы жүйе',tabletennis:'Кездесу есебі: партиялар · сеттер · матч жеңімпазы',asyk:'Нәтиже: ату дәлдігі / ұпай / төреші бекіткен орын',chess:'Тақта есебі: 1–4 тақта · жеңіс 1 · тең 0,5 · жеңіліс 0 (регламентке қарай)',athletics:'Өлшем бірлігі: секунд / метр · нәтиже түрі: уақыт немесе қашықтық · орын норматив кестесімен'}[s.id];$('sportConfig').innerHTML='<b>Осы спортқа арналған есептеу модулі</b><p>'+cfg+'</p><p class="muted">Тіркелгеннен кейін осы спортқа арналған қатысушылар тізімі, жеребе, нәтижелер және хаттама бөлімдері ашылады.</p>'; $('chessTeamRules').classList.toggle('hidden',!(s.id==='chess'&&$('kind').value==='team'));} 
+$('sport').onchange=updateSport;
+$('kind').onchange=updateSport;
+function createCompetition(){let s=SPORTS.find(x=>x.id===$('sport').value);$('sport').disabled=false;comp={id:Date.now(),level,season:$('season').value,cname:$('cname').value||s.name, country:$('country').value,region:$('region').value,district:$('district').value,organizer:$('organizer').value,sport:s.id,sportName:s.name,age:$('age').value,kind:$('kind').value,gender:$('gender').value,system:$('system').value,date:$('date').value,entries:[],matches:[],scores:{},athleticsEvent:'60m',athleticsResults:{},chessTieRule:$('chessTieRule')?.value||'regulation'};archive.push(comp);persist();openCompetition(comp.id)}
+function openCompetition(id){comp=archive.find(x=>x.id===id);if(!comp)return;if(comp.sport==='chess'&&comp.kind==='team')ensureTeamMatchIds();show('competition');$('ctitle').textContent=comp.cname;$('cmeta').textContent=[comp.level,comp.season,comp.region,comp.district,comp.sportName,comp.age,comp.kind==='team'?'Командалық':'Жекелей'].filter(Boolean).join(' · ');entryForm();renderAll()}
+function entryForm(){if(comp.kind==='team')$('entryForm').innerHTML=`<div class="grid"><div><label>Мектеп / ұйым</label><input id="school"></div><div><label>Команда атауы</label><input id="entryName"></div><div><label>${comp.sport==='chess'?'3 ұлдың аты-жөні (үтірмен бөліңіз)':'Ұлдар (аты-жөндерін үтірмен)'}</label><input id="boys"></div><div><label>${comp.sport==='chess'?'1 қыздың аты-жөні':'Қыздар (аты-жөндерін үтірмен)'}</label><input id="girls"></div><div><label>Жаттықтырушы</label><input id="coach"></div></div>`;else $('entryForm').innerHTML=`<div class="grid"><div><label>Мектеп / ұйым</label><input id="school"></div><div><label>Спортшының аты-жөні</label><input id="entryName"></div><div><label>Сыныбы</label><input id="className"></div><div><label>Туған жылы</label><input id="birth" type="number"></div></div>`}
+function addEntry(){let school=$('school').value.trim(),name=$('entryName').value.trim();if(!school||!name)return alert('Мектеп/ұйым және команда/қатысушы атауын толтырыңыз.');let e={id:'x'+Date.now(),school,name};if(comp.kind==='team'){e.boys=$('boys').value.split(',').map(x=>x.trim()).filter(Boolean);e.girls=$('girls').value.split(',').map(x=>x.trim()).filter(Boolean);e.coach=$('coach').value;if(comp.sport==='chess'&&(e.boys.length!==3||e.girls.length!==1))return alert('Командалық шахмат құрамы дәл 3 ұл + 1 қыз болуы керек. Ұлдардың 3 аты-жөнін, қыздың 1 аты-жөнін үтірмен бөліп енгізіңіз.');if(comp.sport==='chess')e.roster=[e.boys[0],e.boys[1],e.boys[2],e.girls[0]]}else{e.className=$('className').value;e.birth=$('birth').value}comp.entries.push(e);persist();renderAll();entryForm()}
+function renderAll(){if(isTeamChess())ensureTeamMatchIds();renderEntries();renderFixtures();renderResults();renderStandings()}
+function renderEntries(){$('entries').innerHTML='<h3>Тіркелген жазба: '+comp.entries.length+'</h3><table><tr><th>Мектеп / ұйым</th><th>Команда / қатысушы</th><th>Құрамы</th><th></th></tr>'+comp.entries.map((e,i)=>`<tr><td>${e.school}</td><td>${e.name}</td><td>${comp.kind==='team'?'Ұл: '+(e.boys||[]).join(', ')+'; Қыз: '+(e.girls||[]).join(', '):(e.className||'')}</td><td><button class="danger" onclick="removeEntry(${i})">Өшіру</button></td></tr>`).join('')+'</table>'}
+window.removeEntry=i=>{comp.entries.splice(i,1);comp.matches=[];comp.scores={};persist();renderAll()}
+function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function makeDraw(){if(comp.sport==='athletics'){comp.matches=[];comp.scores={};persist();renderAll();return}if(comp.entries.length<2)return alert('Жеребе үшін кемінде 2 қатысушы немесе команда керек.');let a=shuffle(comp.entries);comp.matches=[];comp.scores={};if(comp.system==='ko'){for(let i=0;i<a.length;i+=2)comp.matches.push({round:1,a:a[i].id,b:a[i+1]?.id||null})}else if(comp.system==='swiss'){let rounds=Math.max(1,Math.min(15,Number($('roundNum').value)||7));for(let r=1;r<=rounds;r++){let b=a.slice();if(b.length%2)b.push(null);for(let i=0;i<b.length;i+=2)comp.matches.push({round:r,a:b[i].id,b:b[i+1]?.id||null});a=shuffle(a)}}else{let b=[...a];if(b.length%2)b.push(null);let rounds=[];for(let r=0;r<b.length-1;r++){for(let i=0;i<b.length/2;i++)if(b[i])rounds.push({round:r+1,a:b[i].id,b:b[b.length-1-i]?.id||null});b=[b[0],b[b.length-1],...b.slice(1,-1)]}comp.matches=comp.system==='groups'?rounds.filter(x=>x.round===1):rounds}persist();renderAll()}
+function entry(id){return comp.entries.find(e=>e.id===id)}
+function renderFixtures(){if(isTeamChess()){$('fixtures').innerHTML=comp.matches.length?'<table><tr><th>Тур</th><th>А командасы</th><th>В командасы</th><th>А командасының түсі (1-тақта)</th><th>Есеп</th></tr>'+comp.matches.map(m=>{let r=chessTeamMatchScore(m);return `<tr><td>${m.round}</td><td>${esc(entry(m.a)?.name||'')}</td><td>${esc(entry(m.b)?.name||'Бос тур')}</td><td>${m.teamAWhite===false?'Қара':'Ақ'}</td><td>${m.b?r.a+' : '+r.b:'1 ұпай (бос тур)'}</td></tr>`}).join('')+'</table>'+(comp.system==='swiss'&&comp.swissRound<Math.max(1,Number($('roundNum').value)||7)?'<div class="actions"><button onclick="makeNextSwissRound()">Келесі турдың жеребесін құру</button></div>':''):'<p class="muted">Командалық жеребе әлі құрылмаған.</p>';return}if(comp.sport==='athletics'){$('fixtures').innerHTML='<p class=\"notice\">Жеңіл атлетикада жеребе жұптарға бөлінбейді. Тіркелген спортшылар старттық тізім ретінде көрсетіледі. Әр дисциплина бойынша нәтиже жеке енгізіледі.</p><table><tr><th>Старт №</th><th>Спортшы</th><th>Мектеп</th></tr>'+comp.entries.map((e,i)=>`<tr><td>${i+1}</td><td>${esc(e.name)}</td><td>${esc(e.school)}</td></tr>`).join('')+'</table>';return}$('fixtures').innerHTML=comp.matches.length?'<table><tr><th>Тур</th><th>А жағы</th><th>В жағы</th></tr>'+comp.matches.map(m=>`<tr><td>${m.round}</td><td>${entry(m.a)?.name||'—'}</td><td>${entry(m.b)?.name||'Бос тур'}</td></tr>`).join('')+'</table>':'<p class="muted">Жеребе әлі құрылмаған.</p>'}
+function renderResults(){
+ if(comp.sport==='athletics'){
+  comp.athleticsResults=comp.athleticsResults||{};
+  const events=[['60m','60 метрге жүгіру','секунд','lower'],['100m','100 метрге жүгіру','секунд','lower'],['200m','200 метрге жүгіру','секунд','lower'],['400m','400 метрге жүгіру','секунд','lower'],['800m','800 метрге жүгіру','мин:сек','lower'],['long','Ұзындыққа секіру','метр','higher'],['high','Биіктікке секіру','метр','higher'],['shot','Доп / ядро лақтыру','метр','higher'],['relay','Эстафета','секунд','lower']];
+  const ev=events.find(x=>x[0]===comp.athleticsEvent)||events[0];
+  $('results').innerHTML=`<div class="ath-card"><h3>Жеңіл атлетика · дисциплина таңдау</h3><div class="ath-result-head"><div><label>Жарыс түрі</label><select id="athEvent">${events.map(x=>`<option value="${x[0]}" ${x[0]===ev[0]?'selected':''}>${x[1]}</option>`).join('')}</select></div><div><label>Нәтиже өлшемі</label><input value="${ev[2]}" disabled></div></div><p class="muted">${ev[3]==='lower'?'Уақыты аз спортшы жоғары орын алады.':'Көрсеткіші жоғары спортшы жоғары орын алады.'} Әр қатысушының нәтижесін жеке енгізіңіз.</p></div>`+
+  comp.entries.map((e,i)=>{let r=comp.athleticsResults[e.id]||{};return `<div class="ath-card"><div class="ath-row"><strong>${i+1}. ${esc(e.name)}</strong><input aria-label="${esc(e.name)} нәтижесі" placeholder="Нәтиже (${ev[2]})" value="${r[ev[0]]??''}" oninput="setAthleticsResult('${e.id}','${ev[0]}',this.value)"><span>${esc(e.school)}</span></div></div>`}).join('');
+  $('athEvent').onchange=e=>{comp.athleticsEvent=e.target.value;persist();renderResults();renderStandings()};return;
+ }
+ $('results').innerHTML=comp.matches.map((m,i)=>{let s=comp.scores[i]||{};let ctrl;if(!m.b)ctrl='Бос тур';else if(comp.sport==='chess'||comp.sport==='togyz')ctrl=`<select onchange="setScore(${i},'winner',this.value)"><option value="">Нәтижені таңдаңыз</option><option value="a" ${s.winner==='a'?'selected':''}>${entry(m.a).name} жеңді</option><option value="draw" ${s.winner==='draw'?'selected':''}>Тең ойын</option><option value="b" ${s.winner==='b'?'selected':''}>${entry(m.b).name} жеңді</option></select>`;else ctrl=`<input type="number" min="0" placeholder="А есебі" value="${s.a??''}" onchange="setScore(${i},'a',this.value)" style="width:85px"><input type="number" min="0" placeholder="В есебі" value="${s.b??''}" onchange="setScore(${i},'b',this.value)" style="width:85px">`;return `<div class="notice"><b>${entry(m.a)?.name||''} — ${entry(m.b)?.name||'Бос тур'}</b><br>${ctrl}</div>`}).join('')
+}
+window.setAthleticsResult=(id,event,value)=>{comp.athleticsResults=comp.athleticsResults||{};comp.athleticsResults[id]=comp.athleticsResults[id]||{};comp.athleticsResults[id][event]=value;persist();renderStandings()}
+
+window.setTeamBoardScore=(matchId,n,v)=>{ensureTeamMatchIds();let m=comp.matches.find(x=>x.id===matchId);if(!m||!m.b)return alert('Бұл тақтаға қарсылас команда тіркелмеген.');let sc=teamScoreFor(m);sc.boards=sc.boards||{};if(!['a','b','draw',''].includes(v))return;sc.boards[n]=v;persist();renderAll()};
+window.setScore=(i,k,v)=>{comp.scores[i]=comp.scores[i]||{};comp.scores[i][k]=(k==='a'||k==='b')?Number(v):v;persist();renderStandings()}
+function athleticsStandings(){const ev=comp.athleticsEvent||'60m',higher=['long','high','shot'].includes(ev);return comp.entries.map(e=>({...e,result:(comp.athleticsResults||{})[e.id]?.[ev]??''})).filter(x=>String(x.result).trim()!=='').sort((a,b)=>{let x=Number(String(a.result).replace(',','.')),y=Number(String(b.result).replace(',','.'));if(!Number.isFinite(x)||!Number.isFinite(y))return 0;return higher?y-x:x-y})}
+function standings(){let a=comp.entries.map(e=>({...e,pts:0,played:0,w:0,d:0,l:0,diff:0}));comp.matches.forEach((m,i)=>{let s=comp.scores[i]||{},x=a.find(z=>z.id===m.a),y=a.find(z=>z.id===m.b);if(x&&m.bye&&m.stage==='Швейцариялық жүйе'){x.pts+=1;return}if(!x||!y)return;if(comp.sport==='chess'||comp.sport==='togyz'){if(!s.winner)return;x.played++;y.played++;if(s.winner==='a'){x.pts+=comp.sport==='chess'?2:1;x.w++;y.l++}else if(s.winner==='b'){y.pts+=comp.sport==='chess'?2:1;y.w++;x.l++}else{x.pts+=comp.sport==='chess'?1:.5;y.pts+=comp.sport==='chess'?1:.5;x.d++;y.d++}}else if(s.a!==undefined&&s.b!==undefined){x.played++;y.played++;x.diff+=s.a-s.b;y.diff+=s.b-s.a;if(s.a>s.b){x.pts+=3;x.w++;y.l++}else if(s.b>s.a){y.pts+=3;y.w++;x.l++}else{x.pts++;y.pts++;x.d++;y.d++}}});return a.sort((x,y)=>y.pts-x.pts||y.diff-x.diff)}
+function renderStandings(){if(isTeamChess()){let a=chessTeamStandings();$('standings').innerHTML='<p class="muted">Матч жеңісі = 2 командалық ұпай · тең матч = 1 · жеңіліс = 0. Тақталардағы ұпайлар бөлек қосылады.</p><table><tr><th>Орын</th><th>Команда</th><th>Матч</th><th>Ж</th><th>Т</th><th>Ұ</th><th>Тақта ұпайы</th><th>Қыздар тақтасы</th></tr>'+a.map((x,i)=>`<tr><td>${x.rank||i+1}</td><td>${esc(x.name)}<br><small>${esc(x.school)}</small></td><td>${x.played}</td><td>${x.w}</td><td>${x.d}</td><td>${x.l}</td><td>${x.boardPts}</td><td>${x.girlsPts}</td><td>${x.boardWins[0]}</td><td>${x.boardWins[1]}</td><td>${x.boardWins[2]}</td><td>${x.boardWins[3]}</td></tr>`).join('')+'</table><div class="notice"><b>Теңдік шешу реті:</b> командалық ұпай → өзара кездесу → 1-тақта → қыздар тақтасы (4-тақта) → 2-тақта → 3-тақта → тақта ұпайы. Қыздар тақтасын бірінші қою параметрі таңдалса, сол рет қолданылады. 2:2 тақта есебі — тең матч; әр командаға 1 турнирлік ұпай беріледі. Қосымша блиц тек бекітілген регламент бойынша.</div><h3>Ойыншылардың ақ-қара түс статистикасы (жеребе бойынша)</h3><table><tr><th>Команда</th><th>Тақта</th><th>Ойыншы</th><th>Ақ</th><th>Қара</th></tr>'+teamPlayerColorStats().map(x=>`<tr><td>${esc(x.team)}</td><td>${x.board}</td><td>${esc(x.name)}</td><td>${x.white}</td><td>${x.black}</td></tr>`).join('')+'</table>';return}if(comp.sport==='athletics'){ let a=athleticsStandings();let ev=comp.athleticsEvent||'60m';$('standings').innerHTML=a.length?'<table><tr><th>Орын</th><th>Спортшы</th><th>Мектеп</th><th>Нәтиже</th></tr>'+a.map((x,i)=>`<tr><td>${x.rank||i+1}</td><td>${esc(x.name)}</td><td>${esc(x.school)}</td><td>${esc(x.result)}</td></tr>`).join('')+'</table><p class="muted">Орындар енгізілген нәтижелерді салыстыру арқылы автоматты реттелді. Бірдей нәтиже болса, бірдей орын көрсетіледі. Ресми нормативтік ұпай бұл нұсқада есептелмейді.</p>':'<p class="muted">Нәтиже енгізілгеннен кейін орындар автоматты түрде осы жерде көрсетіледі.</p>';return}let a=standings();$('standings').innerHTML='<table><tr><th>Орын</th><th>Команда / спортшы</th><th>Ойын</th><th>Ж</th><th>Т</th><th>Ұ</th><th>Ұпай</th></tr>'+a.map((x,i)=>`<tr><td>${x.rank||i+1}</td><td>${esc(x.name)}<br><small>${esc(x.school)}</small></td><td>${x.played}</td><td>${x.w}</td><td>${x.d}</td><td>${x.l}</td><td>${x.pts}</td></tr>`).join('')+'</table>'}
+
+function esc(s){return String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function word(title,table,filename){let h=`<html><head><meta charset="utf-8"><style>body{font-family:'Times New Roman';font-size:12pt}h2{text-align:center}table{border-collapse:collapse;width:100%}td,th{border:1px solid #000;padding:5px} 
+/* Контрастты күшейту: iPhone/Safari және dark-mode әсерінен мәтін ағарып кетпеуі үшін */
+.card,.notice,.screen,.card p,.card div,.card label,.card h2,.card h3,
+.card td,.card th,.card small,.card strong,.card b,.card span,
+#setup,#competition,#home { color:#17283a; }
+.card h2,.card h3 { color:#10243a; }
+.card .muted,.muted { color:#526579!important; }
+input,select,textarea { color:#17283a!important; -webkit-text-fill-color:#17283a!important; background:#ffffff!important; }
+input::placeholder { color:#738397!important; -webkit-text-fill-color:#738397!important; opacity:1; }
+button,.dl { color:#ffffff!important; -webkit-text-fill-color:#ffffff!important; }
+button.tile { color:#17283a!important; -webkit-text-fill-color:#17283a!important; background:#ffffff!important; }
+button.tile span { color:#526579!important; -webkit-text-fill-color:#526579!important; }
+.alt,.alt * { color:#1b3d58!important; -webkit-text-fill-color:#1b3d58!important; }
+.danger,.danger * { color:#ffffff!important; -webkit-text-fill-color:#ffffff!important; }
+header,header * { color:#ffffff; }
+header p,header small { color:#d8e7f1!important; }
+th { color:#17283a!important; background:#edf2f6!important; }
+td { color:#17283a!important; background:#ffffff; }
+
+.sports-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:12px;margin-top:16px}
+.sport-card{min-height:112px;width:100%;background:linear-gradient(145deg,#ffffff,#f3f7fb)!important;border:1px solid #d5e0ea;border-radius:16px;padding:13px;text-align:left;color:#17283a!important;-webkit-text-fill-color:#17283a!important;display:flex;flex-direction:row;align-items:center;gap:13px;box-shadow:0 5px 16px #10243a10;transition:.18s}
+.sport-card:hover{transform:translateY(-2px);border-color:#347da8;box-shadow:0 10px 22px #10243a18}
+.sport-card *{color:#17283a!important;-webkit-text-fill-color:#17283a!important}
+.sport-art{flex:0 0 94px;width:94px;height:94px;border-radius:20px;background:radial-gradient(circle at 35% 25%,#254766,#10243b 72%);display:grid;place-items:center;overflow:visible;box-shadow:inset 0 1px 0 #ffffff24,0 7px 18px #0004}.sport-art svg{width:100%;height:100%;overflow:visible;filter:drop-shadow(0 5px 5px #0005)}
+.sport-copy{display:flex;flex-direction:column;align-items:flex-start;gap:5px;min-width:0}
+.sport-card b{display:block;font-size:15px;line-height:1.25;color:#10243a!important;-webkit-text-fill-color:#10243a!important}
+.sport-card small{font-size:12px;line-height:1.3;color:#526579!important;-webkit-text-fill-color:#526579!important}
+.sport-card em{font-style:normal;color:#28658b!important;-webkit-text-fill-color:#28658b!important;font-size:10px;font-weight:700;margin-top:2px}
+@media(max-width:600px){.sports-grid{grid-template-columns:1fr}.sport-card{min-height:108px;padding:11px}.sport-art{flex-basis:82px;width:82px;height:82px}}
+/* iOS Safari және қараңғы режимдегі ақ мәтін мәселесіне қарсы нақты бекіту */
+#sports .sport-card,#sports .sport-card *{color:#17283a!important;-webkit-text-fill-color:#17283a!important;text-shadow:none!important}
+#sports .sport-card{background:#fff!important}#sports .sport-card .sport-art{color:inherit!important;-webkit-text-fill-color:initial!important;background:radial-gradient(circle at 35% 25%,#254766,#10243b 72%)!important}
+#sports .sport-card .sport-copy b{color:#10243a!important;-webkit-text-fill-color:#10243a!important}
+#sports .sport-card .sport-copy small{color:#526579!important;-webkit-text-fill-color:#526579!important}
+#sports .sport-card .sport-copy em{color:#28658b!important;-webkit-text-fill-color:#28658b!important}
+.sport-config{background:#f3f7fa;border:1px solid #d7e2eb;border-radius:10px;padding:12px;margin:10px 0;color:#17334b}.sport-config p{margin:6px 0}
+
+/* UML DIGITAL v16 — фотосуреттермен жаңартылған интерфейс */
+.level-tile{position:relative!important;isolation:isolate;min-height:190px!important;display:flex!important;flex-direction:column!important;justify-content:flex-end!important;overflow:hidden!important;padding:18px!important;border:0!important;border-radius:18px!important;background-image:var(--level-bg)!important;background-size:cover!important;background-position:center!important;box-shadow:0 8px 24px #0b223a24!important;text-align:left!important}
+.level-tile:before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,#071a2b10 10%,#071a2bd9 100%)}
+.level-tile .level-shade{display:none}
+.level-tile b{font-size:20px!important;color:#fff!important;-webkit-text-fill-color:#fff!important;margin:0 0 5px!important;text-shadow:0 2px 8px #0008}
+.level-tile span:not(.level-shade){font-size:13px!important;color:#edf6ff!important;-webkit-text-fill-color:#edf6ff!important;text-shadow:0 1px 5px #0009}
+.level-tile:hover{transform:translateY(-3px);filter:saturate(1.12)}
+.sport-card{min-height:126px!important;padding:12px!important;gap:14px!important;background:linear-gradient(120deg,#fff,#f4f8fc)!important}
+.sport-art{flex:0 0 94px!important;width:94px!important;height:94px!important;padding:0!important;overflow:hidden!important;border-radius:13px!important;background:#dbe7f0!important;display:block!important}
+.sport-art img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .35s ease}
+.sport-card:hover .sport-art img{transform:scale(1.08)}
+.sport-copy{gap:6px!important}
+@media(max-width:600px){.level-tile{min-height:145px!important}.sport-card{min-height:104px!important}.sport-art{flex-basis:76px!important;width:76px!important;height:76px!important}}
+</style></head><body><h2>${title}</h2><p>Жарыс: ${esc(comp.cname)}<br>Маусым: ${esc(comp.season)}<br>Деңгейі: ${esc(comp.level)}<br>Өңір: ${esc(comp.region)} ${esc(comp.district)}<br>Спорт түрі: ${esc(comp.sportName)}<br>Жас санаты: ${esc(comp.age)}<br>Формат: ${comp.kind==='team'?'Командалық':'Жекелей'}</p>${table}<p>Бас төреші: ____________________ Хатшы: ____________________</p><p>Автор: Бегенов Сейітжан Аманкелдіұлы</p><footer style="text-align:center;padding:12px;color:#8295a8;font-size:11px">ҰМЛ DIGITAL платформасын әзірлеуші: Бегенов Сейітжан Аманкелдіұлы</footer>
+</body></html>`;let b=new Blob(['\ufeff',h],{type:'application/msword'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+function downloadSchedule(){word('ЖАРЫС КЕСТЕСІ','<table><tr><th>Тур</th><th>А</th><th>В</th></tr>'+comp.matches.map(m=>`<tr><td>${m.round}</td><td>${esc(entry(m.a)?.name)}</td><td>${esc(entry(m.b)?.name||'Бос тур')}</td></tr>`).join('')+'</table>','UML_keste.doc')}
+function downloadMatchProtocol(){word('ОЙЫН ХАТТАМАСЫ','<table><tr><th>№</th><th>А</th><th>В</th><th>Нәтиже</th></tr>'+comp.matches.map((m,i)=>{let s=comp.scores[i]||{};return `<tr><td>${i+1}</td><td>${esc(entry(m.a)?.name)}</td><td>${esc(entry(m.b)?.name||'')}</td><td>${esc(s.winner||((s.a!==undefined)?s.a+':'+s.b:s.note||''))}</td></tr>`}).join('')+'</table>','UML_oiyn_hattamasy.doc')}
+function downloadFinalProtocol(){if(isTeamChess()){let a=chessTeamStandings();let html='<table><tr><th>Орын</th><th>Команда</th><th>Мектеп</th><th>Матч ұпайы</th><th>Өзара ұпай</th><th>Бухгольц</th><th>Тақта ұпайы</th><th>Қыздар тақтасы</th></tr>'+a.map(x=>`<tr><td>${x.rank}-орын</td><td>${esc(x.name)}</td><td>${esc(x.school)}</td><td>${x.pts}</td><td>${x.miniPts}</td><td><b>${x.bh}</b></td><td>${x.boardPts}</td><td>${x.girlsPts}</td></tr>`).join('')+'</table><h3>Әр тақта бойынша ойын нәтижелері</h3>'+comp.matches.map((m,i)=>{if(!m.b)return '';let s=teamScoreFor(m),bd=s.boards||{};return `<p><b>${esc(entry(m.a).name)} — ${esc(entry(m.b).name)} (${chessTeamMatchScore(m).a}:${chessTeamMatchScore(m).b})</b></p><table><tr><th>Тақта</th><th>А командасы</th><th>Нәтиже</th><th>В командасы</th><th>Түстер</th></tr>`+[1,2,3,4].map(n=>`<tr><td>${n}</td><td>${esc(entry(m.a).roster?.[n-1]||'')}</td><td>${esc(bd[n]||'Енгізілмеген')}</td><td>${esc(entry(m.b).roster?.[n-1]||'')}</td><td>${(n%2===1?(m.teamAWhite!==false):!(m.teamAWhite!==false))?'А — Ақ / В — Қара':'А — Қара / В — Ақ'}</td></tr>`).join('')+'</table>'}).join('');word('ШАХМАТ · КОМАНДАЛЫҚ ҚОРЫТЫНДЫ ХАТТАМА',html,'UML_chess_team_final.doc');return}if(comp.sport==='athletics'){let a=athleticsStandings();let ev=comp.athleticsEvent||'60m';word('ЖЕҢІЛ АТЛЕТИКА · ҚОРЫТЫНДЫ ХАТТАМА','<p>Дисциплина: '+esc(({ '60m':'60 метрге жүгіру','100m':'100 метрге жүгіру','200m':'200 метрге жүгіру','400m':'400 метрге жүгіру','800m':'800 метрге жүгіру','long':'Ұзындыққа секіру','high':'Биіктікке секіру','shot':'Доп / ядро лақтыру','relay':'Эстафета'}[ev]||ev))+'</p><table><tr><th>Орын</th><th>Спортшы</th><th>Мектеп</th><th>Нәтиже</th></tr>'+a.map((x,i)=>`<tr><td>${x.rank||i+1}</td><td>${esc(x.name)}</td><td>${esc(x.school)}</td><td>${esc(x.result)}</td></tr>`).join('')+'</table>','UML_zhengil_atletika_korytyndy.doc');return}let a=standings();word('ҚОРЫТЫНДЫ ХАТТАМА','<table><tr><th>Орын</th><th>Қатысушы / команда</th><th>Мектеп</th><th>Ойын</th><th>Ж</th><th>Т</th><th>Ұ</th><th>Ұпай</th></tr>'+a.map((x,i)=>`<tr><td>${x.rank||i+1}</td><td>${esc(x.name)}</td><td>${esc(x.school)}</td><td>${x.played}</td><td>${x.w}</td><td>${x.d}</td><td>${x.l}</td><td>${x.pts}</td></tr>`).join('')+'</table>','UML_korytyndy_hattama.doc')}
+function downloadRoster(){word('ҚАТЫСУШЫЛАР ТІЗІМІ','<table><tr><th>№</th><th>Мектеп</th><th>Команда / қатысушы</th><th>Құрамы</th></tr>'+comp.entries.map((e,i)=>`<tr><td>${i+1}</td><td>${esc(e.school)}</td><td>${esc(e.name)}</td><td>${esc([...(e.boys||[]),...(e.girls||[])].join(', '))}</td></tr>`).join('')+'</table>','UML_tizim.doc')}
+function exportCompetition(){let b=new Blob([JSON.stringify(comp,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='UML_competition_'+comp.id+'.json';a.click()}
+function exportAll(){let b=new Blob([JSON.stringify(archive,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='UML_archive.json';a.click()}
+$('importAll').onchange=e=>{let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let v=JSON.parse(r.result);if(!Array.isArray(v))throw 0;archive=archive.concat(v);persist();alert('Мұрағат импортталды')}catch{alert('JSON файл дұрыс емес')}};r.readAsText(f)}
+function renderArchive(){$('archive').innerHTML=archive.length?archive.map(x=>`<div class="notice"><b>${esc(x.cname)}</b><br><span class="muted">${esc(x.level)} · ${esc(x.season)} · ${esc(x.sportName)} · ${x.entries.length} жазба</span><div class="actions"><button onclick="openCompetition(${x.id})">Ашу</button><button class="danger" onclick="deleteCompetition(${x.id})">Өшіру</button></div></div>`).join(''):'Әзірге сақталған жарыс жоқ.'}
+window.deleteCompetition=id=>{if(confirm('Жарысты мұрағаттан өшіресіз бе?')){archive=archive.filter(x=>x.id!==id);persist()}}
+renderArchive();
+
+/* === UML PRO v6: турнирлік логика === */
+function scored(m){let s=comp.scores[comp.matches.indexOf(m)]||{};return m.b?((s.a!==undefined&&s.b!==undefined)||!!s.winner):true}
+function matchExists(a,b){return comp.matches.some(m=>(m.a===a&&m.b===b)||(m.a===b&&m.b===a))}
+function pointsMap(){let map={};comp.entries.forEach(e=>map[e.id]=0);comp.matches.forEach((m,i)=>{if(!m.b){if(m.bye&&comp.sport==='chess')map[m.a]+=1;return}let s=comp.scores[i]||{};if(comp.sport==='chess'||comp.sport==='togyz'){if(s.winner==='a')map[m.a]+=(comp.sport==='chess'?1:1);else if(s.winner==='b')map[m.b]+=(comp.sport==='chess'?1:1);else if(s.winner==='draw'){map[m.a]+=.5;map[m.b]+=.5}}else if(s.a!==undefined&&s.b!==undefined){if(s.a>s.b)map[m.a]+=3;else if(s.b>s.a)map[m.b]+=3;else{map[m.a]+=1;map[m.b]+=1}}});return map}
+function buchholz(id){let pts=pointsMap(),sum=0;comp.matches.forEach((m,i)=>{if(!m.b||!scored(m))return;if(m.a===id)sum+=pts[m.b]||0;else if(m.b===id)sum+=pts[m.a]||0});return sum}
+function standings(){let a=comp.entries.map(e=>({...e,pts:0,played:0,w:0,d:0,l:0,diff:0,bh:0}));comp.matches.forEach((m,i)=>{let s=comp.scores[i]||{},x=a.find(z=>z.id===m.a),y=a.find(z=>z.id===m.b);if(x&&m.bye&&m.stage==='Швейцариялық жүйе'){x.pts+=1;return}if(!x||!y)return;if(comp.sport==='chess'||comp.sport==='togyz'){if(!s.winner)return;x.played++;y.played++;if(s.winner==='a'){x.pts+=1;x.w++;y.l++}else if(s.winner==='b'){y.pts+=1;y.w++;x.l++}else{x.pts+=.5;y.pts+=.5;x.d++;y.d++}}else if(s.a!==undefined&&s.b!==undefined){x.played++;y.played++;x.diff+=s.a-s.b;y.diff+=s.b-s.a;if(s.a>s.b){x.pts+=3;x.w++;y.l++}else if(s.b>s.a){y.pts+=3;y.w++;x.l++}else{x.pts++;y.pts++;x.d++;y.d++}}});a.forEach(x=>x.bh=comp.sport==='chess'?buchholz(x.id):0);return a.sort((x,y)=>y.pts-x.pts||(comp.sport==='chess'?y.bh-x.bh:y.diff-x.diff)||x.name.localeCompare(y.name,'kk'))}
+function makeDraw(){
+ if(comp.sport==='athletics'){comp.matches=[];comp.scores={};persist();renderAll();return}
+ if(comp.entries.length<2)return alert('Жеребе үшін кемінде 2 команда немесе қатысушы тіркеңіз.');
+ comp.matches=[];comp.scores={};comp.stage='group';
+ if(comp.system==='swiss'){comp.swissRound=0;makeNextSwissRound(true);return}
+ if(comp.system==='ko'){let a=shuffle(comp.entries);let n=1;while(n<a.length)n*=2;let byes=n-a.length;let round=[];for(let i=0;i<byes;i++)round.push({round:1,stage:'Плей-офф',a:a[i].id,b:null,bye:true});let rest=a.slice(byes);for(let i=0;i<rest.length;i+=2)round.push({round:1,stage:'1/ '+(rest.length/2),a:rest[i].id,b:rest[i+1]?.id||null});comp.matches=round;}
+ else if(comp.system==='groups'&&['football','futsal','basketball','handball','volleyball'].includes(comp.sport)){let count=Math.max(1,Math.min(comp.entries.length,Number($('groupNum').value)||2));let shuffled=shuffle(comp.entries);let groups=Array.from({length:count},(_,i)=>({name:String.fromCharCode(65+i),ids:[]}));shuffled.forEach((e,i)=>groups[i%count].ids.push(e.id));comp.groups=groups;groups.forEach(g=>{let arr=g.ids.map(id=>entry(id));let n=arr.length;if(n<2)return;let rot=[...arr];if(n%2)rot.push(null);let total=rot.length-1;for(let r=0;r<total;r++){for(let i=0;i<rot.length/2;i++){let a=rot[i],b=rot[rot.length-1-i];if(a&&b)comp.matches.push({round:r+1,stage:'Топтық кезең · '+g.name,a:a.id,b:b.id,group:g.name})}rot=[rot[0],rot[rot.length-1],...rot.slice(1,-1)]}})}
+ else {let a=[...comp.entries],n=a.length;if(n%2)a.push(null);let rot=[...a];for(let r=0;r<rot.length-1;r++){for(let i=0;i<rot.length/2;i++){let x=rot[i],y=rot[rot.length-1-i];if(x)comp.matches.push({round:r+1,stage:'Айналмалы жүйе',a:x.id,b:y?.id||null})}rot=[rot[0],rot[rot.length-1],...rot.slice(1,-1)]}}
+ persist();renderAll();
+}
+function isTeamChess(){return comp.sport==='chess'&&comp.kind==='team'}
+function ensureTeamMatchIds(){if(!comp)return;comp.teamScores=comp.teamScores||{};comp.matches.forEach((m,i)=>{if(!m.id)m.id='chm_'+(m.round||1)+'_'+(m.a||'x')+'_'+(m.b||'bye')+'_'+i;let legacy=comp.scores?.[i];if(!comp.teamScores[m.id]&&legacy?.boards)comp.teamScores[m.id]=JSON.parse(JSON.stringify(legacy));});}
+function teamScoreFor(m){ensureTeamMatchIds();return comp.teamScores[m.id]||(comp.teamScores[m.id]={boards:{}})}
+function chessTeamMatchScore(m){let s=teamScoreFor(m),boards=s.boards||{};let a=0,b=0,done=0;for(let n=1;n<=4;n++){let v=boards[n];if(v==='a'){a+=1;done++}else if(v==='draw'){a+=.5;b+=.5;done++}else if(v==='b'){b+=1;done++}}return {a,b,done,complete:done===4,matchA:a>b?2:a===b?1:0,matchB:b>a?2:a===b?1:0}}
+function chessTeamStandings(){
+ let rows=comp.entries.map(e=>({...e,pts:0,miniPts:0,bh:0,boardPts:0,played:0,w:0,d:0,l:0,girlsPts:0,boardWins:[0,0,0,0],opponents:[]}));
+ comp.matches.forEach(m=>{if(!m.b)return;let x=rows.find(z=>z.id===m.a),y=rows.find(z=>z.id===m.b);if(!x||!y)return;let r=chessTeamMatchScore(m);if(!r.complete)return;x.played++;y.played++;x.boardPts+=r.a;y.boardPts+=r.b;x.pts+=r.matchA;y.pts+=r.matchB;x.opponents.push(y.id);y.opponents.push(x.id);if(r.matchA===2){x.w++;y.l++}else if(r.matchB===2){y.w++;x.l++}else{x.d++;y.d++}let bd=teamScoreFor(m).boards||{};if(bd[4]==='a')x.girlsPts+=1;else if(bd[4]==='draw'){x.girlsPts+=.5;y.girlsPts+=.5}else if(bd[4]==='b')y.girlsPts+=1;for(let n=1;n<=4;n++){if(bd[n]==='a')x.boardWins[n-1]++;else if(bd[n]==='b')y.boardWins[n-1]++}});
+ comp.matches.filter(m=>m.bye&&m.a).forEach(m=>{let x=rows.find(z=>z.id===m.a);if(x){x.pts+=2;x.played++;x.w++}});
+ // Тең командалар тобының ішіндегі барлық өзара кездесулердің командалық ұпайын есептеу (mini-table).
+ rows.forEach(x=>{rows.filter(y=>y.id!==x.id&&y.pts===x.pts).forEach(y=>{comp.matches.forEach(m=>{if(!m.b||!((m.a===x.id&&m.b===y.id)||(m.a===y.id&&m.b===x.id)))return;let r=chessTeamMatchScore(m);if(!r.complete)return;let xScore=m.a===x.id?r.matchA:r.matchB;x.miniPts+=xScore;});});});
+ // Командалық Бухгольц: осы команда кездескен қарсылас командалардың турнирлік матч ұпайларының қосындысы. Бос тур есепке кірмейді.
+ rows.forEach(x=>{x.bh=x.opponents.reduce((sum,oppId)=>{let opp=rows.find(z=>z.id===oppId);return sum+(opp?opp.pts:0)},0)});
+ const rule=comp.chessTieRule||'regulation',order=rule==='girls'?[3,0,1,2]:[0,3,1,2];
+ const compare=(x,y)=>{if(y.pts!==x.pts)return y.pts-x.pts;if(y.miniPts!==x.miniPts)return y.miniPts-x.miniPts;if(y.bh!==x.bh)return y.bh-x.bh;for(let n of order)if(y.boardWins[n]!==x.boardWins[n])return y.boardWins[n]-x.boardWins[n];if(y.girlsPts!==x.girlsPts)return y.girlsPts-x.girlsPts;if(y.boardPts!==x.boardPts)return y.boardPts-x.boardPts;return x.name.localeCompare(y.name,'kk')};
+ rows.sort(compare);
+ // Егер барлық қолданылатын көрсеткіштер тең болса, бірдей орын беріледі.
+ const same=(x,y)=>x.pts===y.pts&&x.miniPts===y.miniPts&&x.bh===y.bh&&order.every(n=>x.boardWins[n]===y.boardWins[n])&&x.girlsPts===y.girlsPts&&x.boardPts===y.boardPts;
+ let rank=0;rows.forEach((x,i)=>{if(i===0||!same(x,rows[i-1]))rank=i+1;x.rank=rank;x.tieBreak=`${x.pts} / ${x.miniPts} / ${x.boardPts}`});return rows;
+}
+function teamPlayerColorStats(){let out={};comp.entries.forEach(t=>(t.roster||[]).forEach((name,i)=>out[t.id+'_'+i]={name,white:0,black:0,team:t.name,board:i+1}));comp.matches.forEach(m=>{if(!m.b)return;let aWhite=m.teamAWhite!==false;for(let n=1;n<=4;n++){let ai=n-1,whiteA=(n%2===1)?aWhite:!aWhite;let aid=m.a+'_'+ai,bid=m.b+'_'+ai;if(out[aid]){if(whiteA)out[aid].white++;else out[aid].black++}if(out[bid]){if(whiteA)out[bid].black++;else out[bid].white++}}});return Object.values(out)}
+function teamColorForRound(teamId,round){let prior=comp.matches.filter(m=>m.round<round&&m.b&&(m.a===teamId||m.b===teamId));let white=0,black=0;prior.forEach(m=>{let aWhite=m.teamAWhite!==false;if(m.a===teamId){if(aWhite)white++;else black++}else{if(aWhite)black++;else white++}});return white<=black}
+function makeTeamChessSwissRound(){let total=Math.max(1,Math.min(15,Number($('roundNum').value)||7));let current=comp.swissRound||0;let prev=comp.matches.filter(m=>m.round===current&&(m.stage||'').startsWith('Швейцариялық жүйе'));let unfinished=prev.filter(m=>m.b&&!chessTeamMatchScore(m).complete);if(current>0&&(!prev.length||unfinished.length>0))return alert('Алдымен осы турдағы барлық командалық матчтың 4 тақта нәтижесін енгізіңіз.');if(current>=total)return alert('Белгіленген барлық тур аяқталды.');if(current>0&&!prev.length)return alert('Алдыңғы турдың матчтары табылмады. Жарыс жеребесін қайта тексеріңіз.');comp.swissRound=current+1;let ranked=chessTeamStandings().map(x=>x.id),pool=ranked.slice(),pairs=[];if(pool.length%2){let had=new Set(comp.matches.filter(m=>m.bye).map(m=>m.a));let bi=pool.slice().reverse().findIndex(id=>!had.has(id));let bye=bi<0?pool.pop():pool.splice(pool.length-1-bi,1)[0];pairs.push({round:comp.swissRound,stage:'Швейцариялық жүйе · командалық',a:bye,b:null,bye:true})}while(pool.length){let a=pool.shift(),idx=pool.findIndex(b=>!matchExists(a,b));if(idx<0)return alert('Қарсыластарды қайталамай жұптау мүмкін болмады. Қатысушылар мен өткен турларды тексеріңіз.');let b=pool.splice(idx,1)[0];let aWhite=teamColorForRound(a,comp.swissRound);pairs.push({round:comp.swissRound,stage:'Швейцариялық жүйе · командалық',a,b,teamAWhite:aWhite})}comp.matches.push(...pairs);persist();renderAll()}
+function makeNextSwissRound(first=false){
+ if(isTeamChess())return makeTeamChessSwissRound();
+ let total=Math.max(1,Math.min(15,Number($('roundNum').value)||7));let completed=comp.matches.filter(m=>m.stage==='Швейцариялық жүйе'&&m.round===comp.swissRound).every(scored);
+ if(!first&&comp.swissRound>0&&!completed)return alert('Алдымен осы турдағы барлық кездесудің нәтижесін енгізіңіз.');
+ if(comp.swissRound>=total)return alert('Белгіленген барлық тур аяқталды.');
+ comp.swissRound=(comp.swissRound||0)+1;let ranked=standings().map(x=>x.id);let pool=ranked.slice(),pairs=[];if(pool.length%2){let bye=pool.pop();let hadBye=new Set(comp.matches.filter(m=>m.bye).map(m=>m.a));let alt=ranked.filter(id=>!hadBye.has(id));bye=alt[alt.length-1]||bye;pairs.push({round:comp.swissRound,stage:'Швейцариялық жүйе',a:bye,b:null,bye:true})}
+ while(pool.length){let a=pool.shift(),idx=pool.findIndex(b=>!matchExists(a,b));if(idx<0)idx=0;let b=pool.splice(idx,1)[0];let white=a,black=b;if(comp.sport==='chess'){let colors={};comp.matches.forEach(m=>{if(m.colorA){colors[m.a]=colors[m.a]||{w:0,b:0};colors[m.b]=colors[m.b]||{w:0,b:0};colors[m.a][m.colorA==='Ақ'?'w':'b']++;colors[m.b][m.colorA==='Ақ'?'b':'w']++}});let ca=colors[a]||{w:0,b:0},cb=colors[b]||{w:0,b:0};if(ca.w-ca.b>cb.w-cb.b){white=b;black=a}else if(ca.w-ca.b===cb.w-cb.b&&Math.random()>.5){white=b;black=a}}
+ pairs.push({round:comp.swissRound,stage:'Швейцариялық жүйе',a:white,b:black,colorA:'Ақ',colorB:'Қара'});
+ }
+ comp.matches.push(...pairs);persist();renderAll();
+}
+function groupStandings(group){let ids=comp.groups?.find(g=>g.name===group)?.ids||[];let all=standings();return all.filter(x=>ids.includes(x.id))}
+function advancePlayoff(){if(!comp.groups?.length)return alert('Алдымен топтық жеребе құрыңыз.');let groupMatches=comp.matches.filter(m=>m.stage.startsWith('Топтық кезең'));if(!groupMatches.every(scored))return alert('Плей-оффқа өтпес бұрын топтық кезеңнің барлық ойын нәтижесін енгізіңіз.');if(comp.matches.some(m=>(m.stage||'').startsWith('Плей-офф')))return alert('Плей-офф кестесі бұрыннан құрылған.');let qualifiers=[];comp.groups.forEach(g=>{let top=groupStandings(g.name).slice(0,2);qualifiers.push(...top.map(x=>({id:x.id,group:g.name,rank:top.indexOf(x)+1}))) });if(qualifiers.length<2)return alert('Плей-офф құруға қатысушы жеткіліксіз.');let pairs=[];let gs=comp.groups.map(g=>qualifiers.filter(x=>x.group===g.name));if(gs.length===2&&gs.every(x=>x.length>=2)){pairs.push({round:1,stage:'Плей-офф · жартылай финал',a:gs[0][0].id,b:gs[1][1].id},{round:1,stage:'Плей-офф · жартылай финал',a:gs[1][0].id,b:gs[0][1].id})}else{for(let i=0;i<gs.length;i+=2){let left=gs[i]||[],right=gs[i+1]||[];if(left[0]&&right[1])pairs.push({round:1,stage:'Плей-офф · ширек финал',a:left[0].id,b:right[1].id});if(right[0]&&left[1])pairs.push({round:1,stage:'Плей-офф · ширек финал',a:right[0].id,b:left[1].id})}}comp.matches.push(...pairs);comp.playoffRound=1;persist();renderAll();}
+function generateNextKnockout(){let old=comp.matches.filter(m=>(m.stage||'').startsWith('Плей-офф')&&m.round===comp.playoffRound);if(!old.length||!old.every(scored))return alert('Алдымен плей-оффтың барлық ойынын аяқтап, нәтижесін енгізіңіз.');let winners=old.map((m,i)=>{let s=comp.scores[comp.matches.indexOf(m)]||{};if(s.a>s.b)return m.a;if(s.b>s.a)return m.b;if(s.penWinner==='a')return m.a;if(s.penWinner==='b')return m.b;return null});if(winners.some(x=>!x))return alert('Тең есеп болған матчта пенальти жеңімпазын белгілеңіз.');if(winners.length===1){comp.champion=winners[0];persist();renderAll();alert('Жеңімпаз анықталды: '+entry(comp.champion).name);return}comp.playoffRound++;let next=[];let label=winners.length===2?'ФИНАЛ':winners.length===4?'ЖАРТЫЛАЙ ФИНАЛ':'ПЛЕЙ-ОФФ';for(let i=0;i<winners.length;i+=2)next.push({round:comp.playoffRound,stage:'Плей-офф · '+label,a:winners[i],b:winners[i+1]||null});comp.matches.push(...next);persist();renderAll();}
+function renderFixtures(){if(isTeamChess()){$('fixtures').innerHTML=comp.matches.length?'<table><tr><th>Тур</th><th>А командасы</th><th>В командасы</th><th>А командасының түсі (1-тақта)</th><th>Есеп</th></tr>'+comp.matches.map(m=>{let r=chessTeamMatchScore(m);return `<tr><td>${m.round}</td><td>${esc(entry(m.a)?.name||'')}</td><td>${esc(entry(m.b)?.name||'Бос тур')}</td><td>${m.teamAWhite===false?'Қара':'Ақ'}</td><td>${m.b?r.a+' : '+r.b:'1 ұпай (бос тур)'}</td></tr>`}).join('')+'</table>'+(comp.system==='swiss'&&comp.swissRound<Math.max(1,Number($('roundNum').value)||7)?'<div class="actions"><button onclick="makeNextSwissRound()">Келесі турдың жеребесін құру</button></div>':''):'<p class="muted">Командалық жеребе әлі құрылмаған.</p>';return}if(comp.sport==='athletics'){$('fixtures').innerHTML='<p class="notice">Жеңіл атлетикада жұптық жеребе қолданылмайды. Старттық тізім жеке беріледі.</p><table><tr><th>№</th><th>Спортшы</th><th>Мектеп</th></tr>'+comp.entries.map((e,i)=>`<tr><td>${i+1}</td><td>${esc(e.name)}</td><td>${esc(e.school)}</td></tr>`).join('')+'</table>';return}
+ let html='';let stages=[...new Set(comp.matches.map(m=>m.stage||'Жарыс'))];stages.forEach(st=>{html+=`<div class="stage-title">${esc(st)}</div><table><tr><th>Тур</th><th>А жағы</th><th>В жағы</th><th>Түс</th></tr>`+comp.matches.filter(m=>(m.stage||'Жарыс')===st).map(m=>`<tr><td>${m.round}</td><td>${esc(entry(m.a)?.name||'—')}</td><td>${esc(entry(m.b)?.name||'Бос тур')}</td><td>${m.colorA?`<span class="color-tag white-tag">${m.colorA}</span> / <span class="color-tag black-tag">${m.colorB}</span>`:'—'}</td></tr>`).join('')+'</table>'});
+ if(comp.system==='swiss'&&comp.swissRound<Math.max(1,Number($('roundNum').value)||7))html+='<div class="actions"><button onclick="makeNextSwissRound()">Келесі турдың жеребесін құру</button></div>';
+ if(comp.groups?.length){html+='<div class="actions"><button class="alt" onclick="advancePlayoff()">Топтан плей-оффқа өткізу</button></div>'}
+ if(comp.matches.some(m=>(m.stage||'').startsWith('Плей-офф'))&&!comp.champion)html+='<div class="actions"><button onclick="generateNextKnockout()">Келесі кезең / финалға өткізу</button></div>';
+ if(comp.champion)html+=`<div class="notice"><b>🏆 Жеңімпаз: ${esc(entry(comp.champion)?.name||'')}</b></div>`;
+ $('fixtures').innerHTML=html||'<p class="muted">Жеребе әлі құрылмаған.</p>';
+}
+function renderResults(){if(isTeamChess()){$('results').innerHTML=comp.matches.map((m,i)=>{if(!m.b)return `<div class="match-card"><b>${esc(entry(m.a)?.name||'')} · бос тур</b></div>`;ensureTeamMatchIds();let s=teamScoreFor(m),bd=s.boards||{},a=entry(m.a),b=entry(m.b),aWhite=m.teamAWhite!==false;let rows=[1,2,3,4].map(n=>{let ai=n-1,whiteA=(n%2===1)?aWhite:!aWhite;let aPlayer=a.roster?.[ai],bPlayer=b.roster?.[ai],aColor=whiteA?'Ақ':'Қара',bColor=whiteA?'Қара':'Ақ',val=bd[n]||'';let outcome=val==='a'?`${aPlayer||'А командасы'} жеңді`:val==='b'?`${bPlayer||'В командасы'} жеңді`:val==='draw'?'Тең ойын':'Нәтиже енгізілмеген';return `<tr><td>${n}${n===4?' · Қыздар':''}</td><td><b>${esc(aPlayer||'Қатысушы көрсетілмеген')}</b> <span class="color-tag ${aColor==='Ақ'?'white-tag':'black-tag'}">${aColor}</span></td><td><select onchange="setTeamBoardScore('${m.id}',${n},this.value)"><option value="" ${!val?'selected':''}>Нәтижені таңдаңыз</option><option value="a" ${val==='a'?'selected':''}>${esc(aPlayer||'А командасы')} жеңді</option><option value="draw" ${val==='draw'?'selected':''}>Тең ойын</option><option value="b" ${val==='b'?'selected':''}>${esc(bPlayer||'В командасы')} жеңді</option></select><small class="board-outcome">${esc(outcome)}</small></td><td><b>${esc(bPlayer||'Қатысушы көрсетілмеген')}</b> <span class="color-tag ${bColor==='Ақ'?'white-tag':'black-tag'}">${bColor}</span></td></tr>`}).join('');let r=chessTeamMatchScore(m);return `<div class="match-card"><b>${esc(m.stage)} · ${m.round}-тур</b><h3>${esc(a.name)} — ${esc(b.name)}</h3><p>Командалық есеп: <b>${r.a} : ${r.b}</b> · ${r.complete?(r.a>r.b?'А командасы жеңді':r.a<r.b?'В командасы жеңді':'Тең матч'):'4 тақтаның нәтижесін енгізіңіз'}</p><div style="overflow-x:auto"><table><tr><th>Тақта</th><th>А командасының ойыншысы</th><th>Нәтиже</th><th>В командасының ойыншысы</th></tr>${rows}</table></div></div>`}).join('');return}if(comp.sport==='athletics'){comp.athleticsResults=comp.athleticsResults||{};const events=[['60m','60 метрге жүгіру','секунд','lower'],['100m','100 метрге жүгіру','секунд','lower'],['200m','200 метрге жүгіру','секунд','lower'],['400m','400 метрге жүгіру','секунд','lower'],['800m','800 метрге жүгіру','мин:сек','lower'],['long','Ұзындыққа секіру','метр','higher'],['high','Биіктікке секіру','метр','higher'],['shot','Доп / ядро лақтыру','метр','higher'],['relay','Эстафета','секунд','lower']];const ev=events.find(x=>x[0]===comp.athleticsEvent)||events[0];$('results').innerHTML=`<div class="ath-card"><h3>Жеңіл атлетика · дисциплина</h3><select id="athEvent">${events.map(x=>`<option value="${x[0]}" ${x[0]===ev[0]?'selected':''}>${x[1]}</option>`).join('')}</select><p>${ev[3]==='lower'?'Уақыты аз нәтиже жоғары.':'Көрсеткіші жоғары нәтиже жоғары.'}</p></div>`+comp.entries.map((e,i)=>{let r=comp.athleticsResults[e.id]||{};return `<div class="match-card"><b>${i+1}. ${esc(e.name)}</b><input placeholder="Нәтиже (${ev[2]})" value="${r[ev[0]]??''}" oninput="setAthleticsResult('${e.id}','${ev[0]}',this.value)"></div>`}).join('');$('athEvent').onchange=e=>{comp.athleticsEvent=e.target.value;persist();renderResults();renderStandings()};return}
+ $('results').innerHTML=comp.matches.map((m,i)=>{let s=comp.scores[i]||{};if(!m.b)return `<div class="match-card"><b>${esc(entry(m.a)?.name||'')} — бос тур</b></div>`;let ctrl;if(comp.sport==='chess'||comp.sport==='togyz'){ctrl=`<select onchange="setScore(${i},'winner',this.value)"><option value="">Нәтижені таңдаңыз</option><option value="a" ${s.winner==='a'?'selected':''}>${esc(entry(m.a).name)} жеңді</option><option value="draw" ${s.winner==='draw'?'selected':''}>Тең ойын</option><option value="b" ${s.winner==='b'?'selected':''}>${esc(entry(m.b).name)} жеңді</option></select>`}else{ctrl=`<input type="number" min="0" placeholder="А есебі" value="${s.a??''}" onchange="setScore(${i},'a',this.value)" style="width:90px"><input type="number" min="0" placeholder="В есебі" value="${s.b??''}" onchange="setScore(${i},'b',this.value)" style="width:90px">`;if(m.stage==='Плей-офф')ctrl+=`<select onchange="setScore(${i},'penWinner',this.value)"><option value="">Пенальти жеңімпазы (тең болса)</option><option value="a" ${s.penWinner==='a'?'selected':''}>${esc(entry(m.a).name)}</option><option value="b" ${s.penWinner==='b'?'selected':''}>${esc(entry(m.b).name)}</option></select>`}
+ return `<div class="match-card"><b>${esc(m.stage||'')} · ${m.round}-тур</b><p>${esc(entry(m.a)?.name||'')} ${m.colorA?`<span class="color-tag white-tag">${m.colorA}</span>`:''} — ${esc(entry(m.b)?.name||'')} ${m.colorB?`<span class="color-tag black-tag">${m.colorB}</span>`:''}</p>${ctrl}</div>`}).join('');}
+function renderStandings(){if(isTeamChess()){let a=chessTeamStandings();$('standings').innerHTML='<p class="muted">Матч жеңісі = 2 командалық ұпай · тең матч = 1 · жеңіліс = 0. Орындар нәтижелер енгізілген сайын автоматты жаңарады. Тең ұпайлы командаларда өзара кездесулердің шағын кестесі есептеледі.</p><table><tr><th>Орын</th><th>Команда</th><th>Матч</th><th>Ж</th><th>Т</th><th>Ұ</th><th>Өзара ұпай</th><th>Бухгольц</th><th>Тақта ұпайы</th><th>Қыздар тақтасы</th><th>1-тақта</th><th>2-тақта</th><th>3-тақта</th><th>4-тақта</th></tr>'+a.map(x=>`<tr><td><b>${x.rank}-орын</b></td><td>${esc(x.name)}<br><small>${esc(x.school)}</small></td><td>${x.played}</td><td>${x.w}</td><td>${x.d}</td><td>${x.l}</td><td>${x.miniPts}</td><td>${x.bh}</td><td>${x.boardPts}</td><td>${x.girlsPts}</td></tr>`).join('')+'</table><div class="notice"><b>Автоматты орын анықтау:</b> 1) командалық ұпай; 2) тең ұпайлы командалардың өзара кездесулеріндегі шағын кесте; 3) командалық Бухгольц (қарсылас командалардың матч ұпайларының қосындысы); 4) таңдалған регламентке сай тақталар реті; 4) қыздар тақтасының ұпайы; 5) жалпы тақта ұпайы. Бухгольц бос турды қоспай есептеледі. Барлық көрсеткіш тең болса, командаларға бірдей орын беріледі. Қосымша блиц тек жарыс регламенті бекіткен жағдайда өткізіледі.</div><h3>Ойыншылардың ақ-қара түс статистикасы (жеребе бойынша)</h3><table><tr><th>Команда</th><th>Тақта</th><th>Ойыншы</th><th>Ақ</th><th>Қара</th></tr>'+teamPlayerColorStats().map(x=>`<tr><td>${esc(x.team)}</td><td>${x.board}</td><td>${esc(x.name)}</td><td>${x.white}</td><td>${x.black}</td></tr>`).join('')+'</table>';return}if(comp.sport==='athletics'){ let ev=comp.athleticsEvent||'60m',higher=['long','high','shot'].includes(ev);let a=comp.entries.map(e=>({...e,result:(comp.athleticsResults||{})[e.id]?.[ev]??''})).filter(x=>String(x.result).trim()!=='').sort((x,y)=>{let n=Number(String(x.result).replace(',','.')),m=Number(String(y.result).replace(',','.'));return higher?m-n:n-m});$('standings').innerHTML=a.length?'<table><tr><th>Орын</th><th>Спортшы</th><th>Мектеп</th><th>Нәтиже</th></tr>'+a.map((x,i)=>`<tr><td>${x.rank||i+1}</td><td>${esc(x.name)}</td><td>${esc(x.school)}</td><td>${esc(x.result)}</td></tr>`).join('')+'</table>':'<p>Нәтиже енгізілген жоқ.</p>';return}let a=standings();$('standings').innerHTML='<table><tr><th>Орын</th><th>Қатысушы / команда</th><th>Ойын</th><th>Ж</th><th>Т</th><th>Ұ</th><th>Қосымша</th></tr>'+a.map((x,i)=>`<tr><td>${x.rank||i+1}</td><td>${esc(x.name)}<br><small>${esc(x.school)}</small></td><td>${x.played}</td><td>${x.w}</td><td>${x.d}</td><td>${x.l}</td><td>${comp.sport==='chess'?'Бухгольц: '+x.bh:'Айырма: '+x.diff}</td></tr>`).join('')+'</table>'+(comp.sport==='chess'?'<p class="muted">Швейцар жүйесі: негізгі ұпай — жеңіс 1, тең ойын 0,5, жеңіліс 0. Бухгольц — қарсыластар жинаған ұпайлардың қосындысы. Тең Бухгольц жағдайында қосымша тай-брейк регламентте көрсетілуі тиіс.</p>':'')}
+
+
+/* UML PRO v12 — спортқа бейімделген есептеу және турнирлік логика */
+// Құжат қаріптері: интерфейс те, басып шығару/Word та Times New Roman.
+
+
+const UML_RULES={
+ basketball:{win:2,draw:1,loss:0,fields:'Төрт кезеңнің ұпайы бөлек тіркеледі; тең есепте қосымша уақыт нәтижесі енгізіледі.'},
+ volleyball:{win:2,draw:0,loss:0,fields:'Сет саны мен әр сеттегі ұпай жеке тіркеледі. Матч нәтижесі сет жеңімпазынан есептеледі.'},
+ handball:{win:2,draw:1,loss:0,fields:'1 және 2-тайм голдары бөлек тіркеледі; плей-оффта қосымша уақыт/7 метрлік сериясы көрсетіледі.'},
+ football:{win:3,draw:1,loss:0,fields:'Негізгі уақыт есебі; плей-офф тең болса пенальти жеңімпазы міндетті.'},
+ futsal:{win:3,draw:1,loss:0,fields:'Екі тайм есебі, жинақталған фолдар және плей-офф пенальтиі тіркеледі.'},
+ tabletennis:{win:1,draw:0,loss:0,fields:'Әр партияның ұпайы енгізіледі; партиялар саны матч жеңімпазын анықтайды.'},
+ togyz:{win:1,draw:.5,loss:0,fields:'Жеңіс/тең/жеңіліс және швейцарлық ұпай; ресми тақта есебі регламентпен нақтыланады.'},
+ asyk:{win:1,draw:0,loss:0,fields:'Нақты ұпай/дәл тигізу саны енгізіледі; асық ату мен бес асық бөлек есептеледі.'},
+ chess:{win:1,draw:.5,loss:0,fields:'Жекелей швейцарлық ұпай 1/0,5/0; командалық матчта 2/1/0.'}
+};
+function isNumericSport(id){return ['basketball','volleyball','handball','football','futsal','tabletennis','asyk'].includes(id)}
+function scoreComplete(m,s){if(!m.b)return true;if(comp.sport==='chess'&&comp.kind==='team')return chessTeamMatchScore(m).complete;if(comp.sport==='volleyball')return Array.isArray(s.sets)&&s.sets.filter(z=>z&&z.a!==''&&z.b!=='').length>=3;if(comp.sport==='tabletennis')return Array.isArray(s.sets)&&s.sets.filter(z=>z&&z.a!==''&&z.b!=='').length>=3;if(comp.sport==='basketball'||comp.sport==='handball'||comp.sport==='futsal')return s.p1!==undefined&&s.p2!==undefined;if(comp.sport==='football')return s.a!==undefined&&s.b!==undefined&&(String(m.stage||'').includes('Плей-офф')&&s.a===s.b?!['a','b'].includes(s.penWinner):true);if(comp.sport==='asyk')return s.a!==undefined&&s.b!==undefined;return !!s.winner||(s.a!==undefined&&s.b!==undefined)}
+window.setSportField=(i,k,v)=>{comp.scores[i]=comp.scores[i]||{};comp.scores[i][k]=v;persist();renderAll()};
+window.setSetScore=(i,n,k,v)=>{comp.scores[i]=comp.scores[i]||{};comp.scores[i].sets=comp.scores[i].sets||[];comp.scores[i].sets[n]=comp.scores[i].sets[n]||{a:'',b:''};comp.scores[i].sets[n][k]=v;persist();renderAll()};
+function scoreSummary(m,i){let s=comp.scores[i]||{};if(comp.sport==='volleyball'||comp.sport==='tabletennis'){let sets=s.sets||[],a=0,b=0,valid=0;sets.forEach(z=>{if(z&&z.a!==''&&z.b!==''&&z.a!==undefined&&z.b!==undefined){valid++;let x=+z.a,y=+z.b;if(x>y)a++;else if(y>x)b++}});return {a,b,valid,complete:valid>=3&&(a>=3||b>=3)}}if(['basketball','handball','futsal'].includes(comp.sport)){let a=(+s.p1||0)+(+s.p2||0),b=(+s.q1||0)+(+s.q2||0);if(s.otA!==undefined&&s.otB!==undefined){a+=+s.otA;b+=+s.otB}return {a,b,complete:s.p1!==undefined&&s.p2!==undefined}}return {a:s.a,b:s.b,complete:scoreComplete(m,s)}}
+// Нәтиже енгізу әр спорттың құрылымына сай бөлек.
+renderResults=function(){
+ if(isTeamChess()){const old=window.renderResults;return old();}
+ if(comp.sport==='athletics'){const old=window.renderResults;return old();}
+ $('results').innerHTML=comp.matches.map((m,i)=>{let s=comp.scores[i]||{};if(!m.b)return `<div class="match-card"><b>${esc(entry(m.a)?.name||'')} — бос тур</b></div>`;let a=esc(entry(m.a)?.name||''),b=esc(entry(m.b)?.name||''),ctrl='';
+ if(comp.sport==='chess'||comp.sport==='togyz')ctrl=`<select onchange="setScore(${i},'winner',this.value)"><option value="">Нәтижені таңдаңыз</option><option value="a" ${s.winner==='a'?'selected':''}>${a} жеңді</option><option value="draw" ${s.winner==='draw'?'selected':''}>Тең ойын</option><option value="b" ${s.winner==='b'?'selected':''}>${b} жеңді</option></select>`;
+ else if(comp.sport==='volleyball'||comp.sport==='tabletennis'){let n=comp.sport==='volleyball'?5:5;ctrl=`<p><b>${comp.sport==='volleyball'?'Сеттер (3 жеңіске дейін)':'Партиялар (3 жеңіске дейін)'}</b></p><div class="grid">${Array.from({length:n},(_,k)=>{let z=(s.sets||[])[k]||{};return `<div class="notice"><b>${k+1}-сет</b><label>${a}</label><input type="number" min="0" value="${z.a??''}" placeholder="Ұпай" onchange="setSetScore(${i},${k},'a',this.value)"><label>${b}</label><input type="number" min="0" value="${z.b??''}" placeholder="Ұпай" onchange="setSetScore(${i},${k},'b',this.value)"></div>`}).join('')}</div>`;}
+ else if(comp.sport==='basketball'||comp.sport==='handball'||comp.sport==='futsal'){ctrl=`<div class="grid">${[1,2].map(k=>`<div><label>${k}-тайм / кезең · ${a}</label><input type="number" min="0" value="${s['p'+k]??''}" onchange="setSportField(${i},'p${k}',this.value)"><label>${k}-тайм / кезең · ${b}</label><input type="number" min="0" value="${s['q'+k]??''}" onchange="setSportField(${i},'q${k}',this.value)"></div>`).join('')}</div><div class="notice"><b>Қосымша уақыт (болса)</b><div class="grid"><input type="number" min="0" placeholder="${a}" value="${s.otA??''}" onchange="setSportField(${i},'otA',this.value)"><input type="number" min="0" placeholder="${b}" value="${s.otB??''}" onchange="setSportField(${i},'otB',this.value)"></div></div>`;}
+ else {ctrl=`<div class="grid"><div><label>${a} ұпайы / голы</label><input type="number" min="0" value="${s.a??''}" onchange="setScore(${i},'a',this.value)"></div><div><label>${b} ұпайы / голы</label><input type="number" min="0" value="${s.b??''}" onchange="setScore(${i},'b',this.value)"></div></div>`;if(comp.sport==='football'||comp.sport==='futsal')ctrl+=`<label>Пенальти жеңімпазы (негізгі есеп тең болса)</label><select onchange="setScore(${i},'penWinner',this.value)"><option value="">Таңдаңыз</option><option value="a" ${s.penWinner==='a'?'selected':''}>${a}</option><option value="b" ${s.penWinner==='b'?'selected':''}>${b}</option></select>`;}
+ let sum=scoreSummary(m,i);return `<div class="match-card"><b>${esc(m.stage||'Жарыс')} · ${m.round}-тур</b><h3>${a} — ${b}</h3>${ctrl}<p class="muted">${sum.complete?'Нәтиже тіркелді':'Нәтиже толық енгізілген жоқ'}</p></div>`}).join('');
+};
+// Кез келген матчтың нәтижесі нақты спорттық өрістерден есептеледі.
+function normalizedMatch(m,i){let s=comp.scores[i]||{};if(comp.sport==='chess'||comp.sport==='togyz'){if(!s.winner)return null;return s.winner==='a'?1:s.winner==='b'?-1:0}if(comp.sport==='volleyball'||comp.sport==='tabletennis'){let r=scoreSummary(m,i);if(!r.complete)return null;return r.a>r.b?1:r.b>r.a?-1:0}if(['basketball','handball','futsal'].includes(comp.sport)){if(s.p1===undefined||s.p2===undefined)return null;let a=(+s.p1||0)+(+s.p2||0)+(+s.otA||0),b=(+s.q1||0)+(+s.q2||0)+(+s.otB||0);return a>b?1:a<b?-1:0}if(s.a===undefined||s.b===undefined)return null;return +s.a>+s.b?1:+s.a<+s.b?-1:0}
+standings=function(){let rows=comp.entries.map(e=>({...e,pts:0,played:0,w:0,d:0,l:0,diff:0,bh:0,setsFor:0,setsAgainst:0}));comp.matches.forEach((m,i)=>{let x=rows.find(z=>z.id===m.a),y=rows.find(z=>z.id===m.b);if(!x)return;if(!m.b){if(m.bye){x.pts+=1;x.w++;}return}if(!y)return;let res=normalizedMatch(m,i);if(res===null)return;x.played++;y.played++;if(res>0){x.w++;y.l++;x.pts+=UML_RULES[comp.sport]?.win??3;y.pts+=UML_RULES[comp.sport]?.loss??0}else if(res<0){y.w++;x.l++;y.pts+=UML_RULES[comp.sport]?.win??3;x.pts+=UML_RULES[comp.sport]?.loss??0}else{x.d++;y.d++;x.pts+=UML_RULES[comp.sport]?.draw??1;y.pts+=UML_RULES[comp.sport]?.draw??1}let sc=scoreSummary(m,i);if(sc.a!==undefined&&sc.b!==undefined){x.diff+=(+sc.a)-(+sc.b);y.diff+=(+sc.b)-(+sc.a)}if(comp.sport==='volleyball'||comp.sport==='tabletennis'){x.setsFor+=sc.a;x.setsAgainst+=sc.b;y.setsFor+=sc.b;y.setsAgainst+=sc.a}});rows.forEach(x=>{if(comp.sport==='chess')x.bh=buchholz(x.id)});return rows.sort((a,b)=>b.pts-a.pts||(comp.sport==='chess'?b.bh-a.bh:comp.sport==='volleyball'||comp.sport==='tabletennis'?(b.setsFor-b.setsAgainst)-(a.setsFor-a.setsAgainst):b.diff-a.diff)||a.name.localeCompare(b.name,'kk')).map((x,i,arr)=>({...x,rank:i&&x.pts===arr[i-1].pts&&x.diff===arr[i-1].diff&&x.bh===arr[i-1].bh?arr[i-1].rank:i+1}))};
+// Швейцарлық жұптауда бұрын кездескен қарсыласты қайта қоспау.
+makeNextSwissRound=function(first=false){if(isTeamChess())return makeTeamChessSwissRound();let total=Math.max(1,Math.min(15,Number($('roundNum').value)||7));let prev=comp.matches.filter(m=>m.stage==='Швейцариялық жүйе'&&m.round===comp.swissRound);if(!first&&comp.swissRound>0&&prev.some(m=>m.b&&!scoreComplete(m,comp.scores[comp.matches.indexOf(m)]||{})))return alert('Алдымен осы турдың барлық нәтижесін толық енгізіңіз.');if(comp.swissRound>=total)return alert('Барлық тур аяқталды.');comp.swissRound=(comp.swissRound||0)+1;let ranked=standings().map(x=>x.id),pool=[...ranked],pairs=[];if(pool.length%2){let had=new Set(comp.matches.filter(m=>m.bye).map(m=>m.a));let bye=[...pool].reverse().find(id=>!had.has(id))||pool[pool.length-1];pool=pool.filter(id=>id!==bye);pairs.push({round:comp.swissRound,stage:'Швейцариялық жүйе',a:bye,b:null,bye:true})}while(pool.length){let a=pool.shift(),idx=pool.findIndex(b=>!matchExists(a,b));if(idx<0){alert('Қайталанбайтын жұп табылмады. Тур жасалмады; төреші жеребені қолмен шешуі керек.');comp.swissRound--;return}let b=pool.splice(idx,1)[0],colorA='Ақ';if(comp.sport==='chess'){let stat=id=>{let w=0,bl=0;comp.matches.filter(m=>m.colorA&&(m.a===id||m.b===id)).forEach(m=>{let c=m.a===id?m.colorA:m.colorB;if(c==='Ақ')w++;else bl++});return {w,bl}};let ca=stat(a),cb=stat(b);if(ca.w-ca.bl>cb.w-cb.bl)colorA='Қара';else if(ca.w-ca.bl===cb.w-cb.bl&&Math.random()<.5)colorA='Қара'}pairs.push({round:comp.swissRound,stage:'Швейцариялық жүйе',a,b,colorA,colorB:colorA==='Ақ'?'Қара':'Ақ'})}comp.matches.push(...pairs);persist();renderAll()};
+// Топтан плей-офф: тек 2 топтағы үздік екі командаға арналған дұрыс жартылай финал.
+advancePlayoff=function(){if(!comp.groups?.length)return alert('Топтық жеребе құрылмаған.');if(comp.groups.length!==2)return alert('Автоматты плей-офф әзірге дәл 2 топ форматына бекітілген. 3+ топ үшін регламенттегі квота қажет.');let gm=comp.matches.filter(m=>(m.stage||'').startsWith('Топтық кезең'));if(!gm.length||!gm.every(m=>scoreComplete(m,comp.scores[comp.matches.indexOf(m)]||{})))return alert('Топтық кезеңнің барлық матчының нәтижесін енгізіңіз.');if(comp.matches.some(m=>(m.stage||'').startsWith('Плей-офф')))return alert('Плей-офф бұрын құрылған.');let [g1,g2]=comp.groups,top1=groupStandings(g1.name).slice(0,2),top2=groupStandings(g2.name).slice(0,2);if(top1.length<2||top2.length<2)return alert('Әр топта кемінде екі команда болуы керек.');comp.matches.push({round:1,stage:'Плей-офф · жартылай финал',a:top1[0].id,b:top2[1].id},{round:1,stage:'Плей-офф · жартылай финал',a:top2[0].id,b:top1[1].id});comp.playoffRound=1;persist();renderAll()};
+// Финалға шығу үшін әр жартылай финал жеңімпазы нақты есептен анықталады.
+generateNextKnockout=function(){let old=comp.matches.filter(m=>(m.stage||'').startsWith('Плей-офф')&&m.round===comp.playoffRound);if(!old.length||!old.every(m=>scoreComplete(m,comp.scores[comp.matches.indexOf(m)]||{})))return alert('Осы кезеңнің барлық матчының нәтижесін енгізіңіз.');let winners=old.map(m=>{let i=comp.matches.indexOf(m),s=comp.scores[i]||{},r=normalizedMatch(m,i);if(r>0)return m.a;if(r<0)return m.b;if(s.penWinner==='a')return m.a;if(s.penWinner==='b')return m.b;return null});if(winners.some(x=>!x))return alert('Тең есеп: пенальти/тай-брейк жеңімпазын белгілеңіз.');if(winners.length===1){comp.champion=winners[0];persist();renderAll();return alert('Жеңімпаз: '+entry(comp.champion).name)}if(winners.length%2)return alert('Келесі кезеңге жұп саны сәйкес емес. Регламентті тексеріңіз.');comp.playoffRound++;let label=winners.length===2?'ФИНАЛ':winners.length===4?'ЖАРТЫЛАЙ ФИНАЛ':'ПЛЕЙ-ОФФ';for(let i=0;i<winners.length;i+=2)comp.matches.push({round:comp.playoffRound,stage:'Плей-офф · '+label,a:winners[i],b:winners[i+1]});persist();renderAll()};
+// Орындарда бірдей негізгі көрсеткіш болса, тең орын беріледі.
+const _oldRenderStandings=renderStandings;
+renderStandings=function(){if(isTeamChess()||comp.sport==='athletics')return _oldRenderStandings();let a=standings();$('standings').innerHTML=`<table><tr><th>Орын</th><th>Қатысушы / команда</th><th>Ойын</th><th>Жеңіс</th><th>Тең</th><th>Ұтылыс</th><th>Турнирлік ұпай</th><th>Қосымша көрсеткіш</th></tr>${a.map(x=>`<tr><td><b>${x.rank}-орын</b></td><td>${esc(x.name)}<br><small>${esc(x.school)}</small></td><td>${x.played}</td><td>${x.w}</td><td>${x.d}</td><td>${x.l}</td><td>${x.pts}</td><td>${comp.sport==='chess'?'Бухгольц: '+x.bh:comp.sport==='volleyball'||comp.sport==='tabletennis'?'Сет айырмасы: '+(x.setsFor-x.setsAgainst):'Айырма: '+x.diff}</td></tr>`).join('')}</table><p class="notice"><b>Есептеу ережесі:</b> ${UML_RULES[comp.sport]?.fields||'Нәтиже бекітілген жарыс регламенті бойынша есептеледі.'} Нәтиже толық енгізілген матчтар ғана кестеге қосылады.</p>`};
+// Нәтижені экспорттау/архивтеу алдында барлық матчтардың толықтығын ескерту.
+const _oldDownloadFinal=downloadFinalProtocol;
+downloadFinalProtocol=function(){let pending=comp.matches.filter(m=>m.b&&!scoreComplete(m,comp.scores[comp.matches.indexOf(m)]||{}));if(pending.length&&!confirm(`${pending.length} матчтың нәтижесі толық емес. Қазіргі аралық қорытындыны Word-қа шығарасыз ба?`))return;return _oldDownloadFinal()};
+// Жеңіл атлетика: минут:секунд форматын сандық секундқа айналдырып дұрыс сұрыптау.
+function athleticsValue(v){let t=String(v??'').trim().replace(',','.');if(/^\d+:\d+(\.\d+)?$/.test(t)){let [m,s]=t.split(':');return Number(m)*60+Number(s)}return Number(t)}
+athleticsStandings=function(){let ev=comp.athleticsEvent||'60m',higher=['long','high','shot'].includes(ev);return comp.entries.map(e=>({...e,result:(comp.athleticsResults||{})[e.id]?.[ev]??''})).filter(x=>String(x.result).trim()!=='').sort((a,b)=>{let x=athleticsValue(a.result),y=athleticsValue(b.result);if(!Number.isFinite(x)||!Number.isFinite(y))return 0;return higher?y-x:x-y})};
+
+window.__umlOldRenderResults=renderResults;window.__umlOldRenderStandings=renderStandings;window.__umlOldMakeNextSwissRound=makeNextSwissRound;window.__umlOldMakeDraw=makeDraw;
+
+/* ===== UML DIGITAL v13: шахмат режимдерін оқшаулау ===== */
+function chessModeKey(){return comp.kind==='team'?'team':'individual'}
+function chessEnsureStores(){if(!comp||comp.sport!=='chess')return;comp.individualResults=comp.individualResults||{};comp.teamResults=comp.teamResults||{};comp.matches=comp.matches||[];comp.matches.forEach((m,i)=>{if(!m.id)m.id='ch_'+String(comp.id)+'_'+String(m.round||1)+'_'+String(m.a||'bye')+'_'+String(m.b||'bye')+'_'+i;if(!m.boardIds)m.boardIds=[1,2,3,4].map(n=>m.id+'_b'+n)});if(comp.kind==='team'){comp.matches.forEach(m=>{if(!comp.teamResults[m.id]){let old=comp.teamScores?.[m.id]||comp.scores?.[comp.matches.indexOf(m)];if(old?.boards)comp.teamResults[m.id]=JSON.parse(JSON.stringify(old));else comp.teamResults[m.id]={boards:{}}}})}else{comp.matches.forEach(m=>{if(!comp.individualResults[m.id]){let old=comp.scores?.[comp.matches.indexOf(m)];comp.individualResults[m.id]=old&&old.winner?{winner:old.winner}:{} }})}}
+function chessIndividualResult(m){chessEnsureStores();return comp.individualResults[m.id]||(comp.individualResults[m.id]={})}
+function chessTeamResult(m){chessEnsureStores();return comp.teamResults[m.id]||(comp.teamResults[m.id]={boards:{}})}
+function chessMatchDone(m){if(!m.b)return true;if(isTeamChess()){let b=chessTeamResult(m).boards||{};return [1,2,3,4].every(n=>['a','b','draw'].includes(b[n]))}return ['a','b','draw'].includes(chessIndividualResult(m).winner)}
+function ensureTeamMatchIds(){chessEnsureStores()}
+function teamScoreFor(m){return chessTeamResult(m)}
+function chessTeamMatchScore(m){let bd=chessTeamResult(m).boards||{},a=0,b=0,done=0;for(let n=1;n<=4;n++){if(bd[n]==='a'){a++;done++}else if(bd[n]==='b'){b++;done++}else if(bd[n]==='draw'){a+=.5;b+=.5;done++}}return {a,b,done,complete:done===4,matchA:done===4?(a>b?2:a===b?1:0):0,matchB:done===4?(b>a?2:a===b?1:0):0}}
+window.setTeamBoardScore=function(matchId,n,v){if(!comp||comp.sport!=='chess'||comp.kind!=='team')return alert('Командалық шахмат жарысын ашыңыз.');chessEnsureStores();let m=comp.matches.find(x=>x.id===matchId);if(!m||!m.b||![1,2,3,4].includes(Number(n)))return alert('Матч немесе тақта табылмады.');if(!['a','b','draw',''].includes(v))return;let r=chessTeamResult(m);r.boards[n]=v;r.boardIds=r.boardIds||{};r.boardIds[n]=m.boardIds[n-1];r.updatedAt=new Date().toISOString();persist();renderAll()}
+window.setScore=function(i,k,v){if(!comp)return;if(comp.sport==='chess'){if(comp.kind!=='individual')return alert('Командалық шахмат нәтижесі төрт тақтадан енгізіледі.');chessEnsureStores();let m=comp.matches[i];if(!m||!m.b)return; if(k!=='winner'||!['a','b','draw',''].includes(v))return;chessIndividualResult(m).winner=v;chessIndividualResult(m).updatedAt=new Date().toISOString();persist();renderAll();return;}comp.scores[i]=comp.scores[i]||{};comp.scores[i][k]=(k==='a'||k==='b')?Number(v):v;persist();renderStandings()}
+function chessTeamStandings(){chessEnsureStores();let rows=comp.entries.map(e=>({...e,pts:0,miniPts:0,bh:0,boardPts:0,played:0,w:0,d:0,l:0,girlsPts:0,boardWins:[0,0,0,0],opponents:[]}));comp.matches.forEach(m=>{if(!m.b)return;let x=rows.find(z=>z.id===m.a),y=rows.find(z=>z.id===m.b),r=chessTeamMatchScore(m);if(!x||!y||!r.complete)return;x.played++;y.played++;x.boardPts+=r.a;y.boardPts+=r.b;x.pts+=r.matchA;y.pts+=r.matchB;x.opponents.push(y.id);y.opponents.push(x.id);if(r.matchA===2){x.w++;y.l++}else if(r.matchB===2){y.w++;x.l++}else{x.d++;y.d++}let bd=chessTeamResult(m).boards||{};if(bd[4]==='a')x.girlsPts++;else if(bd[4]==='b')y.girlsPts++;else if(bd[4]==='draw'){x.girlsPts+=.5;y.girlsPts+=.5}for(let n=1;n<=4;n++){if(bd[n]==='a')x.boardWins[n-1]++;if(bd[n]==='b')y.boardWins[n-1]++}});comp.matches.filter(m=>m.bye&&m.a).forEach(m=>{let z=rows.find(x=>x.id===m.a);if(z){z.pts+=2;z.played++;z.w++}});rows.forEach(x=>{x.miniPts=comp.matches.reduce((s,m)=>{if(!m.b||!((m.a===x.id&&rows.find(y=>y.id===m.b)?.pts===x.pts)||(m.b===x.id&&rows.find(y=>y.id===m.a)?.pts===x.pts)))return s;let r=chessTeamMatchScore(m);return s+(m.a===x.id?r.matchA:r.matchB)},0);x.bh=x.opponents.reduce((s,id)=>s+(rows.find(y=>y.id===id)?.pts||0),0)});let ord=comp.chessTieRule==='girls'?[3,0,1,2]:[0,3,1,2];rows.sort((x,y)=>y.pts-x.pts||y.miniPts-x.miniPts||y.bh-x.bh||ord.reduce((d,n)=>d||y.boardWins[n]-x.boardWins[n],0)||y.girlsPts-x.girlsPts||y.boardPts-x.boardPts||x.name.localeCompare(y.name,'kk'));let rank=0;rows.forEach((x,i)=>{if(!i||x.pts!==rows[i-1].pts||x.miniPts!==rows[i-1].miniPts||x.bh!==rows[i-1].bh||x.boardPts!==rows[i-1].boardPts||x.girlsPts!==rows[i-1].girlsPts||ord.some(n=>x.boardWins[n]!==rows[i-1].boardWins[n]))rank=i+1;x.rank=rank});return rows}
+function chessIndividualStandings(){chessEnsureStores();let a=comp.entries.map(e=>({...e,pts:0,played:0,w:0,d:0,l:0,bh:0,white:0,black:0,opponents:[]}));comp.matches.forEach(m=>{let x=a.find(z=>z.id===m.a),y=a.find(z=>z.id===m.b);if(!x)return;if(!m.b){if(m.bye){x.pts+=Number(comp.byePoints??1);x.byeCount=(x.byeCount||0)+1}return}if(!y)return;let r=chessIndividualResult(m);if(!['a','b','draw'].includes(r.winner))return;x.played++;y.played++;x.opponents.push(y.id);y.opponents.push(x.id);if(m.colorA==='Ақ'||m.colorA==='White'){x.white++;y.black++}else if(m.colorA==='Қара'||m.colorA==='Black'){x.black++;y.white++}if(r.winner==='a'){x.pts++;x.w++;y.l++}else if(r.winner==='b'){y.pts++;y.w++;x.l++}else{x.pts+=.5;y.pts+=.5;x.d++;y.d++}});let pts=Object.fromEntries(a.map(x=>[x.id,x.pts]));a.forEach(x=>x.bh=x.opponents.reduce((s,id)=>s+(pts[id]||0),0));a.sort((x,y)=>y.pts-x.pts||y.bh-x.bh||y.w-x.w||x.name.localeCompare(y.name,'kk'));let rank=0;a.forEach((x,i)=>{if(!i||x.pts!==a[i-1].pts||x.bh!==a[i-1].bh||x.w!==a[i-1].w)rank=i+1;x.rank=rank});return a}
+function standings(){if(comp.sport==='chess'&&comp.kind==='individual')return chessIndividualStandings();return comp.entries.map(e=>({...e,pts:0,played:0,w:0,d:0,l:0,diff:0}))}
+function renderResults(){if(comp.sport!=='chess'){return window.__umlOldRenderResults?.()}chessEnsureStores();if(isTeamChess()){$('results').innerHTML=comp.matches.map(m=>{let a=entry(m.a),b=entry(m.b);if(!m.b)return `<div class="match-card"><b>${esc(a?.name||'')} · бос тур</b></div>`;let bd=chessTeamResult(m).boards||{},r=chessTeamMatchScore(m),rows=[1,2,3,4].map(n=>{let aw=(n%2===1)?m.teamAWhite!==false:m.teamAWhite===false,ap=a?.roster?.[n-1]||'',bp=b?.roster?.[n-1]||'',v=bd[n]||'',ac=aw?'Ақ':'Қара',bc=aw?'Қара':'Ақ';return `<tr><td>${n}${n===4?' · Қыздар':''}</td><td>${esc(ap)} <span class="color-tag ${ac==='Ақ'?'white-tag':'black-tag'}">${ac}</span></td><td><select onchange="setTeamBoardScore('${m.id}',${n},this.value)"><option value="">Нәтижені таңдаңыз</option><option value="a" ${v==='a'?'selected':''}>А командасы жеңді</option><option value="draw" ${v==='draw'?'selected':''}>Тең ойын</option><option value="b" ${v==='b'?'selected':''}>В командасы жеңді</option></select><small>${v==='a'?esc(ap)+' жеңді':v==='b'?esc(bp)+' жеңді':v==='draw'?'Тең ойын':'Енгізілмеген'}</small></td><td>${esc(bp)} <span class="color-tag ${bc==='Ақ'?'white-tag':'black-tag'}">${bc}</span></td></tr>`}).join('');return `<div class="match-card"><h3>${esc(a?.name||'')} — ${esc(b?.name||'')}</h3><p>Тақта есебі: <b>${r.a} : ${r.b}</b> · ${r.complete?'Матч аяқталды':'4 тақтаның нәтижесі толық емес'}</p><table><tr><th>Тақта</th><th>А командасы</th><th>Нәтиже</th><th>В командасы</th></tr>${rows}</table></div>`}).join('');return;} $('results').innerHTML=comp.matches.map((m,i)=>{let a=entry(m.a),b=entry(m.b);if(!m.b)return `<div class="match-card">${esc(a?.name||'')} · бос тур</div>`;let r=chessIndividualResult(m);return `<div class="match-card"><b>${m.round}-тур</b><p>${esc(a?.name||'')} (${m.colorA||'Түс белгісіз'}) — ${esc(b?.name||'')} (${m.colorB||'Түс белгісіз'})</p><select onchange="setScore(${i},'winner',this.value)"><option value="">Нәтижені таңдаңыз</option><option value="a" ${r.winner==='a'?'selected':''}>${esc(a?.name||'А')} жеңді</option><option value="draw" ${r.winner==='draw'?'selected':''}>Тең ойын</option><option value="b" ${r.winner==='b'?'selected':''}>${esc(b?.name||'В')} жеңді</option></select></div>`}).join('')}
+function renderStandings(){if(comp.sport!=='chess')return window.__umlOldRenderStandings?.();let a=isTeamChess()?chessTeamStandings():chessIndividualStandings();if(isTeamChess())$('standings').innerHTML='<table><tr><th>Орын</th><th>Команда</th><th>Мектеп</th><th>Матч</th><th>Ж</th><th>Т</th><th>Ұ</th><th>Командалық ұпай</th><th>Тақта ұпайы</th><th>Бухгольц</th><th>Қыздар тақтасы</th></tr>'+a.map(x=>`<tr><td>${x.rank}</td><td>${esc(x.name)}</td><td>${esc(x.school)}</td><td>${x.played}</td><td>${x.w}</td><td>${x.d}</td><td>${x.l}</td><td>${x.pts}</td><td>${x.boardPts}</td><td>${x.bh}</td><td>${x.girlsPts}</td></tr>`).join('')+'</table>';else $('standings').innerHTML='<table><tr><th>Орын</th><th>Ойыншы</th><th>Мектеп</th><th>Партия</th><th>Ж</th><th>Т</th><th>Ұ</th><th>Ұпай</th><th>Бухгольц</th><th>Ақ</th><th>Қара</th></tr>'+a.map(x=>`<tr><td>${x.rank}</td><td>${esc(x.name)}</td><td>${esc(x.school)}</td><td>${x.played}</td><td>${x.w}</td><td>${x.d}</td><td>${x.l}</td><td>${x.pts}</td><td>${x.bh}</td><td>${x.white}</td><td>${x.black}</td></tr>`).join('')}
+function makeNextSwissRound(first=false){if(comp.sport!=='chess')return window.__umlOldMakeNextSwissRound?.(first);chessEnsureStores();let total=Math.max(1,Math.min(15,Number($('roundNum')?.value)||7)),cur=comp.swissRound||0;if(cur&&comp.matches.filter(m=>m.round===cur).some(m=>!chessMatchDone(m)))return alert('Алдыңғы турдың барлық нәтижесін енгізіңіз.');if(cur>=total)return alert('Барлық тур аяқталды.');let rank=isTeamChess()?chessTeamStandings().map(x=>x.id):chessIndividualStandings().map(x=>x.id),pool=[...rank],pairs=[],usedBye=new Set(comp.matches.filter(m=>m.bye).map(m=>m.a));if(pool.length%2){let bye=[...pool].reverse().find(id=>!usedBye.has(id));if(!bye)bye=pool[pool.length-1];pool=pool.filter(id=>id!==bye);pairs.push({round:cur+1,stage:isTeamChess()?'Швейцариялық жүйе · командалық':'Швейцариялық жүйе',a:bye,b:null,bye:true,id:'ch_'+comp.id+'_r'+(cur+1)+'_'+bye+'_bye'})}while(pool.length){let a=pool.shift(),idx=pool.findIndex(b=>!comp.matches.some(m=>m.b&&((m.a===a&&m.b===b)||(m.a===b&&m.b===a))));if(idx<0)return alert('Қайталанбайтын заңды жұп табылмады. Тур құрылмады.');let b=pool.splice(idx,1)[0],m={round:cur+1,stage:isTeamChess()?'Швейцариялық жүйе · командалық':'Швейцариялық жүйе',a,b,id:'ch_'+comp.id+'_r'+(cur+1)+'_'+a+'_'+b};if(isTeamChess()){m.teamAWhite=teamColorForRound(a,cur+1)}else{let ca=comp.colorHistory?.[a]||{w:0,b:0,last:''},cb=comp.colorHistory?.[b]||{w:0,b:0,last:''};let aw=ca.w<=ca.b;if(ca.last==='Ақ'&&ca.w>ca.b)aw=false;if(ca.last==='Қара'&&ca.b>ca.w)aw=true;m.colorA=aw?'Ақ':'Қара';m.colorB=aw?'Қара':'Ақ';comp.colorHistory=comp.colorHistory||{};for(let [id,c] of [[a,aw?'Ақ':'Қара'],[b,aw?'Қара':'Ақ']]){let z=comp.colorHistory[id]||{w:0,b:0,last:''};z[c==='Ақ'?'w':'b']++;z.last=c;comp.colorHistory[id]=z}}pairs.push(m)}comp.swissRound=cur+1;comp.matches.push(...pairs);chessEnsureStores();persist();renderAll()}
+function makeDraw(){if(comp.sport==='chess'){if(comp.matches.some(chessMatchDone) && comp.matches.length)return alert('Нәтижесі бар жеребені қайта құруға болмайды. Жаңа жарыс ашыңыз немесе нәтижесіз бос жеребені ғана қайта құрыңыз.');comp.matches=[];comp.individualResults={};comp.teamResults={};comp.scores={};comp.swissRound=0;if(comp.system==='swiss'){makeNextSwissRound(true);return}let ids=shuffle(comp.entries.map(e=>e.id));for(let i=0;i<ids.length;i+=2){let a=ids[i],b=ids[i+1]||null;comp.matches.push({id:'ch_'+comp.id+'_r1_'+a+'_'+(b||'bye'),round:1,stage:'Жеребе',a,b,bye:!b,teamAWhite:Math.random()>.5,colorA:Math.random()>.5?'Ақ':'Қара',colorB:'Қара'})}chessEnsureStores();persist();renderAll();return}return window.__umlOldMakeDraw?.()}
+function openCompetition(id){comp=archive.find(x=>x.id===id);if(!comp)return;if(comp.sport==='chess')chessEnsureStores();show('competition');$('ctitle').textContent=comp.cname;$('cmeta').textContent=[comp.level,comp.season,comp.region,comp.district,comp.sportName,comp.age,comp.kind==='team'?'Командалық':'Жекелей'].filter(Boolean).join(' · ');entryForm();renderAll()}
+
+/* ===== v14 AQBOZAT: audited chess corrections ===== */
+const __v14OldDownloadFinal=downloadFinalProtocol;
+function chessUniqueId(prefix='ch'){return prefix+'_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,9)}
+function chessColorStats(id){let w=0,b=0,last='',streak=0;for(const m of [...(comp.matches||[])].filter(m=>m.b&&(m.a===id||m.b===id)).sort((x,y)=>x.round-y.round)){let c=m.a===id?m.colorA:m.colorB;if(!c)continue;let z=(c==='Ақ'||c==='White')?'w':'b';if(z==='w')w++;else b++;if(z===last)streak++;else streak=1;last=z;}return {w,b,last,streak,diff:w-b}}
+function chessPairColor(a,b){let A=chessColorStats(a),B=chessColorStats(b);let opts=[{a:'Ақ',b:'Қара'},{a:'Қара',b:'Ақ'}];opts.sort((x,y)=>{const cost=o=>{let ca=o.a==='Ақ'?'w':'b',cb=o.b==='Ақ'?'w':'b';let da=A.diff+(ca==='w'?1:-1),db=B.diff+(cb==='w'?1:-1);let repeat=(A.last===o.a?3+A.streak:0)+(B.last===o.b?3+B.streak:0);return Math.abs(da)+Math.abs(db)+repeat+Math.abs((A.w+(ca==='w'))-(A.b+(ca==='b')))*.2+Math.abs((B.w+(cb==='w'))-(B.b+(cb==='b')))*.2};return cost(x)-cost(y)});return opts[0]}
+function chessBuildSwissPairs(ids,team=false){const score=id=>{let x=(team?chessTeamStandings():chessIndividualStandings()).find(z=>z.id===id);return x?.pts||0};const played=(a,b)=>(comp.matches||[]).some(m=>m.b&&((m.a===a&&m.b===b)||(m.a===b&&m.b===a)));let pool=[...ids].sort((a,b)=>score(b)-score(a));let best=null,bestCost=Infinity;function dfs(rem,pairs,cost){if(!rem.length){if(cost<bestCost){bestCost=cost;best=pairs.slice()}return}if(cost>=bestCost)return;let a=rem[0],candidates=rem.slice(1).filter(b=>!played(a,b)).sort((x,y)=>Math.abs(score(a)-score(x))-Math.abs(score(a)-score(y)));for(const b of candidates){let gap=Math.abs(score(a)-score(b));dfs(rem.filter(x=>x!==a&&x!==b),[...pairs,[a,b]],cost+gap*100+(score(a)===score(b)?0:10));if(bestCost===0)return}}dfs(pool,[],0);return best}
+function chessMakeSwissRound(){chessEnsureStores();const current=Number(comp.swissRound||0),total=Math.max(1,Math.min(15,Number($('roundNum')?.value)||7));if(current>=total)return alert('Барлық тур аяқталды.');if(current&&comp.matches.filter(m=>m.round===current).some(m=>!chessMatchDone(m)))return alert('Алдыңғы турдың барлық партияларының нәтижесін енгізіңіз.');const team=isTeamChess(),rows=team?chessTeamStandings():chessIndividualStandings(),ids=rows.map(x=>x.id);let pool=[...ids],pairs=[];if(pool.length%2){const priorBye=new Set(comp.matches.filter(m=>m.bye).map(m=>m.a));let bye=[...pool].reverse().find(id=>!priorBye.has(id));if(!bye)bye=pool[pool.length-1];pool=pool.filter(id=>id!==bye);pairs.push({id:chessUniqueId(),round:current+1,stage:team?'Швейцариялық жүйе · командалық':'Швейцариялық жүйе',a:bye,b:null,bye:true})}const found=chessBuildSwissPairs(pool,team);if(!found)return alert('Қайталанбаған заңды жұптау табылмады. Бұрынғы жеребе мен нәтижелер өзгеріссіз қалды. Төреші шешім қабылдауы керек.');for(const [a,b] of found){let m={id:chessUniqueId(),round:current+1,stage:team?'Швейцариялық жүйе · командалық':'Швейцариялық жүйе',a,b};if(team)m.teamAWhite=teamColorForRound(a,current+1);else Object.assign(m,chessPairColor(a,b));pairs.push(m)}// commit only after the complete pairing has been validated
+const seen=new Set();for(const m of pairs){if(seen.has(m.a)||m.b&&seen.has(m.b))return alert('Жеребеде қатысушы қайталанды. Ештеңе сақталған жоқ.');seen.add(m.a);if(m.b)seen.add(m.b);if(m.b&&comp.matches.some(x=>x.b&&((x.a===m.a&&x.b===m.b)||(x.a===m.b&&x.b===m.a))))return alert('Қайталанған қарсылас анықталды. Ештеңе сақталған жоқ.')}comp.matches.push(...pairs);comp.swissRound=current+1;chessEnsureStores();persist();renderAll()}
+makeNextSwissRound=function(first=false){if(comp?.sport==='chess')return chessMakeSwissRound();return window.__umlOldMakeNextSwissRound?.(first)};
+makeDraw=function(){if(comp?.sport!=='chess')return window.__umlOldMakeDraw?.();if(comp.matches?.length&&comp.matches.some(chessMatchDone))return alert('Нәтижесі бар жеребені өшіруге болмайды.');if(comp.system==='swiss'){comp.swissRound=0;return chessMakeSwissRound()}if(comp.system==='groups'||comp.system==='roundrobin'){let ids=shuffle(comp.entries.map(e=>e.id));let ring=ids.length%2?[...ids,null]:[...ids];let rounds=[];for(let r=0;r<ring.length-1;r++){let row=[];for(let i=0;i<ring.length/2;i++){let a=ring[i],b=ring[ring.length-1-i];if(a&&b){let colors=isTeamChess()?{teamAWhite:Math.random()<.5}:chessPairColor(a,b);row.push({id:chessUniqueId(),round:r+1,stage:'Айналмалы жүйе',a,b,...colors})}else if(a||b)row.push({id:chessUniqueId(),round:r+1,stage:'Айналмалы жүйе',a:a||b,b:null,bye:true})}rounds.push(...row);ring=[ring[0],ring[ring.length-1],...ring.slice(1,-1)]}comp.matches=rounds;comp.individualResults={};comp.teamResults={};comp.scores={};chessEnsureStores();persist();renderAll();return}let ids=shuffle(comp.entries.map(e=>e.id)),pairs=[];for(let i=0;i<ids.length;i+=2){let a=ids[i],b=ids[i+1]||null,m={id:chessUniqueId(),round:1,stage:comp.system==='ko'?'Плей-офф':'Жеребе',a,b,bye:!b};if(b){if(isTeamChess())m.teamAWhite=Math.random()<.5;else Object.assign(m,chessPairColor(a,b))}pairs.push(m)}comp.matches=pairs;comp.individualResults={};comp.teamResults={};comp.scores={};comp.swissRound=1;chessEnsureStores();persist();renderAll()};
+function chessTeamStandings(){chessEnsureStores();const rows=comp.entries.map(e=>({...e,pts:0,miniPts:0,bh:0,boardPts:0,played:0,w:0,d:0,l:0,girlsPts:0,boardWins:[0,0,0,0],opponents:[]}));for(const m of comp.matches){if(!m.b)continue;const x=rows.find(z=>z.id===m.a),y=rows.find(z=>z.id===m.b),r=chessTeamMatchScore(m);if(!x||!y||!r.complete)continue;x.played++;y.played++;x.boardPts+=r.a;y.boardPts+=r.b;x.pts+=r.matchA;y.pts+=r.matchB;x.opponents.push(y.id);y.opponents.push(x.id);if(r.matchA===2){x.w++;y.l++}else if(r.matchB===2){y.w++;x.l++}else{x.d++;y.d++}const bd=chessTeamResult(m).boards||{};if(bd[4]==='a')x.girlsPts++;else if(bd[4]==='b')y.girlsPts++;else if(bd[4]==='draw'){x.girlsPts+=.5;y.girlsPts+=.5}for(let n=1;n<=4;n++){if(bd[n]==='a')x.boardWins[n-1]++;if(bd[n]==='b')y.boardWins[n-1]++}}
+// Team bye points are configurable; default remains 2 match points, no fictitious opponent is added.
+for(const m of comp.matches.filter(m=>m.bye&&m.a)){const z=rows.find(x=>x.id===m.a);if(z){z.pts+=Number(comp.teamByePoints??2);z.played++;z.w++}}
+// Mini-match points are calculated only within the exact final match-point tie group.
+const groups=new Map();for(const x of rows){const k=String(x.pts);if(!groups.has(k))groups.set(k,new Set());groups.get(k).add(x.id)}
+for(const x of rows){const group=groups.get(String(x.pts));x.miniPts=0;for(const m of comp.matches){if(!m.b||!group.has(m.a)||!group.has(m.b)||!((m.a===x.id)||(m.b===x.id)))continue;const r=chessTeamMatchScore(m);if(!r.complete)continue;x.miniPts+=m.a===x.id?r.matchA:r.matchB}x.bh=x.opponents.reduce((s,id)=>s+(rows.find(y=>y.id===id)?.pts||0),0)}
+const rule=Array.isArray(comp.teamTieBreakOrder)?comp.teamTieBreakOrder:['miniPts','bh','boardPts','girlsPts'];const val=(x,k)=>k==='wins'?x.w:k==='girlsPts'?x.girlsPts:k==='boardPts'?x.boardPts:k==='bh'?x.bh:k==='miniPts'?x.miniPts:k.startsWith('board')?x.boardWins[Number(k.slice(5))-1]||0:0;rows.sort((a,b)=>b.pts-a.pts||rule.reduce((d,k)=>d||(val(b,k)-val(a,k)),0)||a.name.localeCompare(b.name,'kk'));let rank=0;rows.forEach((x,i)=>{if(!i||x.pts!==rows[i-1].pts||rule.some(k=>val(x,k)!==val(rows[i-1],k)))rank=i+1;x.rank=rank});return rows}
+function chessIndividualStandings(){chessEnsureStores();let a=comp.entries.map(e=>({...e,pts:0,played:0,w:0,d:0,l:0,bh:0,white:0,black:0,opponents:[],sb:0}));for(const m of comp.matches){let x=a.find(z=>z.id===m.a),y=a.find(z=>z.id===m.b);if(!x)continue;if(!m.b){if(m.bye){x.pts+=Number(comp.byePoints??1);x.byeCount=(x.byeCount||0)+1}continue}if(!y)continue;let r=chessIndividualResult(m);if(!['a','b','draw'].includes(r.winner))continue;x.played++;y.played++;x.opponents.push(y.id);y.opponents.push(x.id);if(m.colorA==='Ақ'||m.colorA==='White'){x.white++;y.black++}else if(m.colorA==='Қара'||m.colorA==='Black'){x.black++;y.white++}if(r.winner==='a'){x.pts++;x.w++;y.l++}else if(r.winner==='b'){y.pts++;y.w++;x.l++}else{x.pts+=.5;y.pts+=.5;x.d++;y.d++}}
+const pts=Object.fromEntries(a.map(x=>[x.id,x.pts]));for(const m of comp.matches){if(!m.b)continue;const x=a.find(z=>z.id===m.a),y=a.find(z=>z.id===m.b);if(!x||!y)continue;const w=chessIndividualResult(m).winner;if(w==='a')x.sb+=pts[y.id];else if(w==='b')y.sb+=pts[x.id];else if(w==='draw'){x.sb+=.5*pts[y.id];y.sb+=.5*pts[x.id]}}const mode=comp.buchholzMode||'standard';a.forEach(x=>{let vals=x.opponents.map(id=>pts[id]||0);if(mode==='cut1'&&vals.length)vals.sort((p,q)=>p-q).shift();else if(mode==='cut2'&&vals.length>=2){vals.sort((p,q)=>p-q);vals.shift();vals.pop()}else if(mode==='median'&&vals.length>=3){vals.sort((p,q)=>p-q);vals.shift();vals.pop()}x.bh=vals.reduce((s,v)=>s+v,0)});const order=Array.isArray(comp.individualTieBreakOrder)?comp.individualTieBreakOrder:['bh','sb','wins'];const val=(x,k)=>k==='bh'?x.bh:k==='sb'?x.sb:k==='wins'?x.w:k==='whiteWins'?0:0;a.sort((x,y)=>y.pts-x.pts||order.reduce((d,k)=>d||(val(y,k)-val(x,k)),0)||x.name.localeCompare(y.name,'kk'));let rank=0;a.forEach((x,i)=>{if(!i||x.pts!==a[i-1].pts||order.some(k=>val(x,k)!==val(a[i-1],k)))rank=i+1;x.rank=rank});return a}
+// Correct protocol routing: chess completion is checked against the mode-specific result store.
+downloadFinalProtocol=function(){if(comp?.sport==='chess'){chessEnsureStores();const pending=comp.matches.filter(m=>m.b&&!chessMatchDone(m));if(pending.length&&!confirm(`${pending.length} шахмат матчы аяқталмаған. Аралық хаттаманы шығарасыз ба?`))return;if(isTeamChess()){let a=chessTeamStandings();let html='<table><tr><th>Орын</th><th>Команда</th><th>Мектеп</th><th>Матч ұпайы</th><th>Өзара кездесу</th><th>Бухгольц</th><th>Тақта ұпайы</th><th>Қыздар тақтасы</th></tr>'+a.map(x=>`<tr><td>${x.rank}</td><td>${esc(x.name)}</td><td>${esc(x.school)}</td><td>${x.pts}</td><td>${x.miniPts}</td><td>${x.bh}</td><td>${x.boardPts}</td><td>${x.girlsPts}</td></tr>`).join('')+'</table>';word('АҚБОЗАТ · КОМАНДАЛЫҚ ҚОРЫТЫНДЫ ХАТТАМА',html,'UML_Aqbozat_team.doc');return}let a=chessIndividualStandings();let html='<table><tr><th>Орын</th><th>Ойыншы</th><th>Мектеп</th><th>Ойын</th><th>Ж</th><th>Т</th><th>Ұ</th><th>Ұпай</th><th>Бухгольц</th><th>Ақ</th><th>Қара</th></tr>'+a.map(x=>`<tr><td>${x.rank}</td><td>${esc(x.name)}</td><td>${esc(x.school)}</td><td>${x.played}</td><td>${x.w}</td><td>${x.d}</td><td>${x.l}</td><td>${x.pts}</td><td>${x.bh}</td><td>${x.white}</td><td>${x.black}</td></tr>`).join('')+'</table><h3>Турлар</h3>'+comp.matches.map(m=>`<p>${m.round}-тур: ${esc(entry(m.a)?.name||'')} (${m.colorA||'—'}) — ${esc(entry(m.b)?.name||'Бос тур')} (${m.colorB||'—'}) · ${chessIndividualResult(m).winner||'Нәтиже жоқ'}</p>`).join('');word('АҚБОЗАТ · ЖЕКЕЛЕЙ ҚОРЫТЫНДЫ ХАТТАМА',html,'UML_Aqbozat_individual.doc');return}return __v14OldDownloadFinal?.()};
+
+
+/* ===== FIX v14.1: командалық шахмат нәтижесін айқын енгізу интерфейсі ===== */
+window.setTeamBoardScore=function(matchId,n,v){
+  if(!comp||comp.sport!=='chess'||comp.kind!=='team'){alert('Алдымен «Ақбозат» командалық жарысын ашыңыз.');return;}
+  const m=comp.matches.find(x=>String(x.id)===String(matchId));
+  if(!m||!m.b){alert('Матч табылмады. Алдымен жеребе құрыңыз.');return;}
+  n=Number(n); if(![1,2,3,4].includes(n)||!['a','b','draw',''].includes(v))return;
+  chessEnsureStores();
+  const rec=chessTeamResult(m); rec.boards=rec.boards||{};
+  if(v==='') delete rec.boards[n]; else rec.boards[n]=v;
+  rec.updatedAt=new Date().toISOString();
+  persist(); renderAll();
+};
+renderResults=function(){
+  if(!isTeamChess()){
+    if(comp.sport==='chess'){
+      chessEnsureStores();
+      $('results').innerHTML=comp.matches.map(m=>{const a=entry(m.a),b=entry(m.b);if(!m.b)return `<div class="match-card">${esc(a?.name||'')} · бос тур</div>`;const r=chessIndividualResult(m);return `<div class="match-card"><h3>${m.round}-тур: ${esc(a?.name||'')} — ${esc(b?.name||'')}</h3><select onchange="setScore(${comp.matches.indexOf(m)},'winner',this.value)"><option value="">Нәтижені таңдаңыз</option><option value="a" ${r.winner==='a'?'selected':''}>${esc(a?.name||'А')} жеңді</option><option value="draw" ${r.winner==='draw'?'selected':''}>Тең ойын</option><option value="b" ${r.winner==='b'?'selected':''}>${esc(b?.name||'В')} жеңді</option></select></div>`}).join('')||'<p class="notice">Алдымен қатысушыларды тіркеп, жеребе құрыңыз.</p>';
+    } else if(window.__umlOldRenderResults) return window.__umlOldRenderResults();
+    return;
+  }
+  chessEnsureStores();
+  if(!comp.matches.length){$('results').innerHTML='<div class="notice"><b>Командалық матч нәтижесін енгізу</b><p>Нәтиже енгізу бөлімі жеребе құрылғаннан кейін ашылады. Алдымен кемінде екі толық команда тіркеп, «Жеребе құру» батырмасын басыңыз.</p></div>';return;}
+  $('results').innerHTML='<div class="notice"><b>НӘТИЖЕ ЕНГІЗУ НҰСҚАУЛЫҒЫ</b><p>Әр матчта 1–4 тақтаның нәтижесін жеке таңдаңыз. «А командасы жеңді», «Тең ойын» немесе «В командасы жеңді» батырмасын басыңыз. Төрт тақтаның бәрі толтырылғанда матч автоматты түрде аяқталып, турнирлік кесте қайта есептеледі.</p></div>'+comp.matches.map(m=>{
+    const a=entry(m.a),b=entry(m.b);if(!m.b)return `<div class="match-card"><b>${esc(a?.name||'')} · бос тур</b></div>`;
+    const bd=chessTeamResult(m).boards||{},r=chessTeamMatchScore(m),aWhite=m.teamAWhite!==false;
+    const rows=[1,2,3,4].map(n=>{
+      const ap=a?.roster?.[n-1]||`А командасы · ${n}-тақта`,bp=b?.roster?.[n-1]||`В командасы · ${n}-тақта`;
+      const whiteA=(n%2===1)?aWhite:!aWhite,ac=whiteA?'Ақ':'Қара',bc=whiteA?'Қара':'Ақ',v=bd[n]||'';
+      const button=(value,label)=>`<button type="button" class="${v===value?'active':''}" style="margin:3px;padding:8px 10px;${v===value?'background:#176b45;color:white;':''}" onclick="setTeamBoardScore('${String(m.id).replace(/'/g,"\\'")}',${n},'${value}')">${label}</button>`;
+      return `<tr><td><b>${n}-тақта${n===4?' · ҚЫЗДАР':''}</b></td><td><b>${esc(ap)}</b><br><span class="color-tag ${ac==='Ақ'?'white-tag':'black-tag'}">${ac}</span></td><td>${button('a','А жеңді')}${button('draw','Тең')}${button('b','В жеңді')}<br><small>${v==='a'?esc(ap)+' жеңді':v==='b'?esc(bp)+' жеңді':v==='draw'?'Тең ойын':'НӘТИЖЕ ТАҢДАЛМАҒАН'}</small></td><td><b>${esc(bp)}</b><br><span class="color-tag ${bc==='Ақ'?'white-tag':'black-tag'}">${bc}</span></td></tr>`;
+    }).join('');
+    return `<div class="match-card" style="margin:14px 0;padding:16px;border:2px solid #315477;border-radius:12px"><div class="muted">${esc(m.stage||'Командалық шахмат')} · ${m.round}-тур</div><h3>${esc(a?.name||'А командасы')} — ${esc(b?.name||'В командасы')}</h3><div style="font-size:18px;margin:8px 0">Тақта есебі: <b>${r.a} : ${r.b}</b> · ${r.done}/4 нәтиже енгізілді · <b>${r.complete?'МАТЧ АЯҚТАЛДЫ':'МАТЧ АЯҚТАЛМАҒАН'}</b></div><div style="overflow-x:auto"><table><thead><tr><th>Тақта</th><th>А командасы</th><th>НӘТИЖЕНІ ОСЫНДА ЕНГІЗІҢІЗ</th><th>В командасы</th></tr></thead><tbody>${rows}</tbody></table></div></div>`;
+  }).join('');
+};
+
+
+/* ===== v14.2: ХАТТАМА НӘТИЖЕЛЕРІНІҢ ТОЛЫҚ ЭКСПОРТЫ ===== */
+function umlResultText(m,i){
+  if(!m.b)return 'Бос тур';
+  if(comp.sport==='chess'&&comp.kind==='team'){
+    chessEnsureStores();const bd=chessTeamResult(m).boards||{};
+    const labels={a:'А командасы жеңді',b:'В командасы жеңді',draw:'Тең ойын'};
+    return [1,2,3,4].map(n=>`${n}-тақта: ${labels[bd[n]]||'енгізілмеген'}`).join('; ')+` | Жалпы есеп ${chessTeamMatchScore(m).a}:${chessTeamMatchScore(m).b}`;
+  }
+  if(comp.sport==='chess'){
+    chessEnsureStores();const w=chessIndividualResult(m).winner;
+    return w==='a'?`${entry(m.a)?.name||'А'} жеңді`:w==='b'?`${entry(m.b)?.name||'В'} жеңді`:w==='draw'?'Тең ойын':'Нәтиже енгізілмеген';
+  }
+  const s=comp.scores?.[i]||{};
+  if(comp.sport==='volleyball'||comp.sport==='tabletennis'){
+    const sets=s.sets||[];const detail=sets.map((z,j)=>z&&z.a!==''&&z.b!==''&&z.a!==undefined&&z.b!==undefined?`${j+1}-сет ${z.a}:${z.b}`:null).filter(Boolean);
+    const r=scoreSummary(m,i);return `${detail.join('; ')||'Сет нәтижелері енгізілмеген'} | Сет есебі ${r.a}:${r.b}`;
+  }
+  if(['basketball','handball','futsal'].includes(comp.sport)){
+    const a=(Number(s.p1)||0)+(Number(s.p2)||0)+(Number(s.otA)||0),b=(Number(s.q1)||0)+(Number(s.q2)||0)+(Number(s.otB)||0);
+    return s.p1===undefined||s.p2===undefined?'Нәтиже енгізілмеген':`${a}:${b}`;
+  }
+  if(s.a!==undefined&&s.b!==undefined){let t=`${s.a}:${s.b}`;if(s.penWinner)t+=` | Пенальти: ${s.penWinner==='a'?entry(m.a)?.name:entry(m.b)?.name}`;return t;}
+  if(s.winner)return s.winner==='a'?`${entry(m.a)?.name} жеңді`:s.winner==='b'?`${entry(m.b)?.name} жеңді`:'Тең ойын';
+  return s.note||'Нәтиже енгізілмеген';
+}
+downloadMatchProtocol=function(){
+  if(!comp)return alert('Алдымен жарысты ашыңыз.');
+  if(comp.sport==='chess')chessEnsureStores();
+  let rows=comp.matches.map((m,i)=>`<tr><td>${i+1}</td><td>${m.round||'—'}</td><td>${esc(m.stage||'')}</td><td>${esc(entry(m.a)?.name||'')}</td><td>${esc(entry(m.b)?.name||'Бос тур')}</td><td>${esc(umlResultText(m,i))}</td></tr>`).join('');
+  let extra='';
+  if(comp.sport==='chess'&&comp.kind==='team')extra=comp.matches.filter(m=>m.b).map(m=>{const bd=chessTeamResult(m).boards||{};return `<h3>${esc(entry(m.a)?.name||'')} — ${esc(entry(m.b)?.name||'')}</h3><table><tr><th>Тақта</th><th>А командасының ойыншысы</th><th>Нәтиже</th><th>В командасының ойыншысы</th></tr>`+[1,2,3,4].map(n=>{const v=bd[n],txt=v==='a'?'А жеңді':v==='b'?'В жеңді':v==='draw'?'Тең ойын':'Нәтиже енгізілмеген';return `<tr><td>${n}${n===4?' · Қыздар':''}</td><td>${esc(entry(m.a)?.roster?.[n-1]||'')}</td><td>${txt}</td><td>${esc(entry(m.b)?.roster?.[n-1]||'')}</td></tr>`}).join('')+'</table>'}).join('');
+  word('ОЙЫН ХАТТАМАСЫ',`<table><tr><th>№</th><th>Тур</th><th>Кезең</th><th>А командасы</th><th>В командасы</th><th>Нәтиже</th></tr>${rows}</table>${extra}`,'UML_oiyn_hattamasy.doc');
+};
+const __umlV141FinalProtocol=downloadFinalProtocol;
+downloadFinalProtocol=function(){
+  if(!comp)return alert('Алдымен жарысты ашыңыз.');
+  if(comp.sport==='chess'){
+    chessEnsureStores();const pending=comp.matches.filter(m=>m.b&&!chessMatchDone(m));
+    if(pending.length&&!confirm(`${pending.length} шахмат матчы аяқталмаған. Аралық қорытынды хаттаманы шығарасыз ба?`))return;
+    if(isTeamChess()){
+      const a=chessTeamStandings();
+      const summary='<table><tr><th>Орын</th><th>Команда</th><th>Мектеп</th><th>Ойын</th><th>Жеңіс</th><th>Тең</th><th>Жеңіліс</th><th>Матч ұпайы</th><th>Тақта ұпайы</th><th>Қыздар тақтасы</th><th>Бухгольц</th></tr>'+a.map(x=>`<tr><td>${x.rank}</td><td>${esc(x.name)}</td><td>${esc(x.school)}</td><td>${x.played}</td><td>${x.w}</td><td>${x.d}</td><td>${x.l}</td><td>${x.pts}</td><td>${x.boardPts}</td><td>${x.girlsPts}</td><td>${x.bh}</td></tr>`).join('')+'</table>';
+      const details=comp.matches.filter(m=>m.b).map(m=>{const bd=chessTeamResult(m).boards||{},r=chessTeamMatchScore(m);return `<h3>${m.round||1}-тур: ${esc(entry(m.a)?.name||'')} — ${esc(entry(m.b)?.name||'')}</h3><p>Командалық есеп: <b>${r.a}:${r.b}</b> · ${r.complete?'Аяқталды':'Аяқталмаған'}</p><table><tr><th>Тақта</th><th>А командасы</th><th>Нәтиже</th><th>В командасы</th><th>Тақта ұпайы</th></tr>`+[1,2,3,4].map(n=>{const v=bd[n],label=v==='a'?'А жеңді':v==='b'?'В жеңді':v==='draw'?'Тең ойын':'Енгізілмеген',pts=v==='a'?'1:0':v==='b'?'0:1':v==='draw'?'0,5:0,5':'—';return `<tr><td>${n}${n===4?' · Қыздар':''}</td><td>${esc(entry(m.a)?.roster?.[n-1]||'')}</td><td>${label}</td><td>${esc(entry(m.b)?.roster?.[n-1]||'')}</td><td>${pts}</td></tr>`}).join('')+'</table>'}).join('');
+      word('АҚБОЗАТ · КОМАНДАЛЫҚ ҚОРЫТЫНДЫ ХАТТАМА',summary+'<h2>Ойындардың толық нәтижелері</h2>'+details,'UML_Aqbozat_team_final.doc');return;
+    }
+    const a=chessIndividualStandings();const summary='<table><tr><th>Орын</th><th>Ойыншы</th><th>Мектеп</th><th>Ойын</th><th>Ж</th><th>Т</th><th>Жең</th><th>Ұпай</th><th>Бухгольц</th><th>Ақ</th><th>Қара</th></tr>'+a.map(x=>`<tr><td>${x.rank}</td><td>${esc(x.name)}</td><td>${esc(x.school)}</td><td>${x.played}</td><td>${x.w}</td><td>${x.d}</td><td>${x.l}</td><td>${x.pts}</td><td>${x.bh}</td><td>${x.white}</td><td>${x.black}</td></tr>`).join('')+'</table>';
+    const details=comp.matches.map(m=>`<p>${m.round||1}-тур: ${esc(entry(m.a)?.name||'')} (${esc(m.colorA||'—')}) — ${esc(entry(m.b)?.name||'Бос тур')} (${esc(m.colorB||'—')}) · ${esc(umlResultText(m,comp.matches.indexOf(m)))}</p>`).join('');
+    word('АҚБОЗАТ · ЖЕКЕЛЕЙ ҚОРЫТЫНДЫ ХАТТАМА',summary+'<h2>Турлар нәтижесі</h2>'+details,'UML_Aqbozat_individual.doc');return;
+  }
+  if(comp.sport==='athletics'){
+    const a=athleticsStandings(),ev=comp.athleticsEvent||'60m';
+    const label=({'60m':'60 метрге жүгіру','100m':'100 метрге жүгіру','200m':'200 метрге жүгіру','400m':'400 метрге жүгіру','800m':'800 метрге жүгіру','long':'Ұзындыққа секіру','high':'Биіктікке секіру','shot':'Доп / ядро лақтыру','relay':'Эстафета'}[ev]||ev);
+    const table='<table><tr><th>Орын</th><th>Спортшы</th><th>Мектеп</th><th>Нәтиже</th></tr>'+a.map((x,i)=>`<tr><td>${x.rank||i+1}</td><td>${esc(x.name)}</td><td>${esc(x.school)}</td><td>${esc(x.result)}</td></tr>`).join('')+'</table>';
+    word('ЖЕҢІЛ АТЛЕТИКА · ҚОРЫТЫНДЫ ХАТТАМА',`<p>Дисциплина: ${esc(label)}</p>${table}`,'UML_zhengil_atletika_korytyndy.doc');return;
+  }
+  const a=standings();
+  const summary='<table><tr><th>Орын</th><th>Қатысушы / команда</th><th>Мектеп</th><th>Ойын</th><th>Ж</th><th>Т</th><th>Ұ</th><th>Ұпай</th></tr>'+a.map((x,i)=>`<tr><td>${x.rank||i+1}</td><td>${esc(x.name)}</td><td>${esc(x.school)}</td><td>${x.played??''}</td><td>${x.w??''}</td><td>${x.d??''}</td><td>${x.l??''}</td><td>${x.pts??''}</td></tr>`).join('')+'</table>';
+  const matches='<h2>Ойындардың толық нәтижелері</h2><table><tr><th>№</th><th>Тур</th><th>Кезең</th><th>А командасы</th><th>В командасы</th><th>Нәтиже</th></tr>'+comp.matches.map((m,i)=>`<tr><td>${i+1}</td><td>${m.round||'—'}</td><td>${esc(m.stage||'')}</td><td>${esc(entry(m.a)?.name||'')}</td><td>${esc(entry(m.b)?.name||'Бос тур')}</td><td>${esc(umlResultText(m,i))}</td></tr>`).join('')+'</table>';
+  word('ҚОРЫТЫНДЫ ХАТТАМА',summary+matches,'UML_korytyndy_hattama.doc');
+};
+/* ===== v14.2 patch соңы ===== */
+
+
+/* ҰМЛ DIGITAL v15 — critical integrity and protocol repair layer */
+(function(){
+  const norm=s=>String(s??'').trim().toLocaleLowerCase('kk').replace(/\s+/g,' ');
+  const safeId=()=>('uml_'+(globalThis.crypto?.randomUUID?.()||Date.now().toString(36)+'_'+Math.random().toString(36).slice(2)));
+  const oldEntryForm=window.entryForm;
+  window.entryForm=function(){oldEntryForm();};
+  window.addEntry=function(){
+    if(!comp)return alert('Алдымен жарысты ашыңыз.');
+    const school=$('school')?.value.trim()||'', name=$('entryName')?.value.trim()||'';
+    if(!school||!name)return alert('Мектеп/ұйым және команда/қатысушы атауын толтырыңыз.');
+    if(comp.entries.some(e=>norm(e.name)===norm(name)&&norm(e.school)===norm(school)))return alert('Осы мектептің мұндай атаудағы командасы/қатысушысы тіркелген.');
+    const e={id:safeId(),school,name};
+    if(comp.kind==='team'){
+      const parse=id=>String($(id)?.value||'').split(/[;,\n]+/).map(x=>x.trim()).filter(Boolean);
+      e.boys=parse('boys');e.girls=parse('girls');e.coach=$('coach')?.value.trim()||'';
+      if(comp.sport==='chess'&&(e.boys.length!==3||e.girls.length!==1))return alert('Командалық шахматқа дәл 3 ұл және 1 қыз қажет.');
+      const roster=[...e.boys,...e.girls];
+      if(new Set(roster.map(norm)).size!==roster.length)return alert('Команда құрамында бір ойыншы қайталанып тұр.');
+      const existing=comp.entries.flatMap(x=>[...(x.boys||[]),...(x.girls||[])]).map(norm);
+      const duplicate=roster.find(x=>existing.includes(norm(x)));
+      if(duplicate)return alert('Бұл спортшы басқа командаға тіркелген: '+duplicate);
+      if(comp.sport==='chess')e.roster=[e.boys[0],e.boys[1],e.boys[2],e.girls[0]];
+    } else {
+      e.className=$('className')?.value.trim()||'';e.birth=$('birth')?.value||'';
+      if(!e.className)return alert('Оқушының сыныбын енгізіңіз.');
+      if(!/^\d{4}$/.test(String(e.birth)))return alert('Туған жылын 4 санмен енгізіңіз.');
+      const yr=Number(e.birth);if(yr<1990||yr>new Date().getFullYear())return alert('Туған жыл дұрыс емес.');
+      if(comp.entries.some(x=>norm(x.name)===norm(name)))return alert('Бұл жарыста осындай аты-жөні бар қатысушы тіркелген. Қайталануды тексеріңіз.');
+    }
+    comp.entries.push(e);persist();renderAll();entryForm();
+  };
+  window.removeEntry=function(index){
+    const e=comp?.entries?.[index];if(!e)return;
+    if(!confirm(`«${e.name}» жазбасын және оған қатысты матчтарды өшіресіз бе? Басқа матчтар мен нәтижелер сақталады.`))return;
+    const removed=e.id, oldMatches=comp.matches||[], oldScores=comp.scores||{};
+    const keep=[];const scores={};
+    oldMatches.forEach((m,i)=>{if(m.a===removed||m.b===removed)return;const ni=keep.length;keep.push(m);if(oldScores[i]!==undefined)scores[ni]=oldScores[i]});
+    comp.entries.splice(index,1);comp.matches=keep;comp.scores=scores;
+    if(comp.athleticsResults)delete comp.athleticsResults[removed];
+    if(comp.teamResults)keep.forEach(m=>{});
+    if(comp.individualResults)keep.forEach(m=>{});
+    if(comp.teamResults)Object.keys(comp.teamResults).forEach(id=>{if(!keep.some(m=>m.id===id))delete comp.teamResults[id]});
+    if(comp.individualResults)Object.keys(comp.individualResults).forEach(id=>{if(!keep.some(m=>m.id===id))delete comp.individualResults[id]});
+    persist();renderAll();
+  };
+  window.standings=function(){
+    if(!comp)return [];
+    if(comp.sport==='chess'&&comp.kind==='team')return chessTeamStandings();
+    if(comp.sport==='chess'&&comp.kind==='individual')return chessIndividualStandings();
+    if(comp.sport==='athletics')return athleticsStandings();
+    const rows=comp.entries.map(e=>({...e,pts:0,played:0,w:0,d:0,l:0,diff:0,for:0,against:0}));
+    (comp.matches||[]).forEach((m,i)=>{
+      const x=rows.find(z=>z.id===m.a),y=rows.find(z=>z.id===m.b);if(!x)return;
+      if(!m.b){if(m.bye){x.pts+=Number(comp.byePoints??1)}return}if(!y)return;
+      const s=comp.scores?.[i]||{};let result=null,sa=null,sb=null;
+      if(comp.sport==='togyz'){
+        if(!s.winner)return;result=s.winner==='a'?1:s.winner==='b'?-1:0;
+      } else if(comp.sport==='volleyball'||comp.sport==='tabletennis'){
+        const sets=s.sets||[];let aw=0,bw=0,valid=0;for(const z of sets){if(z&&z.a!==''&&z.b!==''&&z.a!==undefined&&z.b!==undefined){valid++;if(+z.a>+z.b)aw++;else if(+z.b>+z.a)bw++}}
+        if(!(comp.sport==='volleyball'?(aw>=3||bw>=3):(aw>=3||bw>=3)))return;
+        result=aw>bw?1:-1;sa=aw;sb=bw;
+        if(comp.sport==='volleyball'){if(aw===3&&bw<=1){x.pts+=3;y.pts+=0}else if(aw===3&&bw===2){x.pts+=2;y.pts+=1}else if(bw===3&&aw<=1){y.pts+=3;x.pts+=0}else{y.pts+=2;x.pts+=1}}
+      } else if(['basketball','handball','futsal'].includes(comp.sport)){
+        if(s.p1===undefined||s.p2===undefined||s.q1===undefined||s.q2===undefined)return;
+        sa=Number(s.p1)+Number(s.p2)+Number(s.otA||0);sb=Number(s.q1)+Number(s.q2)+Number(s.otB||0);result=sa>sb?1:sa<sb?-1:0;
+      } else {
+        if(s.a===undefined||s.b===undefined||s.a===''||s.b==='')return;sa=Number(s.a);sb=Number(s.b);if(!Number.isFinite(sa)||!Number.isFinite(sb))return;result=sa>sb?1:sa<sb?-1:0;
+      }
+      x.played++;y.played++;if(sa!==null&&sb!==null){x.for+=sa;y.for+=sb;x.against+=sb;y.against+=sa;x.diff+=sa-sb;y.diff+=sb-sa}
+      if(result>0){x.w++;y.l++;if(comp.sport!=='volleyball')x.pts+=['basketball','handball'].includes(comp.sport)?2:comp.sport==='tabletennis'?1:3;if(comp.sport!=='volleyball')y.pts+=['basketball','handball'].includes(comp.sport)?1:0}
+      else if(result<0){y.w++;x.l++;if(comp.sport!=='volleyball')y.pts+=['basketball','handball'].includes(comp.sport)?2:comp.sport==='tabletennis'?1:3;if(comp.sport!=='volleyball')x.pts+=['basketball','handball'].includes(comp.sport)?1:0}
+      else{x.d++;y.d++;x.pts++;y.pts++}
+    });
+    rows.sort((a,b)=>b.pts-a.pts||b.diff-a.diff||b.for-a.for||a.name.localeCompare(b.name,'kk'));
+    let rank=0;rows.forEach((x,i)=>{if(!i||x.pts!==rows[i-1].pts||x.diff!==rows[i-1].diff||x.for!==rows[i-1].for)rank=i+1;x.rank=rank});return rows;
+  };
+  window.umlProtocolResult=function(m,i){
+    if(!m.b)return m.bye?'Бос тур':'Қарсылас жоқ';
+    if(comp.sport==='chess'&&comp.kind==='team'){const r=chessTeamMatchScore(m),bd=chessTeamResult(m).boards||{};return `Тақталар: ${[1,2,3,4].map(n=>`${n}: ${bd[n]==='a'?'А жеңді':bd[n]==='b'?'В жеңді':bd[n]==='draw'?'Тең':'енгізілмеген'}`).join('; ')}. Матч есебі ${r.a}:${r.b}${r.complete?'':' (аяқталмаған)'}`}
+    if(comp.sport==='chess'){const w=chessIndividualResult(m).winner;return w==='a'?'А жеңді':w==='b'?'В жеңді':w==='draw'?'Тең ойын':'Нәтиже енгізілмеген'}
+    if(comp.sport==='athletics')return 'Жеңіл атлетика нәтижесі жеке дисциплина хаттамасында көрсетіледі';
+    const s=comp.scores?.[i]||{};
+    if(comp.sport==='volleyball'||comp.sport==='tabletennis'){const sets=s.sets||[];const d=sets.map((z,j)=>z&&z.a!==''&&z.b!==''&&z.a!==undefined&&z.b!==undefined?`${j+1}-сет ${z.a}:${z.b}`:null).filter(Boolean);const r=scoreSummary(m,i);return `${d.join('; ')||'Сет енгізілмеген'} | Сет есебі ${r.a}:${r.b} | ${r.complete?'Аяқталған':'Аяқталмаған'}`}
+    if(['basketball','handball','futsal'].includes(comp.sport)){const ok=['p1','p2','q1','q2'].every(k=>s[k]!==undefined&&s[k]!=='');if(!ok)return 'Нәтиже енгізілмеген';const a=+s.p1 + +s.p2 + +(s.otA||0),b=+s.q1 + +s.q2 + +(s.otB||0);return `${a}:${b}${s.otA!==undefined||s.otB!==undefined?' (қосымша уақытты қоса)':''}`}
+    if(s.a!==undefined&&s.b!==undefined)return `${s.a}:${s.b}${s.penWinner?` | Пенальти жеңімпазы: ${s.penWinner==='a'?'А':'В'}`:''}`;
+    if(s.winner)return s.winner==='a'?'А жеңді':s.winner==='b'?'В жеңді':'Тең ойын';return s.note||'Нәтиже енгізілмеген';
+  };
+  window.downloadMatchProtocol=function(){
+    if(!comp)return alert('Алдымен жарысты ашыңыз.');
+    const rows=(comp.matches||[]).map((m,i)=>`<tr><td>${i+1}</td><td>${m.round||'—'}</td><td>${esc(m.stage||'')}</td><td>${esc(entry(m.a)?.name||'—')}</td><td>${esc(entry(m.b)?.name||'Бос тур')}</td><td>${esc(umlProtocolResult(m,i))}</td></tr>`).join('');
+    const pending=(comp.matches||[]).filter((m,i)=>m.b&&!(comp.sport==='chess'?(comp.kind==='team'?chessTeamMatchScore(m).complete:chessMatchDone(m)):scoreComplete(m,comp.scores?.[i]||{}))).length;
+    const meta=`<p>Жарыс: ${esc(comp.cname)} | ${esc(comp.level)} | ${esc(comp.sportName)} | ${esc(comp.age)} | ${esc(comp.date||'')}</p><p>Күйі: ${pending?`Аяқталмаған матч: ${pending}`:'Барлық матч аяқталған'}</p>`;
+    word('ОЙЫН ХАТТАМАСЫ',meta+`<table><tr><th>№</th><th>Тур</th><th>Кезең</th><th>А командасы / қатысушы</th><th>В командасы / қатысушы</th><th>Нәтиже</th></tr>${rows}</table>`,'UML_oiyn_hattamasy.doc');
+  };
+  window.downloadFinalProtocol=function(){
+    if(!comp)return alert('Алдымен жарысты ашыңыз.');
+    if(comp.sport==='athletics'){const events=['60m','100m','200m','400m','800m','long','high','shot','relay'];const labels={'60m':'60 м','100m':'100 м','200m':'200 м','400m':'400 м','800m':'800 м','long':'Ұзындыққа секіру','high':'Биіктікке секіру','shot':'Лақтыру','relay':'Эстафета'};const html=events.map(ev=>{const higher=['long','high','shot'].includes(ev);const arr=comp.entries.map(e=>({...e,result:comp.athleticsResults?.[e.id]?.[ev]??''})).filter(x=>String(x.result).trim()!=='').sort((a,b)=>{const av=athleticsValue(a.result),bv=athleticsValue(b.result);return higher?bv-av:av-bv});if(!arr.length)return '';let rank=0;arr.forEach((x,i)=>{if(!i||athleticsValue(x.result)!==athleticsValue(arr[i-1].result))rank=i+1;x.rank=rank});return `<h3>${labels[ev]}</h3><table><tr><th>Орын</th><th>Қатысушы</th><th>Мектеп</th><th>Нәтиже</th></tr>${arr.map(x=>`<tr><td>${x.rank}</td><td>${esc(x.name)}</td><td>${esc(x.school)}</td><td>${esc(x.result)}</td></tr>`).join('')}</table>`}).join('');word('ЖЕҢІЛ АТЛЕТИКА · ҚОРЫТЫНДЫ ХАТТАМА',html||'<p>Енгізілген нәтиже жоқ.</p>','UML_athletics_final.doc');return;}
+    if(comp.sport==='chess'&&comp.kind==='team'){const a=chessTeamStandings();const html=`<table><tr><th>Орын</th><th>Команда</th><th>Мектеп</th><th>Матч ұпайы</th><th>Матч</th><th>Ж</th><th>Т</th><th>Ұ</th><th>Тақта ұпайы</th></tr>${a.map(x=>`<tr><td>${x.rank}</td><td>${esc(x.name)}</td><td>${esc(x.school)}</td><td>${x.pts}</td><td>${x.played}</td><td>${x.w}</td><td>${x.d}</td><td>${x.l}</td><td>${x.boardPts}</td></tr>`).join('')}</table>`;word('АҚБОЗАТ · КОМАНДАЛЫҚ ҚОРЫТЫНДЫ',html,'UML_chess_team_final.doc');return;}
+    if(comp.sport==='chess'){const a=chessIndividualStandings();const html=`<table><tr><th>Орын</th><th>Ойыншы</th><th>Мектеп</th><th>Ойын</th><th>Ж</th><th>Т</th><th>Ұ</th><th>Бухгольц</th></tr>${a.map(x=>`<tr><td>${x.rank}</td><td>${esc(x.name)}</td><td>${esc(x.school)}</td><td>${x.played}</td><td>${x.w}</td><td>${x.d}</td><td>${x.l}</td><td>${x.bh}</td></tr>`).join('')}</table>`;word('АҚБОЗАТ · ЖЕКЕЛЕЙ ҚОРЫТЫНДЫ',html,'UML_chess_individual_final.doc');return;}
+    const a=standings();const html=`<table><tr><th>Орын</th><th>Команда / қатысушы</th><th>Мектеп</th><th>Ойын</th><th>Ж</th><th>Т</th><th>Ұ</th><th>Ұпай</th><th>Айырма</th></tr>${a.map(x=>`<tr><td>${x.rank}</td><td>${esc(x.name)}</td><td>${esc(x.school)}</td><td>${x.played}</td><td>${x.w}</td><td>${x.d}</td><td>${x.l}</td><td>${x.pts}</td><td>${x.diff}</td></tr>`).join('')}</table><h3>Матч нәтижелері</h3><table><tr><th>№</th><th>Тур</th><th>А</th><th>В</th><th>Нәтиже</th></tr>${(comp.matches||[]).map((m,i)=>`<tr><td>${i+1}</td><td>${m.round||''}</td><td>${esc(entry(m.a)?.name||'')}</td><td>${esc(entry(m.b)?.name||'Бос тур')}</td><td>${esc(umlProtocolResult(m,i))}</td></tr>`).join('')}</table>`;
+    word('ҚОРЫТЫНДЫ ХАТТАМА',html,'UML_korytyndy_hattama.doc');
+  };
+  window.makeDraw=function(){
+    if(!comp||comp.sport==='chess')return window.__umlOldMakeDraw?.();
+    if(comp.sport==='athletics')return window.__umlOldMakeDraw?.();
+    if(comp.entries.length<2)return alert('Жеребе үшін кемінде 2 қатысушы қажет.');
+    if(comp.matches?.some((m,i)=>scoreComplete(m,comp.scores?.[i]||{})&&m.b))return alert('Нәтижесі енгізілген матчтар бар. Жеребені қайта құру үшін жаңа жарыс ашыңыз.');
+    const ids=shuffle(comp.entries.map(e=>e.id));comp.matches=[];comp.scores={};
+    if(comp.system==='groups'){
+      const n=Math.max(1,Math.min(ids.length,Number($('groupNum')?.value)||2));const groups=Array.from({length:n},(_,i)=>({name:String.fromCharCode(65+i),ids:[]}));ids.forEach((id,i)=>groups[i%n].ids.push(id));comp.groups=groups;
+      groups.forEach(g=>{let ring=[...g.ids];if(ring.length<2)return;if(ring.length%2)ring.push(null);for(let r=0;r<ring.length-1;r++){for(let j=0;j<ring.length/2;j++){const a=ring[j],b=ring[ring.length-1-j];if(a)comp.matches.push({id:safeId(),round:r+1,stage:`Топтық кезең · ${g.name}`,group:g.name,a,b:b||null,bye:!b})}ring=[ring[0],ring[ring.length-1],...ring.slice(1,-1)]}});
+    } else if(comp.system==='round'){
+      let ring=[...ids];if(ring.length%2)ring.push(null);for(let r=0;r<ring.length-1;r++){for(let j=0;j<ring.length/2;j++){const a=ring[j],b=ring[ring.length-1-j];if(a)comp.matches.push({id:safeId(),round:r+1,stage:'Айналмалы жүйе',a,b:b||null,bye:!b})}ring=[ring[0],ring[ring.length-1],...ring.slice(1,-1)]}
+    } else if(comp.system==='ko'){
+      const size=2**Math.ceil(Math.log2(ids.length));const slots=ids.concat(Array(size-ids.length).fill(null));for(let i=0;i<slots.length;i+=2){const a=slots[i],b=slots[i+1];if(a)comp.matches.push({id:safeId(),round:1,stage:'Плей-офф',a,b,bye:!b})}
+    } else return window.__umlOldMakeDraw?.();
+    persist();renderAll();
+  };
+  // Secure participant text rendering against HTML injection.
+  const _renderEntries=window.renderEntries;
+  window.renderEntries=function(){if(!comp)return;const el=$('entries');el.innerHTML='<h3>Тіркелген жазба: '+comp.entries.length+'</h3><table><tr><th>Мектеп / ұйым</th><th>Команда / қатысушы</th><th>Құрамы</th><th></th></tr>'+comp.entries.map((e,i)=>`<tr><td>${esc(e.school)}</td><td>${esc(e.name)}</td><td>${comp.kind==='team'?'Ұл: '+esc((e.boys||[]).join(', '))+'; Қыз: '+esc((e.girls||[]).join(', ')):esc(e.className||'')}</td><td><button class="danger" onclick="removeEntry(${i})">Өшіру</button></td></tr>`).join('')+'</table>'};
+})();
+
+
+/* ===== v21: логика түзетулері (соңғы, жалғыз қабат) ===== */
+(function(){
+const SP=['basketball','handball','futsal'];
+const isPO=m=>String(m.stage||'').startsWith('Плей-офф');
+const has=v=>v!==undefined&&v!==null&&String(v).trim()!=='';
+const num=v=>Number(String(v).replace(',','.'));
+const uid=()=>'uml_'+(crypto.randomUUID?.()||Date.now().toString(36)+Math.random().toString(36).slice(2));
+const tbOf=(m,i)=>{const t=(comp.tieBreaks&&comp.tieBreaks[m.id])||comp.scores?.[i]?.penWinner;return t==='a'||t==='b'?t:''};
+const sgn=(a,b)=>a>b?1:a<b?-1:0;
+function calc(m,i){
+  if(!m.b)return {bye:true,done:true,complete:true};
+  const sp=comp.sport,s=comp.scores?.[i]||{};let r={done:false,res:null,sa:null,sb:null};
+  if(sp==='chess'){
+    chessEnsureStores();
+    if(comp.kind==='team'){const t=chessTeamMatchScore(m);r={done:t.complete,res:sgn(t.a,t.b),sa:t.a,sb:t.b}}
+    else{const w=chessIndividualResult(m).winner;if(['a','b','draw'].includes(w))r={done:true,res:w==='a'?1:w==='b'?-1:0,sa:w==='a'?1:w==='draw'?.5:0,sb:w==='b'?1:w==='draw'?.5:0}}
+  }else if(sp==='togyz'){
+    const w=s.winner;if(['a','b','draw'].includes(w))r={done:true,res:w==='a'?1:w==='b'?-1:0,sa:w==='a'?1:w==='draw'?.5:0,sb:w==='b'?1:w==='draw'?.5:0};
+  }else if(sp==='volleyball'||sp==='tabletennis'){
+    let a=0,b=0;(s.sets||[]).forEach(z=>{if(z&&has(z.a)&&has(z.b)){const x=num(z.a),y=num(z.b);if(x>y)a++;else if(y>x)b++}});
+    if(a>=3||b>=3)r={done:true,res:a>b?1:-1,sa:a,sb:b};
+  }else if(SP.includes(sp)){
+    const n=sp==='basketball'?4:2;let ok=true,sa=0,sb=0;
+    for(let k=1;k<=n;k++){if(!has(s['p'+k])||!has(s['q'+k]))ok=false;sa+=num(s['p'+k])||0;sb+=num(s['q'+k])||0}
+    sa+=num(s.otA)||0;sb+=num(s.otB)||0;
+    r.needOT=ok&&sp==='basketball'&&sa===sb;
+    if(ok&&!r.needOT)r={done:true,res:sgn(sa,sb),sa,sb};
+  }else if(has(s.a)&&has(s.b)){
+    const sa=num(s.a),sb=num(s.b);if(Number.isFinite(sa)&&Number.isFinite(sb))r={done:true,res:sgn(sa,sb),sa,sb};
+  }
+  r.tied=!!r.done&&r.res===0;
+  r.complete=!!r.done&&!(isPO(m)&&r.res===0&&!tbOf(m,i));
+  return r;
+}
+window.__umlCalc=calc;
+window.scoreComplete=function(m){return calc(m,comp.matches.indexOf(m)).complete};
+window.scoreSummary=function(m,i){const c=calc(m,i);return {a:c.sa??0,b:c.sb??0,valid:0,complete:c.complete}};
+window.setTie=function(i,v){const m=comp.matches[i];if(!m)return;if(!m.id)m.id=uid();comp.tieBreaks=comp.tieBreaks||{};if(v)comp.tieBreaks[m.id]=v;else delete comp.tieBreaks[m.id];persist();renderAll()};
+window.setBBLoss=function(v){comp.bbLossPts=Math.max(0,Math.min(2,Number(v)||0));persist();renderAll()};
+
+/* Ұпай жүйесі — бір дерек көзі: [жеңіс, тең, жеңіліс] */
+const PTS={football:[3,1,0],futsal:[3,1,0],handball:[2,1,0],basketball:[2,0,1],tabletennis:[1,0,0],asyk:[3,1,0],togyz:[1,.5,0]};
+Object.assign(UML_RULES,{
+  handball:{win:2,draw:1,loss:0,fields:'Екі таймның голдары бөлек тіркеледі. Жеңіс 2, тең 1, жеңіліс 0. Плей-оффта тең есепте 7 метрлік серия жеңімпазы таңдалады.'},
+  basketball:{win:2,draw:0,loss:1,fields:'Төрт ширектің ұпайы бөлек тіркеледі. Тең есепте қосымша уақыт ұпайы енгізіледі. Жеңіс 2, жеңілген команда 1 ұпай алады (мәнін «Нәтиже енгізу» бөлімінде өзгертуге болады).'},
+  togyz:{win:1,draw:.5,loss:0,fields:'Жеңіс 1, тең 0,5, жеңіліс 0. Плей-оффта тең ойын болмайды.'}
+});
+const _st=window.standings;
+window.standings=function(){
+  if(!comp)return [];
+  if(comp.sport==='athletics'||comp.sport==='chess')return _st();
+  const sp=comp.sport,P=PTS[sp]||[3,1,0];
+  const loss=sp==='basketball'?(comp.bbLossPts??1):P[2];
+  const rows=comp.entries.map(e=>({...e,pts:0,played:0,w:0,d:0,l:0,diff:0,for:0,against:0,setsFor:0,setsAgainst:0,bh:0}));
+  (comp.matches||[]).forEach((m,i)=>{
+    const x=rows.find(z=>z.id===m.a);if(!x)return;
+    if(!m.b){if(m.bye&&String(m.stage||'').startsWith('Швейцариялық'))x.pts+=P[0];return}
+    const y=rows.find(z=>z.id===m.b);if(!y)return;
+    const c=calc(m,i);if(!c.done)return;
+    x.played++;y.played++;x.for+=c.sa;y.for+=c.sb;x.against+=c.sb;y.against+=c.sa;x.diff+=c.sa-c.sb;y.diff+=c.sb-c.sa;
+    if(sp==='volleyball'||sp==='tabletennis'){x.setsFor+=c.sa;x.setsAgainst+=c.sb;y.setsFor+=c.sb;y.setsAgainst+=c.sa}
+    if(c.res===0){x.d++;y.d++;x.pts+=P[1];y.pts+=P[1];return}
+    const W=c.res>0?x:y,L=c.res>0?y:x;W.w++;L.l++;
+    if(sp==='volleyball'){const ls=Math.min(c.sa,c.sb);W.pts+=ls<=1?3:2;L.pts+=ls===2?1:0}
+    else{W.pts+=P[0];L.pts+=loss}
+  });
+  rows.sort((a,b)=>b.pts-a.pts||b.diff-a.diff||b.for-a.for||a.name.localeCompare(b.name,'kk'));
+  let rank=0;rows.forEach((x,i)=>{if(!i||x.pts!==rows[i-1].pts||x.diff!==rows[i-1].diff||x.for!==rows[i-1].for)rank=i+1;x.rank=rank});
+  return rows;
+};
+
+/* ----- Жеребе ----- */
+const _prevDraw=window.makeDraw;
+/* Түпнұсқада chessPairColor қайтарған {a,b} қатысушы а/b өрістерін 'Ақ'/'Қара' деп бүлдіретін: жеке шахматтың швейцариялық жүйесі мүлде жұмыс істемейтін */
+const _cpc=window.chessPairColor;
+window.chessPairColor=function(a,b){const c=_cpc(a,b);return {colorA:c.a,colorB:c.b}};
+function rrRounds(ids){let ring=[...ids];if(ring.length%2)ring.push(null);const R=[];
+  for(let r=0;r<ring.length-1;r++){const row=[];for(let j=0;j<ring.length/2;j++){const a=ring[j],b=ring[ring.length-1-j];if(a||b)row.push(a&&b?[a,b]:[a||b,null])}R.push(row);ring=[ring[0],ring[ring.length-1],...ring.slice(1,-1)]}
+  return R}
+function mk(round,stage,a,b,extra){
+  const m={id:uid(),round,stage,a,b:b||null,bye:!b,...(extra||{})};
+  comp.matches.push(m);
+  if(comp.sport==='chess'&&b){if(comp.kind==='team')m.teamAWhite=Math.random()<.5;else{const c=chessPairColor(a,b);m.colorA=c.colorA;m.colorB=c.colorB}}
+  return m}
+const koLabel=size=>size===2?'ФИНАЛ':size===4?'ЖАРТЫЛАЙ ФИНАЛ':size===8?'1/4 финал':size===16?'1/8 финал':'ПЛЕЙ-ОФФ';
+const pow2=n=>2**Math.ceil(Math.log2(Math.max(2,n)));
+function koRound(ids,round){
+  const size=pow2(ids.length),byes=size-ids.length,st='Плей-офф · '+koLabel(size);
+  ids.slice(0,byes).forEach(id=>mk(round,st,id,null));
+  const rest=ids.slice(byes);for(let i=0;i<rest.length;i+=2)mk(round,st,rest[i],rest[i+1]);
+}
+window.makeDraw=function(){
+  if(!comp)return;
+  const sp=comp.sport;
+  if(sp==='athletics'||(comp.system==='swiss'&&sp==='chess'))return _prevDraw();
+  if(comp.system==='swiss'){
+    if(comp.entries.length<2)return alert('Жеребе үшін кемінде 2 қатысушы қажет. Алдымен «Тіркеу» бөлімінде қатысушыларды қосыңыз.');
+    if((comp.matches||[]).some((m,i)=>m.b&&calc(m,i).done))return alert('Нәтижесі енгізілген матч бар, сондықтан жеребені қайта құруға болмайды. Жаңа жарыс ашыңыз.');
+    comp.matches=[];comp.scores={};comp.tieBreaks={};comp.champion=null;comp.groups=[];comp.swissRound=0;return makeNextSwissRound(true)}
+  if(comp.entries.length<2)return alert('Жеребе үшін кемінде 2 қатысушы қажет. Алдымен «Тіркеу» бөлімінде қатысушыларды қосыңыз.');
+  if((comp.matches||[]).some((m,i)=>m.b&&calc(m,i).done))return alert('Нәтижесі енгізілген матч бар, сондықтан жеребені қайта құруға болмайды. Жаңа жарыс ашыңыз.');
+  const ids=shuffle(comp.entries.map(e=>e.id));
+  comp.matches=[];comp.scores={};comp.tieBreaks={};comp.champion=null;comp.playoffRound=0;comp.groups=[];comp.stage='group';
+  if(sp==='chess'){comp.individualResults={};comp.teamResults={};comp.swissRound=0;comp.byePoints=0;comp.teamByePoints=0}
+  if(comp.system==='ko'){comp.playoffRound=1;koRound(ids,1)}
+  else if(comp.system==='groups'){
+    const n=Math.max(1,Math.min(ids.length,Number($('groupNum')?.value)||2));
+    const groups=Array.from({length:n},(_,i)=>({name:String.fromCharCode(65+i),ids:[]}));ids.forEach((id,i)=>groups[i%n].ids.push(id));comp.groups=groups;
+    groups.forEach(g=>{if(g.ids.length>1)rrRounds(g.ids).forEach((row,r)=>row.forEach(p=>mk(r+1,'Топтық кезең · '+g.name,p[0],p[1],{group:g.name})))});
+  }else rrRounds(ids).forEach((row,r)=>row.forEach(p=>mk(r+1,'Айналмалы жүйе',p[0],p[1])));
+  if(sp==='chess')chessEnsureStores();
+  persist();renderAll();
+};
+window.advancePlayoff=function(){
+  if(!comp?.groups?.length)return alert('Топтық жеребе құрылмаған. Алдымен «Жеребе құру» батырмасын басыңыз.');
+  const gm=comp.matches.map((m,i)=>[m,i]).filter(([m])=>String(m.stage||'').startsWith('Топтық кезең'));
+  const bad=gm.filter(([m,i])=>m.b&&!calc(m,i).complete);
+  if(!gm.length||bad.length)return alert('Топтық кезеңде нәтижесі енгізілмеген матч бар'+(bad.length?` (${bad.length})`:'')+'. Барлық матчтың есебін енгізіп, қайта басыңыз.');
+  if(comp.matches.some(isPO))return alert('Плей-офф кестесі бұрын құрылған.');
+  const tops=comp.groups.map(g=>groupStandings(g.name).slice(0,2).map(x=>x.id));
+  const G=tops.length,pairs=[],singles=[];
+  if(G===1){if(tops[0][1])pairs.push([tops[0][0],tops[0][1]]);else singles.push(tops[0][0])}
+  else tops.forEach((t,g)=>{const w=t[0],r=tops[(g+1)%G][1];if(w&&r)pairs.push([w,r]);else if(w)singles.push(w)});
+  const cnt=pairs.length*2+singles.length;if(cnt<2)return alert('Плей-офф құруға қатысушы жеткіліксіз.');
+  const st='Плей-офф · '+koLabel(pow2(cnt));comp.playoffRound=1;
+  pairs.forEach(p=>mk(1,st,p[0],p[1]));singles.forEach(id=>mk(1,st,id,null));
+  persist();renderAll();
+};
+window.generateNextKnockout=function(){
+  if(!comp)return;
+  const pr=comp.playoffRound||0,old=[];comp.matches.forEach((m,i)=>{if(isPO(m)&&m.round===pr)old.push([m,i])});
+  if(!old.length)return alert('Плей-офф кестесі әлі құрылмаған. Жеребе құрыңыз немесе топтан плей-оффқа өткізіңіз.');
+  const bad=old.filter(([m,i])=>!calc(m,i).done);
+  if(bad.length)return alert(`Осы кезеңде ${bad.length} матчтың нәтижесі толық енгізілмеген. Есептерді толтырып, қайта басыңыз.`);
+  const tied=old.filter(([m,i])=>!calc(m,i).complete);
+  if(tied.length){const m=tied[0][0];return alert(`«${entry(m.a).name} — ${entry(m.b).name}» матчы тең аяқталды. Пенальти / тай-брейк жеңімпазын таңдаңыз.`)}
+  const winners=old.map(([m,i])=>{if(!m.b)return m.a;const c=calc(m,i);return c.res>0?m.a:c.res<0?m.b:(tbOf(m,i)==='a'?m.a:m.b)});
+  if(winners.length===1){comp.champion=winners[0];persist();renderAll();return alert('Жеңімпаз: '+entry(winners[0]).name)}
+  comp.playoffRound=pr+1;koRound(winners,pr+1);
+  if(comp.sport==='chess')chessEnsureStores();
+  persist();renderAll();
+};
+
+/* ----- Нәтиже енгізу интерфейсі ----- */
+const _prevRR=window.renderResults;
+const FIVE=['basketball','handball','futsal','football','asyk'];
+window.renderResults=function(){
+  if(!comp)return;
+  const sp=comp.sport;
+  if(FIVE.includes(sp)){
+    const head=sp==='basketball'?`<div class="notice"><label>Ұтылған команданың турнирлік ұпайы</label><input type="number" min="0" max="2" inputmode="numeric" value="${comp.bbLossPts??1}" onchange="setBBLoss(this.value)"><small>Әдетте 1 (FIBA). Регламент басқаша болса, өзгертіңіз.</small></div>`:'';
+    $('results').innerHTML=head+(comp.matches.length?comp.matches.map((m,i)=>{
+      if(!m.b)return `<div class="match-card"><b>${esc(entry(m.a)?.name||'')} — бос тур</b></div>`;
+      const a=esc(entry(m.a)?.name||''),b=esc(entry(m.b)?.name||''),s=comp.scores?.[i]||{},c=calc(m,i),tb=tbOf(m,i);let ctrl;
+      if(SP.includes(sp)){const n=sp==='basketball'?4:2,lab=sp==='basketball'?'ширек':'тайм';
+        ctrl='<div class="grid">'+Array.from({length:n},(_,k)=>{k++;return `<div class="notice"><b>${k}-${lab}</b><label>${a}</label><input type="number" min="0" inputmode="numeric" value="${esc(s['p'+k]??'')}" onchange="setSportField(${i},'p${k}',this.value)"><label>${b}</label><input type="number" min="0" inputmode="numeric" value="${esc(s['q'+k]??'')}" onchange="setSportField(${i},'q${k}',this.value)"></div>`}).join('')+`</div><div class="notice"><b>Қосымша уақыт (болса)</b><div class="grid"><input type="number" min="0" inputmode="numeric" placeholder="${a}" value="${esc(s.otA??'')}" onchange="setSportField(${i},'otA',this.value)"><input type="number" min="0" inputmode="numeric" placeholder="${b}" value="${esc(s.otB??'')}" onchange="setSportField(${i},'otB',this.value)"></div></div>`;
+      }else ctrl=`<div class="grid"><div><label>${a} ${sp==='asyk'?'ұпайы':'голы'}</label><input type="number" min="0" inputmode="numeric" value="${esc(s.a??'')}" onchange="setSportField(${i},'a',this.value)"></div><div><label>${b} ${sp==='asyk'?'ұпайы':'голы'}</label><input type="number" min="0" inputmode="numeric" value="${esc(s.b??'')}" onchange="setSportField(${i},'b',this.value)"></div></div>`;
+      if(isPO(m)&&sp!=='basketball'&&c.tied)ctrl+=`<label>${sp==='handball'?'7 метрлік серия':sp==='asyk'?'Қосымша ату':'Пенальти'} жеңімпазы (тең есеп)</label><select onchange="setTie(${i},this.value)"><option value="">Таңдаңыз</option><option value="a" ${tb==='a'?'selected':''}>${a}</option><option value="b" ${tb==='b'?'selected':''}>${b}</option></select>`;
+      const st=c.complete?`Нәтиже тіркелді: ${c.sa}:${c.sb}`:c.needOT?'Тең есеп: қосымша уақыттың ұпайын енгізіңіз':c.done?'Тең есеп: жеңімпазды таңдаңыз':'Нәтиже толық енгізілген жоқ';
+      return `<div class="match-card"><b>${esc(m.stage||'Жарыс')} · ${m.round}-тур</b><h3>${a} — ${b}</h3>${ctrl}<p class="muted">${st}</p></div>`}).join(''):'<p class="notice">Алдымен қатысушыларды тіркеп, жеребе құрыңыз.</p>');
+  }else _prevRR();
+  const R=$('results');
+  if(sp==='togyz'||(sp==='chess'&&comp.kind!=='team'))R.querySelectorAll('select').forEach(sel=>{
+    const mt=(sel.getAttribute('onchange')||'').match(/setScore\((\d+),'winner'/);if(!mt)return;
+    const m=comp.matches[+mt[1]];if(m&&isPO(m))sel.querySelector('option[value="draw"]')?.remove()});
+  if(sp==='chess'&&comp.kind==='team'){
+    const cards=[...R.children].slice(1);
+    comp.matches.forEach((m,i)=>{if(!m.b||!isPO(m)||!cards[i])return;const c=calc(m,i);if(!(c.done&&c.tied))return;const tb=tbOf(m,i);
+      cards[i].insertAdjacentHTML('beforeend',`<div class="notice"><label>Тай-брейк жеңімпазы (2:2)</label><select onchange="setTie(${i},this.value)"><option value="">Таңдаңыз</option><option value="a" ${tb==='a'?'selected':''}>${esc(entry(m.a).name)}</option><option value="b" ${tb==='b'?'selected':''}>${esc(entry(m.b).name)}</option></select></div>`)});
+  }
+};
+const _rf=window.renderFixtures;
+window.renderFixtures=function(){
+  _rf();if(!comp)return;const el=$('fixtures');if(!el||comp.sport==='athletics')return;
+  if(comp.matches.some(isPO)&&!comp.champion&&!el.querySelector('[onclick*="generateNextKnockout"]'))el.insertAdjacentHTML('beforeend','<div class="actions"><button onclick="generateNextKnockout()">Келесі кезеңге өткізу</button></div>');
+  if(comp.champion&&!el.textContent.includes('Жеңімпаз'))el.insertAdjacentHTML('beforeend',`<div class="notice"><b>🏆 Жеңімпаз: ${esc(entry(comp.champion)?.name||'')}</b></div>`);
+};
+const _upr=window.umlProtocolResult;
+window.umlProtocolResult=function(m,i){
+  if(!m.b)return _upr(m,i);const sp=comp.sport,s=comp.scores?.[i]||{},c=calc(m,i);let t;
+  if(sp==='basketball'){const per=[1,2,3,4].map(k=>has(s['p'+k])&&has(s['q'+k])?`${k}-ширек ${s['p'+k]}:${s['q'+k]}`:null).filter(Boolean);
+    t=c.done?`${c.sa}:${c.sb}${per.length?' ('+per.join('; ')+')':''}${has(s.otA)||has(s.otB)?' (қосымша уақытты қоса)':''}`:'Нәтиже енгізілмеген'}
+  else t=_upr(m,i);
+  if(isPO(m)&&c.tied&&tbOf(m,i))t+=' | Жеңімпаз (пенальти/тай-брейк): '+(tbOf(m,i)==='a'?entry(m.a).name:entry(m.b).name);
+  return t;
+};
+
+/* Тоғызқұмалақ (шахматтан басқа) швейцариялық жүйе: қайталанбайтын жұпты толық іздеумен табу */
+const _mnsr=window.makeNextSwissRound;
+window.makeNextSwissRound=function(first){
+  if(!comp||comp.sport==='chess'||comp.sport==='athletics')return _mnsr(first);
+  const total=Math.max(1,Math.min(15,Number($('roundNum')?.value)||7)),cur=comp.swissRound||0;
+  if(cur>0&&comp.matches.some((m,i)=>m.round===cur&&m.b&&!calc(m,i).done))return alert('Алдымен осы турдың барлық нәтижесін енгізіңіз.');
+  if(cur>=total)return alert('Белгіленген барлық тур аяқталды.');
+  const rows=standings(),score=Object.fromEntries(rows.map(x=>[x.id,x.pts])),order=rows.map(x=>x.id);
+  const played=(a,b)=>comp.matches.some(m=>m.b&&((m.a===a&&m.b===b)||(m.a===b&&m.b===a)));
+  const hadBye=new Set(comp.matches.filter(m=>m.bye).map(m=>m.a));
+  let byes=[null];if(order.length%2)byes=[...order].reverse().sort((x,y)=>(hadBye.has(x)?1:0)-(hadBye.has(y)?1:0));
+  let found=null,bye=null;
+  for(const bc of byes){
+    const pool=order.filter(id=>id!==bc);let best=null,bestCost=Infinity;
+    (function dfs(rem,pairs,cost){
+      if(!rem.length){if(cost<bestCost){bestCost=cost;best=pairs.slice()}return}
+      if(cost>=bestCost)return;const a=rem[0];
+      rem.slice(1).filter(b=>!played(a,b)).sort((x,y)=>Math.abs(score[a]-score[x])-Math.abs(score[a]-score[y])).forEach(b=>dfs(rem.filter(z=>z!==a&&z!==b),[...pairs,[a,b]],cost+Math.abs(score[a]-score[b])));
+    })(pool,[],0);
+    if(best){found=best;bye=bc;break}
+  }
+  if(!found)return alert('Қайталанбайтын жұптау табылмады. Тур жасалмады: төреші жұптарды қолмен шешуі керек.');
+  const st='Швейцариялық жүйе';
+  if(bye)mk(cur+1,st,bye,null);
+  found.forEach(([a,b])=>mk(cur+1,st,a,b));
+  comp.swissRound=cur+1;persist();renderAll();
+};
+})();
+
+/* ===== v22: жиналатын турлар және орынның негіздемесі ===== */
+(function(){
+const isPO=m=>String(m.stage||'').startsWith('Плей-офф');
+const calc=(m,i)=>window.__umlCalc(m,i);
+const tbOf=(m,i)=>{const t=(comp.tieBreaks&&comp.tieBreaks[m.id])||comp.scores?.[i]?.penWinner;return t==='a'||t==='b'?t:''};
+const f=v=>String(Math.round(v*100)/100).replace('.',',');
+const fh=v=>v===.5?'½':(v%1===.5?Math.floor(v)+'½':String(v));
+const UI={id:null,ovr:{}};
+const sync=()=>{if(UI.id!==comp.id){UI.id=comp.id;UI.ovr={}}};
+function secs(){
+  const map=new Map();
+  comp.matches.forEach((m,i)=>{const po=isPO(m),k=(po?'P':'G')+(m.round||1);
+    if(!map.has(k))map.set(k,{key:k,po,round:m.round||1,label:po?('Плей-офф · '+(String(m.stage).split(' · ')[1]||'')).replace(/ · $/,''):(m.round||1)+'-тур',idx:[]});
+    map.get(k).idx.push(i)});
+  const arr=[...map.values()].sort((a,b)=>(a.po-b.po)||a.round-b.round);
+  arr.forEach(s=>{const real=s.idx.filter(i=>comp.matches[i].b);s.total=real.length;s.done=real.filter(i=>calc(comp.matches[i],i).complete).length});
+  const cur=arr.find(s=>s.done<s.total)||arr[arr.length-1];arr.forEach(s=>s.cur=s===cur);
+  return arr}
+const isOpen=s=>UI.ovr[s.key]!==undefined?UI.ovr[s.key]:s.cur;
+function sum(s){
+  const ok=s.done===s.total,cls=ok?'rd-done':s.cur?'rd-now':'rd-wait',txt=ok?'аяқталды ✓':(s.cur?'жүріп жатыр · ':'күтуде · ')+s.done+'/'+s.total;
+  return `<summary data-k="${s.key}"><span>${esc(s.label)}</span><span class="rd-badge ${cls}">${txt}</span></summary>`}
+document.addEventListener('click',e=>{const s=e.target.closest&&e.target.closest('summary[data-k]');if(s)UI.ovr[s.dataset.k]=!s.parentElement.open});
+
+const _rf=window.renderFixtures;
+window.renderFixtures=function(){
+  if(!comp)return;if(comp.sport==='athletics')return _rf();
+  sync();const el=$('fixtures');
+  if(!comp.matches.length){el.innerHTML='<p class="muted">Жеребе әлі құрылмаған.</p>';return}
+  const team=isTeamChess(),chess=comp.sport==='chess',SC=comp.system==='groups'||comp.system==='ko';let html='';
+  secs().forEach(s=>{
+    const rows=s.idx.map(i=>{const m=comp.matches[i],c=calc(m,i);
+      let col='—';
+      if(chess&&m.b){if(team){const w=m.teamAWhite!==false;col=`<span class="color-tag ${w?'white-tag':'black-tag'}">${w?'Ақ':'Қара'}</span> / <span class="color-tag ${w?'black-tag':'white-tag'}">${w?'Қара':'Ақ'}</span>`}
+        else if(m.colorA)col=`<span class="color-tag ${m.colorA==='Ақ'?'white-tag':'black-tag'}">${esc(m.colorA)}</span> / <span class="color-tag ${m.colorB==='Ақ'?'white-tag':'black-tag'}">${esc(m.colorB)}</span>`}
+      const res=!m.b?'бос тур':(c.done&&c.sa!=null?fh(c.sa)+' : '+fh(c.sb):'—');
+      return `<tr>${SC?`<td>${esc((m.stage||'').split(' · ').slice(-1)[0]||'')}</td>`:''}<td>${esc(entry(m.a)?.name||'—')}</td><td>${esc(entry(m.b)?.name||'Бос тур')}</td>${chess?`<td>${col}</td>`:''}<td>${res}</td></tr>`}).join('');
+    html+=`<details class="round" ${isOpen(s)?'open':''}>${sum(s)}<table><tr>${SC?'<th>Кезең</th>':''}<th>А жағы</th><th>В жағы</th>${chess?'<th>Түс</th>':''}<th>Есеп</th></tr>${rows}</table></details>`});
+  const total=Math.max(1,Number($('roundNum')?.value)||7);
+  if(comp.system==='swiss'&&comp.swissRound<total)html+='<div class="actions"><button onclick="makeNextSwissRound()">Келесі турдың жеребесін құру</button></div>';
+  if(comp.groups?.length&&!comp.matches.some(isPO))html+='<div class="actions"><button class="alt" onclick="advancePlayoff()">Топтан плей-оффқа өткізу</button></div>';
+  if(comp.matches.some(isPO)&&!comp.champion)html+='<div class="actions"><button onclick="generateNextKnockout()">Келесі кезеңге өткізу</button></div>';
+  if(comp.champion)html+=`<div class="notice"><b>🏆 Жеңімпаз: ${esc(entry(comp.champion)?.name||'')}</b></div>`;
+  el.innerHTML=html;
+};
+const _rr=window.renderResults;
+window.renderResults=function(){
+  _rr();if(!comp)return;sync();
+  const R=$('results'),cards=[...R.children].filter(e=>e.classList&&e.classList.contains('match-card'));
+  if(!cards.length||cards.length!==comp.matches.length)return;
+  secs().forEach(s=>{const d=document.createElement('details');d.className='round';d.open=isOpen(s);d.innerHTML=sum(s);s.idx.forEach(i=>d.appendChild(cards[i]));R.appendChild(d)});
+};
+
+/* ----- Орынның негіздемесі ----- */
+function model(){
+  const sp=comp.sport;
+  if(sp==='chess'&&comp.kind==='team'){
+    const order=Array.isArray(comp.teamTieBreakOrder)?comp.teamTieBreakOrder:['miniPts','bh','boardPts','girlsPts'];
+    const N={miniPts:'өзара кездесу ұпайы',bh:'Бухгольц',boardPts:'тақта ұпайы',girlsPts:'қыздар тақтасының ұпайы',wins:'жеңіс саны'};
+    const L={miniPts:'Өзара кездесу — ұпайы тең командалардың бір-бірімен ойнаған матчтарының ұпайы',bh:'Бухгольц — қарсылас командалардың жинаған матч ұпайларының қосындысы',boardPts:'Тақта ұпайы — төрт тақтада жинаған жалпы ұпай',girlsPts:'Қыздар тақтасы — 4-тақтада (қыздар) жинаған ұпай',wins:'Жеңіс саны'};
+    return {rows:chessTeamStandings(),order,main:'матч ұпайы',name:k=>N[k]||(String(k).startsWith('board')?String(k).slice(5)+'-тақтадағы жеңіс':k),legend:k=>L[k]||'',
+      val:(x,k)=>k==='wins'?x.w:k==='girlsPts'?x.girlsPts:k==='boardPts'?x.boardPts:k==='bh'?x.bh:k==='miniPts'?x.miniPts:(x.boardWins&&x.boardWins[Number(String(k).slice(5))-1])||0}}
+  if(sp==='chess'){
+    const order=comp.individualTieBreakOrder||['bh','sb','wins'];
+    const BH={standard:'Бухгольц',cut1:'Бухгольц (Cut-1)',cut2:'Бухгольц (Cut-2)',median:'Медианды Бухгольц'}[comp.buchholzMode||'standard']||'Бухгольц';
+    const N={bh:BH,sb:'Зоннеборн-Бергер',wins:'жеңіс саны'};
+    const L={bh:BH+' — қарсыластардың жинаған ұпайларының қосындысы',sb:'Зоннеборн-Бергер — жеңген қарсыластардың ұпайы мен тең ойнаған қарсыластар ұпайының жартысы',wins:'Жеңіс саны'};
+    return {rows:chessIndividualStandings(),order,main:'ұпай',name:k=>N[k]||k,legend:k=>L[k]||'',val:(x,k)=>k==='bh'?x.bh:k==='sb'?x.sb:k==='wins'?x.w:0}}
+  const dn=sp==='volleyball'||sp==='tabletennis'?'сет айырмасы':sp==='basketball'||sp==='asyk'||sp==='togyz'?'ұпай айырмасы':'гол айырмасы';
+  return {rows:standings(),order:['diff','for'],main:'ұпай',name:k=>k==='diff'?dn:'жинаған / соққан есеп',legend:k=>k==='diff'?'Айырма — жинаған мен жіберіп алған есептің айырмасы':'Жинаған есеп — барлық матчтағы жалпы есеп',val:(x,k)=>x[k]||0}}
+function rankRows(M,rows){let rank=0;rows.forEach((x,i)=>{if(!i||x.pts!==rows[i-1].pts||M.order.some(k=>M.val(x,k)!==M.val(rows[i-1],k)))rank=i+1;x._r=rank});return rows}
+function why(M,x,y,above){
+  const w=above?'озды':'кем',sg=above?'>':'<';
+  if(x.pts!==y.pts)return `${M.main} бойынша ${w} (${f(x.pts)} ${sg} ${f(y.pts)})`;
+  for(const k of M.order){const a=M.val(x,k),b=M.val(y,k);if(a!==b)return `${M.main} тең (${f(x.pts)}); ${M.name(k)} бойынша ${w} (${f(a)} ${sg} ${f(b)})`}
+  return `${M.main} бойынша да, барлық қосымша көрсеткіш бойынша да тең — орын бөлісіледі`}
+function explain(M,rows){
+  rankRows(M,rows);
+  return rows.map((x,i)=>{
+    if(rows.length<2)return '—';
+    if(i===0){const y=rows[1];return `${y._r}-орындағы «${y.name}» ${comp.kind==='team'?'командасынан':'ойыншысынан'}: ${why(M,x,y,true)}`}
+    const y=rows[i-1];return `${y._r}-орындағы «${y.name}» ${comp.kind==='team'?'командасына':'ойыншысына'} қарағанда: ${why(M,x,y,false)}`})}
+function ruleLine(M){return `<b>Теңдік ережесі:</b> ${M.main[0].toUpperCase()+M.main.slice(1)} → ${M.order.map(k=>M.name(k)).join(' → ')}.`}
+function legend(M){return '<ul>'+M.order.map(k=>M.legend(k)).filter(Boolean).map(t=>`<li>${esc(t)}</li>`).join('')+'</ul>'}
+const _rs=window.renderStandings;
+window.renderStandings=function(){
+  _rs();if(!comp||comp.sport==='athletics')return;
+  const done=comp.matches.some((m,i)=>m.b&&calc(m,i).done);if(!done)return;
+  const M=model(),rows=[...M.rows],ex=explain(M,rows);if(rows.length<2)return;
+  $('standings').insertAdjacentHTML('beforeend',`<details class="why"><summary>Орын қалай анықталды?</summary><div class="wbody"><p>${ruleLine(M)}</p>${legend(M)}<ol>${rows.map((x,i)=>`<li><b>${x._r}-орын · ${esc(x.name)}</b> (${f(x.pts)}) — ${esc(ex[i])}</li>`).join('')}</ol></div></details>`)};
+
+/* ----- Қорытынды хаттама ----- */
+const _dfp=window.downloadFinalProtocol;
+const SYS={swiss:'Швейцариялық жүйе',round:'Айналмалы жүйе',groups:'Топтық кезең + плей-офф',ko:'Олимпиадалық жүйе (плей-офф)'};
+function resText(m,i){
+  if(!m.b)return 'Бос тур';const c=calc(m,i);if(!c.done)return 'Нәтиже енгізілмеген';
+  const A=entry(m.a)?.name||'',B=entry(m.b)?.name||'';
+  if(comp.sport==='chess'){let t;
+    if(comp.kind==='team'){const r=chessTeamMatchScore(m);t=`${fh(c.sa)} : ${fh(c.sb)} (матч ұпайы ${r.matchA}:${r.matchB})`}
+    else t=(c.res>0?`${A} жеңді`:c.res<0?`${B} жеңді`:'Тең ойын')+` (${fh(c.sa)}:${fh(c.sb)})`;
+    const tb=tbOf(m,i);if(isPO(m)&&c.tied&&tb)t+=' · тай-брейк жеңімпазы: '+(tb==='a'?A:B);return t}
+  return umlProtocolResult(m,i)}
+const nm=(m,s)=>{const e=entry(m[s]);const c=comp.sport==='chess'&&!isTeamChess()?m[s==='a'?'colorA':'colorB']:'';return esc(e?.name||'—')+(c?` (${esc(c)})`:'')};
+function stTable(M,rows,title){
+  rankRows(M,rows);const ex=explain(M,rows);
+  return `${title?`<h3>${esc(title)}</h3>`:''}<table><tr><th>Орын</th><th>Қатысушы / команда</th><th>Мектеп</th><th>Ойын</th><th>Ж</th><th>Т</th><th>Ұ</th><th>${M.main[0].toUpperCase()+M.main.slice(1)}</th>${M.order.map(k=>`<th>${esc(M.name(k)[0].toUpperCase()+M.name(k).slice(1))}</th>`).join('')}<th>Орын қалай анықталды</th></tr>${rows.map((x,i)=>`<tr><td><b>${x._r}</b></td><td>${esc(x.name)}</td><td>${esc(x.school)}</td><td>${x.played}</td><td>${x.w}</td><td>${x.d}</td><td>${x.l}</td><td><b>${f(x.pts)}</b></td>${M.order.map(k=>`<td>${f(M.val(x,k))}</td>`).join('')}<td>${esc(ex[i])}</td></tr>`).join('')}</table>`}
+function roundsTable(filter,title){
+  const list=comp.matches.map((m,i)=>[m,i]).filter(([m])=>filter(m));if(!list.length)return '';
+  const rs=[...new Set(list.map(([m])=>m.round))].sort((a,b)=>a-b);
+  return `<h3>${esc(title)}</h3>`+rs.map(r=>`<p><b>${r}-тур</b></p><table><tr><th>Кезең</th><th>А жағы</th><th>В жағы</th><th>Нәтиже</th></tr>${list.filter(([m])=>m.round===r).map(([m,i])=>`<tr><td>${esc((m.stage||'').split(' · ').slice(-1)[0]||'')}</td><td>${nm(m,'a')}</td><td>${m.b?nm(m,'b'):'Бос тур'}</td><td>${esc(resText(m,i))}</td></tr>`).join('')}</table>`).join('')}
+function playoffHtml(){
+  const list=comp.matches.map((m,i)=>[m,i]).filter(([m])=>isPO(m));if(!list.length)return '';
+  const rs=[...new Set(list.map(([m])=>m.round))].sort((a,b)=>a-b);
+  return '<h3>Плей-офф</h3>'+rs.map(r=>{const part=list.filter(([m])=>m.round===r);return `<p><b>${esc(String(part[0][0].stage).split(' · ')[1]||'Плей-офф')}</b></p><table><tr><th>А жағы</th><th>В жағы</th><th>Нәтиже</th><th>Өткен / жеңген</th></tr>${part.map(([m,i])=>{const c=calc(m,i);let w='—';if(!m.b)w=entry(m.a)?.name||'';else if(c.complete)w=c.res>0?entry(m.a)?.name:c.res<0?entry(m.b)?.name:(tbOf(m,i)==='a'?entry(m.a)?.name:entry(m.b)?.name);return `<tr><td>${nm(m,'a')}</td><td>${m.b?nm(m,'b'):'Бос тур'}</td><td>${esc(resText(m,i))}</td><td><b>${esc(w||'—')}</b></td></tr>`}).join('')}</table>`}).join('')}
+window.downloadFinalProtocol=function(){
+  if(!comp)return alert('Алдымен жарысты ашыңыз.');
+  if(comp.sport==='athletics')return _dfp();
+  const pending=comp.matches.filter((m,i)=>m.b&&!calc(m,i).complete);
+  if(pending.length&&!confirm(`${pending.length} матчтың нәтижесі аяқталмаған. Аралық хаттаманы шығарасыз ба?`))return;
+  const M=model();let html=`<p><b>Кезең:</b> ${esc(comp.level||'')} · <b>Спорт түрі:</b> ${esc(comp.sportName||comp.sport)} · <b>Жас тобы:</b> ${esc(comp.age||'')} · <b>Санат:</b> ${esc(comp.gender||'')} · <b>Жүйе:</b> ${esc(SYS[comp.system]||comp.system||'')}</p>`;
+  if(comp.champion)html+=`<h3>🏆 Жеңімпаз: ${esc(entry(comp.champion)?.name||'')}</h3>`;
+  const any=comp.matches.some((m,i)=>m.b&&calc(m,i).done);
+  if(comp.system==='groups'&&comp.groups?.length){
+    comp.groups.forEach(g=>{const rows=M.rows.filter(x=>g.ids.includes(x.id)).map(x=>x);html+=stTable(M,rows,'Топ '+g.name)});
+    html+=`<p>${ruleLine(M)}</p>`+legend(M)+playoffHtml()+roundsTable(m=>!isPO(m),'Топтық кезеңнің нәтижелері');
+  }else if(comp.system==='ko'){html+=playoffHtml()}
+  else{
+    if(any)html+=stTable(M,[...M.rows],'Қорытынды кесте')+`<p>${ruleLine(M)}</p>`+legend(M);
+    html+=roundsTable(()=>true,'Турлар бойынша нәтижелер');
+  }
+  const title=comp.sport==='chess'?'АҚБОЗАТ · ҚОРЫТЫНДЫ ХАТТАМА':'ҚОРЫТЫНДЫ ХАТТАМА';
+  word(title,html,comp.sport==='chess'?'UML_chess_final.doc':'UML_korytyndy_hattama.doc');
+};
+
+/* Мұрағат тізімінде жас санаты мен жыныс көрінеді — бірнеше жарыс шатаспауы үшін */
+window.renderArchive=function(){
+  $('archive').innerHTML=archive.length?archive.map(x=>{const extra=[x.age&&!String(x.cname).includes(x.age)?x.age:'',x.gender&&!String(x.cname).includes(x.gender)?x.gender:''].filter(Boolean);
+  return `<div class="arch-row"><div><b>${esc(x.cname)}</b><span class="muted">${[esc(x.level),esc(x.sportName),...extra.map(esc),x.entries.length+' қатысушы'].join(' · ')}${x.champion?' · аяқталған':''}</span></div><div class="actions"><button onclick="openCompetition(${x.id})">Ашу</button><button class="danger" onclick="deleteCompetition(${x.id})">Өшіру</button></div></div>`}).join(''):'<p class="muted">Әзірге сақталған жарыс жоқ. Жоғарыдан деңгейді таңдап, жаңа жарыс ашыңыз.</p>';
+};
+
+/* v24: ертеңгі жарысқа 6 санаттың алдын ала ашылуы (бір рет, қайталанбайды) */
+(function(){
+  const base={level:'Мектепішілік',season:'2026–2027 оқу жылы',country:'Қазақстан Республикасы',region:'Маңғыстау облысы',district:'Түпқараған ауданы',organizer:'Ақшұқыр мектеп-лицейі',sport:'chess',sportName:'Шахмат «Ақбозат»',kind:'individual',system:'swiss',date:'2026-11-23',entries:[],matches:[],scores:{},athleticsEvent:'60m',athleticsResults:{},chessTieRule:'regulation'};
+  const ages=['5–6 сынып','7–8 сынып','9–11 сынып'],gs=['Ұлдар','Қыздар'];let n=0,add=0;
+  ages.forEach(a=>gs.forEach(g=>{n++;const id=202611230+n;
+    if(archive.some(x=>x.id===id)||localStorage.getItem('uml_seed_'+id)==='deleted')return;
+    archive.push({...base,id,cname:'Ақбоз ат · '+a+' · '+g,age:a,gender:g,entries:[],matches:[],scores:{},athleticsResults:{}});add++}));
+  if(add)persist();
+  const _del=window.deleteCompetition;
+  window.deleteCompetition=function(id){if(String(id).startsWith('20261123'))try{localStorage.setItem('uml_seed_'+id,'deleted')}catch(e){}return _del(id)};
+})();
+})();
+</script>
+</body></html>
