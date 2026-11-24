@@ -1,4 +1,4 @@
-<!doctype html><html lang="kk"><head><meta charset="utf-8"><meta name="theme-color" content="#F3F7FB"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Ұлттық мектеп лигасы DIGITAL v26</title>
+<!doctype html><html lang="kk"><head><meta charset="utf-8"><meta name="theme-color" content="#F3F7FB"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Ұлттық мектеп лигасы DIGITAL v28</title>
 <style>
 :root{color-scheme:light;
 --canvas:#F3F7FB;--surface:#fff;--ink:#12263A;--ink-2:#2A425A;--muted:#52667A;--line:#DCE5EE;--line-2:#C3D1DE;
@@ -1108,5 +1108,630 @@ window.renderArchive=function(){
     }
   });
 })();
+
+
+/* ===== v28: ҰМЛ 2026-27 ережесіне сай тіркеу (жыныс құлпы, құрам, өңдеу, кеш қосылу) ===== */
+(function(){
+const g=id=>document.getElementById(id);
+const nrm=s=>String(s??'').trim().toLocaleLowerCase('kk').replace(/\s+/g,' ');
+const uid3=()=>'u3_'+(crypto.randomUUID?.()||Date.now().toString(36)+Math.random().toString(36).slice(2));
+const isIntra=()=>comp&&comp.level==='Мектепішілік';
+const FBMIN={'5–6 сынып':8,'7–8 сынып':10,'9–11 сынып':13};
+/* Ереже: мандаттық құрам (ҰМЛ 2026-27) */
+const REG={
+  basketball:{mode:'sep',min:8,max:12,coach:2},
+  volleyball:{mode:'sep',min:8,max:12,coach:2},
+  handball:{mode:'sep',min:8,max:12,coach:2},
+  football:{mode:'sep',min:null,max:15,coach:2},
+  futsal:{mode:'sep',min:8,max:12,coach:2},
+  asyk:{mode:'sep',min:3,max:3,exact:true,coach:2},
+  athletics:{mode:'sep',min:5,max:5,coach:2},
+  chess:{mode:'mixed',boys:3,girls:1},
+  togyz:{mode:'mixed',boys:2,girls:2},
+  tabletennis:{mode:'mixed',boys:2,girls:1}
+};
+window.UML_REG=REG;
+const reg=()=>REG[comp.sport]||{mode:'sep',min:1,max:99};
+const minFor=()=>{const r=reg();return r.min??(FBMIN[comp.age]||8)};
+/* Жарыс жынысы: Аралас тек аралас командалық (шахмат, тоғызқұмалақ, үстел теннисі) */
+function genderOptions(sportId,kind){
+  const r=REG[sportId]||{};
+  if(kind==='team'&&r.mode==='mixed')return ['Аралас'];
+  return ['Ұлдар','Қыздар'];
+}
+function refreshGender(){
+  const sel=g('gender');if(!sel||!g('sport'))return;
+  const prev=sel.value,opts=genderOptions(g('sport').value,g('kind')?.value||'team');
+  sel.innerHTML=opts.map(o=>`<option>${o}</option>`).join('');
+  sel.value=opts.includes(prev)?prev:opts[0];
+  sel.disabled=opts.length===1;
+  let hint=g('genderHint');
+  if(!hint){hint=document.createElement('small');hint.id='genderHint';hint.className='muted';sel.parentElement.appendChild(hint)}
+  const s=g('sport').value;
+  hint.textContent=opts.length===1?'Аралас команда: ереже бойынша ұлдар мен қыздар бірге ойнайды.':(s==='asyk'?'Ұлдар — асық ату, қыздар — бес асық. Бөлек жарыс.':'Ұлдар мен қыздар бөлек ойнайды: бір жарысқа тек таңдалған жыныс тіркеледі.');
+}
+const _us=window.updateSport;
+window.updateSport=function(){_us();refreshGender()};
+document.addEventListener('change',e=>{if(e.target&&(e.target.id==='sport'||e.target.id==='kind'))setTimeout(refreshGender,0)});
+setTimeout(refreshGender,0);
+const _cc=window.createCompetition;
+window.createCompetition=function(){
+  refreshGender();
+  const sp=g('sport').value,age=g('age').value,r=REG[sp];
+  if(sp==='futsal'&&age!=='9–11 сынып')return alert('Футзал ереже бойынша тек 9–11 сыныпқа арналған.');
+  return _cc();
+};
+
+/* ===== Тіркеу формасы ===== */
+const lastForm={};
+window.entryForm=function(){
+  if(!comp)return;
+  const f=g('entryForm');if(!f)return;
+  const ed=comp.editId?comp.entries.find(e=>e.id===comp.editId):null;
+  const r=reg(),gen=comp.gender||'Ұлдар';
+  const v=k=>ed?(ed[k]??''):'';
+  const sch=ed?ed.school:(comp.lastSchool||(isIntra()?(comp.organizer||''):''));
+  let html='<div class="notice" id="genderBanner"><b>Санат: '+esc(gen)+'</b> · '+(comp.age||'')+' · '+(
+    comp.kind==='team'
+      ?(r.mode==='mixed'?'Аралас команда: '+r.boys+' ұл + '+r.girls+' қыз (ұл орнына қыз ойнауға болмайды)':'Тек '+(gen==='Қыздар'?'қыз балалар':'ұл балалар')+' тіркеледі')
+      :(gen==='Аралас'?'Жынысы әр қатысушыға таңдалады':'Тек '+(gen==='Қыздар'?'қыз балалар':'ұл балалар')+' тіркеледі'))+'</div>';
+  html+='<div class="grid"><div><label>Мектеп / ұйым</label><input id="school" autocomplete="off" value="'+esc(sch)+'"></div>';
+  if(comp.kind==='team'){
+    html+='<div><label>Команда атауы</label><input id="entryName" autocomplete="off" value="'+esc(v('name'))+'"></div>';
+    html+='<div><label>Жаттықтырушы / дене тәрбиесі мұғалімі</label><input id="coach" autocomplete="off" value="'+esc(v('coach'))+'"></div></div>';
+    if(r.mode==='mixed'){
+      const bs=ed?(ed.boys||[]):[],gs=ed?(ed.girls||[]):[];
+      html+='<div class="grid">';
+      for(let i=0;i<r.boys;i++)html+='<div><label>'+(i+1)+'-ұл бала (аты-жөні)</label><input id="pb'+i+'" autocomplete="off" value="'+esc(bs[i]||'')+'"></div>';
+      for(let i=0;i<r.girls;i++)html+='<div><label>'+(r.girls>1?(i+1)+'-қыз бала':'Қыз бала')+' (аты-жөні)</label><input id="pg'+i+'" autocomplete="off" value="'+esc(gs[i]||'')+'"></div>';
+      html+='</div>';
+    }else{
+      const pl=ed?(ed.players||[...(ed.boys||[]),...(ed.girls||[])]):[];
+      html+='<div><label>Ойыншылар (әр жолға бір оқушы)</label><textarea id="players" rows="6" autocomplete="off" placeholder="Әр жолға бір оқушы:&#10;Асан Бекенов&#10;Нұрлан Сәрсен">'+esc(pl.join('\n'))+'</textarea><small class="muted" id="plCount"></small></div>';
+    }
+  }else{
+    html+='<div><label>Спортшының аты-жөні</label><input id="entryName" autocomplete="off" value="'+esc(v('name'))+'"></div>';
+    html+='<div><label>Сыныбы</label><input id="className" autocomplete="off" value="'+esc(v('className'))+'"></div>';
+    if(!isIntra())html+='<div><label>Туған жылы</label><input id="birth" type="number" value="'+esc(v('birth'))+'"></div>';
+    if(comp.gender==='Аралас')html+='<div><label>Жынысы</label><select id="sex"><option'+(v('gender')==='Ұлдар'?' selected':'')+'>Ұлдар</option><option'+(v('gender')==='Қыздар'?' selected':'')+'>Қыздар</option></select></div>';
+    if(comp.sport==='athletics')html+='<div><label>Команда (мектеп / сынып)</label><input id="teamKey" autocomplete="off" value="'+esc(ed?(ed.team||''):'')+'" placeholder="бос қалса — мектеп аты"></div>';
+    html+='</div>';
+  }
+  if(ed)html+='<div class="notice">✏️ Өңдеу режимі: «'+esc(ed.name)+'» · <button class="alt" type="button" onclick="cancelEdit()">Болдырмау</button></div>';
+  f.innerHTML=html;
+  const ab=document.querySelector('#entryForm')?.parentElement?.querySelector('.actions button');
+  if(ab)ab.textContent=ed?'Өзгерісті сақтау':'Тіркеу';
+  updateCount();
+  const pl=g('players');if(pl)pl.addEventListener('input',updateCount);
+  const nm=g('entryName');
+  if(nm){if(window.__umlFocus||ed){nm.focus();window.__umlFocus=false}}
+};
+function listPlayers(){return String(g('players')?.value||'').split(/[\n;,]+/).map(x=>x.trim()).filter(Boolean)}
+function updateCount(){
+  const el=g('plCount');if(!el||!comp)return;
+  const r=reg(),n=listPlayers().length,mn=minFor();
+  const ok=n>=mn&&n<=r.max;
+  el.style.color=ok?'#0a7a3d':'#b45309';
+  el.textContent='Енгізілді: '+n+' · '+(r.exact?'дәл '+r.max:('керек: '+mn+'–'+r.max))+(ok?' ✓':'')+(isIntra()&&n<mn?' (мектепішілікте рұқсат етіледі)':'');
+}
+window.cancelEdit=function(){if(!comp)return;comp.editId=null;entryForm()};
+window.editEntry=function(i){
+  const e=comp?.entries?.[i];if(!e)return;
+  comp.editId=e.id;entryForm();
+  g('entryForm').scrollIntoView({behavior:'smooth',block:'center'});
+};
+
+/* ===== Қосу / өзгерту ===== */
+window.addEntry=function(){
+  if(!comp)return;
+  const r=reg(),gen=comp.gender||'Ұлдар';
+  const school=g('school')?.value.trim()||'',name=g('entryName')?.value.trim()||'';
+  if(!school||!name)return alert('Мектеп/ұйым және команда/қатысушы атауын толтырыңыз.');
+  const edId=comp.editId,ed=edId?comp.entries.find(e=>e.id===edId):null;
+  const others=comp.entries.filter(e=>e!==ed);
+  if(others.some(e=>nrm(e.name)===nrm(name)&&nrm(e.school)===nrm(school)))return alert('Осы мектептің мұндай атаудағы '+(comp.kind==='team'?'командасы':'қатысушысы')+' тіркелген.');
+  const e=ed||{id:uid3(),school,name};
+  e.school=school;e.name=name;
+  if(comp.kind==='team'){
+    e.coach=g('coach')?.value.trim()||'';
+    let players;
+    if(r.mode==='mixed'){
+      const bs=[],gs=[];
+      for(let i=0;i<r.boys;i++)bs.push((g('pb'+i)?.value||'').trim());
+      for(let i=0;i<r.girls;i++)gs.push((g('pg'+i)?.value||'').trim());
+      if(bs.some(x=>!x)||gs.some(x=>!x))return alert('Құрам толық емес: '+r.boys+' ұл және '+r.girls+' қыздың аты-жөнін жазыңыз. Ереже бойынша құрам толық болмаса команда жарысқа жіберілмейді.');
+      players=[...bs,...gs];
+      if(new Set(players.map(nrm)).size!==players.length)return alert('Команда құрамында бір ойыншы қайталанып тұр.');
+      e.boys=bs;e.girls=gs;e.players=players;
+      if(comp.sport==='chess')e.roster=[...bs,...gs];
+    }else{
+      players=listPlayers();
+      if(new Set(players.map(nrm)).size!==players.length)return alert('Команда құрамында бір ойыншы қайталанып тұр.');
+      const mn=minFor();
+      if(players.length>r.max)return alert('Ережеде ең көбі '+r.max+' ойыншыға рұқсат етіледі. Енгізілді: '+players.length+'.');
+      if(r.exact&&players.length!==r.max)return alert('Бұл спорт түрінде құрам дәл '+r.max+' оқушыдан тұрады. Енгізілді: '+players.length+'.');
+      if(players.length<mn){
+        if(!isIntra())return alert('Ереже бойынша құрам кемінде '+mn+' ойыншыдан тұруы керек (қазір '+players.length+'). Құрамы толық емес команда жарысқа жіберілмейді.');
+        if(!confirm('Ережеде кемінде '+mn+' ойыншы керек, ал қазір '+players.length+'. Мектепішілік жарыс болғандықтан сақтауға болады. Сақтау керек пе?'))return;
+      }
+      e.players=players;
+      if(gen==='Қыздар'){e.girls=players;e.boys=[]}else{e.boys=players;e.girls=[]}
+    }
+    e.gender=r.mode==='mixed'?'Аралас':gen;
+    const roster=[...(e.players||[])].map(nrm);
+    const existing=others.flatMap(x=>x.players||[...(x.boys||[]),...(x.girls||[])]).map(nrm);
+    const dup=roster.find(x=>existing.includes(x));
+    if(dup)return alert('Бұл спортшы басқа командаға тіркелген: '+dup);
+  }else{
+    e.className=g('className')?.value.trim()||'';
+    if(!e.className)return alert('Оқушының сыныбын енгізіңіз.');
+    if(!isIntra()){
+      const b=g('birth')?.value||'';
+      if(!/^\d{4}$/.test(String(b)))return alert('Туған жылын 4 санмен енгізіңіз.');
+      if(Number(b)<1990||Number(b)>new Date().getFullYear())return alert('Туған жыл дұрыс емес.');
+      e.birth=b;
+    }else e.birth=e.birth||'';
+    e.gender=comp.gender==='Аралас'?(g('sex')?.value||'Ұлдар'):comp.gender;
+    if(comp.sport==='athletics')e.team=(g('teamKey')?.value.trim())||(isIntra()?e.className:school);
+    if(others.some(x=>nrm(x.name)===nrm(name)&&nrm(x.className)===nrm(e.className)))return alert('Осындай аты-жөні мен сыныбы бар қатысушы тіркелген. Қайталануды тексеріңіз.');
+  }
+  const late=!ed&&(comp.matches||[]).length>0;
+  if(!ed)comp.entries.push(e);
+  comp.editId=null;
+  if(comp.level&&isIntra()||true)comp.lastSchool=school;
+  let msg='';
+  if(late)msg=integrateLate(e);
+  window.__lastAdded=(ed?'Өзгертілді: ':'Тіркелді: ')+e.name+(msg?' · '+msg:'');
+  persist();window.__umlFocus=true;renderAll();entryForm();
+  const st=g('lastAdded');if(st)st.textContent=window.__lastAdded;
+};
+
+/* ===== Жеребеден кейін кеш келген қатысушыны қосу (бұрынғы жеребе сақталады) ===== */
+function mkm(round,stage,a,b,extra){
+  const m={id:uid3(),round,stage,a,b:b||null,bye:!b,...(extra||{})};
+  if(comp.sport==='chess'&&b){
+    if(comp.kind==='team')m.teamAWhite=Math.random()<.5;
+    else{m.colorA='Ақ';m.colorB='Қара'}
+  }
+  comp.matches.push(m);return m;
+}
+const done3=(m,i)=>{try{return window.__umlCalc(m,i).done}catch(_){return false}};
+function integrateLate(e){
+  if(comp.sport==='athletics')return '';
+  const ms=comp.matches,sys=comp.system;
+  const isPOm=m=>String(m.stage||'').startsWith('Плей-офф');
+  if(sys==='swiss'){
+    const cur=Math.max(0,...ms.map(m=>m.round||0));
+    const idx=ms.map((m,i)=>[m,i]).filter(([m])=>m.round===cur);
+    const bye=idx.find(([m,i])=>m.bye&&!m.b);
+    const noRes=idx.every(([m,i])=>!m.b||!done3(m,i));
+    if(bye&&noRes){const m=bye[0];m.b=e.id;m.bye=false;
+      if(comp.sport==='chess'){if(comp.kind==='team')m.teamAWhite=Math.random()<.5;else{m.colorA='Ақ';m.colorB='Қара'}}
+      return cur+'-турда бос тұрған қатысушымен жұптастырылды';}
+    const st=(idx[0]&&idx[0][0].stage)||'Швейцариялық жүйе';
+    mkm(cur||1,st,e.id,null);
+    return (cur||1)+'-турда бос тур берілді, келесі турдан бастап жұптасады';
+  }
+  if(sys==='groups'){
+    if(ms.some(isPOm)){e.unseeded=true;return 'ЕСКЕРТУ: плей-офф басталған, енді жеребеге қосылмайды';}
+    const gs=comp.groups||[];if(!gs.length){e.unseeded=true;return '';}
+    const small=[...gs].sort((a,b)=>a.ids.length-b.ids.length)[0];
+    const mr=Math.max(0,...ms.filter(m=>m.group===small.name).map(m=>m.round||0));
+    small.ids.slice().forEach((id,k)=>mkm(mr+1+k,'Топтық кезең · '+small.name,e.id,id,{group:small.name}));
+    small.ids.push(e.id);
+    return small.name+' тобына қосылды, бұрынғы кесте мен нәтижелер сақталды';
+  }
+  if(sys==='round'){
+    const mr=Math.max(0,...ms.map(m=>m.round||0));
+    comp.entries.filter(x=>x.id!==e.id).forEach((o,k)=>mkm(mr+1+k,'Айналмалы жүйе',e.id,o.id));
+    return 'барлық қатысушымен қосымша ойындар кестеге қосылды';
+  }
+  if(sys==='ko'){
+    const r1=ms.filter(m=>m.round===1);
+    const slot=r1.find(m=>!m.b&&(!isPOm(m)||true));
+    const anyRes=ms.some((m,i)=>m.b&&done3(m,i));
+    if(slot&&!anyRes&&(comp.playoffRound||1)===1){slot.b=e.id;slot.bye=false;return 'бос орынға қойылды';}
+    e.unseeded=true;return 'ЕСКЕРТУ: жеребеде бос орын жоқ';
+  }
+  return '';
+}
+window.umlIntegrateLate=integrateLate;
+
+/* ===== Тізім: әдепкіде жасырын, батырмамен ашылады ===== */
+window.__showEntries=window.__showEntries||{};
+window.toggleEntries=function(){if(!comp)return;window.__showEntries[comp.id]=!window.__showEntries[comp.id];renderEntries()};
+window.renderEntries=function(){
+  if(!comp)return;const el=g('entries');if(!el)return;
+  const open=!!window.__showEntries[comp.id],n=comp.entries.length;
+  const r=reg();
+  let tot='<div class="notice" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><b>Тіркелген: '+n+(comp.kind==='team'?' команда':' қатысушы')+'</b><span class="muted" id="lastAdded">'+esc(window.__lastAdded||'')+'</span><button type="button" class="alt" onclick="toggleEntries()" style="margin-left:auto">'+(open?'Тізімді жасыру':'Тізімді көрсету')+'</button></div>';
+  if(!open){el.innerHTML=tot;return}
+  const rows=comp.entries.map((e,i)=>{
+    const comp_=comp.kind==='team'?esc((e.players||[...(e.boys||[]),...(e.girls||[])]).join(', '))+(e.coach?'<br><small>Жаттықтырушы: '+esc(e.coach)+'</small>':''):esc((e.className||'')+(e.gender&&comp.gender==='Аралас'?' · '+e.gender:''));
+    const warn=e.unseeded?' <b style="color:#b45309">жеребеге қосылмаған</b>':'';
+    return '<tr><td>'+(i+1)+'</td><td>'+esc(e.school)+'</td><td>'+esc(e.name)+warn+'</td><td>'+comp_+'</td><td style="white-space:nowrap"><button type="button" class="alt" onclick="editEntry('+i+')">Өзгерту</button> <button type="button" class="danger" onclick="removeEntry('+i+')">Өшіру</button></td></tr>';
+  }).join('');
+  el.innerHTML=tot+'<div style="overflow-x:auto"><table><tr><th>№</th><th>Мектеп / ұйым</th><th>Команда / қатысушы</th><th>Құрамы</th><th></th></tr>'+rows+'</table></div>';
+};
+/* Қатысушыны өшіргенде басқа матчтар сақталады (v14 мінезі), тек өңдеу режимін тазалау */
+const _re=window.removeEntry;
+window.removeEntry=function(i){if(comp)comp.editId=null;_re(i);try{entryForm()}catch(_){}};
+const _oc=window.openCompetition;
+window.openCompetition=function(id){_oc(id);if(comp){comp.editId=null;try{entryForm()}catch(_){}}};
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&e.target&&e.target.closest&&e.target.closest('#entryForm')&&e.target.tagName==='INPUT'){e.preventDefault();window.addEntry()}
+  if(e.key==='Escape'&&comp&&comp.editId&&e.target.closest&&e.target.closest('#entryForm'))window.cancelEdit();
+},true);
+})();
+
+
+/* ===== v28 · ҰМЛ ережесіне сай ойын қозғалтқышы (шахмат пен жеңіл атлетикадан басқа спорттар) ===== */
+(function(){
+'use strict';
+const g=id=>document.getElementById(id);
+const E=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const own=()=>comp&&comp.sport!=='chess'&&comp.sport!=='athletics';
+const uid=()=>'m'+Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const KIND={football:'goals',futsal:'goals',handball:'goals',basketball:'goals',volleyball:'sets',tabletennis:'tt',asyk:'asyk',togyz:'togyz'};
+const isPO=m=>String(m.stage||'').startsWith('Плей-офф');
+const isFinalStage=m=>/Финал/.test(m.stage||'')&&!/Жартылай|1\/4/.test(m.stage||'');
+const num=v=>(v===''||v===undefined||v===null||isNaN(Number(v)))?null:Number(v);
+const ent=id=>comp.entries.find(e=>e.id===id);
+const nm=id=>id?(ent(id)?.name||'?'):'—';
+const TT_PAIRS=['A–X','B–Y','C–Z (қыздар)','A–Y','B–X'];
+
+/* ---------- Бір ойынның нәтижесі ---------- */
+function calc(m,i){
+  const s=(comp.scores&&comp.scores[i])||{},k=KIND[comp.sport]||'goals';
+  const R={done:false,w:0,pa:0,pb:0,ga:0,gb:0,sa:0,sb:0,note:''};
+  if(!m.b){R.done=true;R.bye=true;return R}
+  if(k==='goals'){
+    let a=num(s.a),b=num(s.b);
+    if(a===null&&s.p1!==undefined){a=(+s.p1||0)+(+s.p2||0)+(+s.otA||0);b=(+s.q1||0)+(+s.q2||0)+(+s.otB||0)}
+    if(a===null||b===null)return R;
+    R.ga=a;R.gb=b;
+    if(a===b){
+      if(comp.sport==='basketball'){R.note='Баскетболда тең есеп болмайды (қосымша уақыт)';return R}
+      if(isPO(m)){
+        if(s.penWinner!=='a'&&s.penWinner!=='b'){R.note='Плей-оффта тең болса — пенальти/қосымша жеңімпазын таңдаңыз';return R}
+        R.w=s.penWinner==='a'?1:-1;R.done=true;
+        R.pa=R.w>0?1:0;R.pb=R.w<0?1:0;return R;
+      }
+      R.w=0;R.done=true;R.pa=R.pb=1;return R;
+    }
+    R.w=a>b?1:-1;R.done=true;
+    const W=comp.sport==='handball'?2:comp.sport==='basketball'?2:3,L=comp.sport==='basketball'?1:0;
+    R.pa=R.w>0?W:L;R.pb=R.w<0?W:L;return R;
+  }
+  if(k==='sets'){
+    const need=(isPO(m)&&isFinalStage(m))?3:2,sets=(s.sets||[]);
+    let wa=0,wb=0,pa=0,pb=0;
+    for(const z of sets){const a=num(z&&z.a),b=num(z&&z.b);if(a===null||b===null||a===b)continue;pa+=a;pb+=b;if(a>b)wa++;else wb++;if(wa===need||wb===need)break}
+    R.sa=wa;R.sb=wb;R.ga=pa;R.gb=pb;
+    if(wa<need&&wb<need)return R;
+    R.done=true;R.w=wa>wb?1:-1;
+    if(wa>wb){R.pa=wb===0?3:2;R.pb=wb===0?0:1}else{R.pb=wa===0?3:2;R.pa=wa===0?0:1}
+    if(need===3){R.pa=R.w>0?1:0;R.pb=R.w<0?1:0}
+    return R;
+  }
+  if(k==='tt'){
+    const r=s.r||[];let wa=0,wb=0;
+    for(let j=0;j<5;j++){if(r[j]==='a')wa++;else if(r[j]==='b')wb++;if(wa===3||wb===3)break}
+    R.sa=wa;R.sb=wb;if(wa<3&&wb<3)return R;
+    R.done=true;R.w=wa>wb?1:-1;R.pa=R.w>0?1:0;R.pb=R.w<0?1:0;return R;
+  }
+  if(k==='asyk'){
+    const a=num(s.a),b=num(s.b);
+    if(a===null||b===null||a<0||b<0||a+b!==3)return R;
+    R.sa=a;R.sb=b;R.ga=num(s.ga)||0;R.gb=num(s.gb)||0;R.done=true;R.w=a>b?1:-1;
+    R.pa=R.w>0?1:0;R.pb=R.w<0?1:0;return R;
+  }
+  if(k==='togyz'){
+    const bd=s.b||[];if(bd.length<4||bd.slice(0,4).some(x=>!x))return R;
+    let a=0,b=0;bd.slice(0,4).forEach(x=>{if(x==='a')a++;else if(x==='b')b++;else{a+=.5;b+=.5}});
+    R.sa=a;R.sb=b;R.done=true;R.w=a>b?1:a<b?-1:0;
+    R.pa=a>b?2:a===b?1:0;R.pb=b>a?2:a===b?1:0;return R;
+  }
+  return R;
+}
+window.__umlCalc=calc;
+window.normalizedMatch=function(m,i){if(!own())return null;const r=calc(m,i);return r.done?r.w:null};
+window.scoreComplete=function(m,s){const i=comp.matches.indexOf(m);return i<0?false:calc(m,i).done};
+window.scoreSummary=function(m,i){const r=calc(m,i);return {complete:r.done,a:r.sa||r.ga,b:r.sb||r.gb,sa:r.sa,sb:r.sb,r}};
+
+/* ---------- Кесте ---------- */
+function tableOf(ids,ms){ // ms: [[m,i]]
+  const rows=ids.map(id=>({id,name:nm(id),school:ent(id)?.school||'',played:0,w:0,d:0,l:0,pts:0,gf:0,ga:0,sf:0,sa:0,ptsF:0,ptsA:0,e:ent(id)}));
+  const by={};rows.forEach(r=>by[r.id]=r);
+  for(const [m,i] of ms){
+    if(!m.b){if(by[m.a]){by[m.a].pts+=(comp.sport==='togyz'||comp.sport==='asyk')?1:0;by[m.a].bye=1}continue}
+    const c=calc(m,i);if(!c.done)continue;const x=by[m.a],y=by[m.b];if(!x||!y)continue;
+    x.played++;y.played++;x.pts+=c.pa;y.pts+=c.pb;x.gf+=c.ga;x.ga+=c.gb;y.gf+=c.gb;y.ga+=c.ga;x.sf+=c.sa;x.sa+=c.sb;y.sf+=c.sb;y.sa+=c.sa;
+    if(c.w>0){x.w++;y.l++}else if(c.w<0){y.w++;x.l++}else{x.d++;y.d++}
+  }
+  rows.forEach(r=>{r.diff=r.gf-r.ga;r.sdiff=r.sf-r.sa});
+  return rank(rows,ms);
+}
+function h2h(ids,ms){const sub=ids.map(id=>({id,pts:0,diff:0,gf:0,sd:0}));const by={};sub.forEach(r=>by[r.id]=r);
+  for(const [m,i] of ms){if(!m.b||!by[m.a]||!by[m.b])continue;const c=calc(m,i);if(!c.done)continue;by[m.a].pts+=c.pa;by[m.b].pts+=c.pb;by[m.a].diff+=c.ga-c.gb;by[m.b].diff+=c.gb-c.ga;by[m.a].gf+=c.ga;by[m.b].gf+=c.gb;by[m.a].sd+=c.sa-c.sb;by[m.b].sd+=c.sb-c.sa}
+  return by}
+function keyOf(r,H,sport){ // ұпайы тең топ ішіндегі салыстыру кілті
+  const h=H[r.id]||{pts:0,diff:0,gf:0,sd:0};
+  if(sport==='football'||sport==='futsal')return [r.w,h.pts,h.diff,h.gf,r.diff,r.gf];
+  if(sport==='volleyball')return [r.w,h.pts,r.sdiff,r.gf-r.ga,r.gf];
+  if(sport==='tabletennis')return [h.pts,r.sdiff,r.sf];
+  if(sport==='asyk')return [h.pts,r.sdiff,r.gf-r.ga];
+  if(sport==='togyz')return [h.pts,r.sdiff,r.sf];
+  return [h.pts,r.diff,r.diff,r.gf];
+}
+function rank(rows,ms){
+  const sport=comp.sport;
+  rows.sort((a,b)=>b.pts-a.pts);
+  const out=[];let i=0;
+  while(i<rows.length){
+    let j=i;while(j<rows.length&&rows[j].pts===rows[i].pts)j++;
+    let blk=rows.slice(i,j);
+    if(blk.length>1){
+      let H=h2h(blk.map(x=>x.id),ms);
+      blk.sort((a,b)=>{const ka=keyOf(a,H,sport),kb=keyOf(b,H,sport);for(let t=0;t<ka.length;t++)if(ka[t]!==kb[t])return kb[t]-ka[t];return 0});
+      for(let t=0;t<blk.length;t++){const ka=keyOf(blk[t],H,sport);blk[t].lot=blk.some((o,u)=>u!==t&&keyOf(o,H,sport).join()===ka.join())}
+    }
+    out.push(...blk);i=j;
+  }
+  out.forEach((r,t)=>r.rank=t+1);
+  return out;
+}
+const idx=()=>comp.matches.map((m,i)=>[m,i]);
+const groupMs=gn=>idx().filter(([m])=>!isPO(m)&&(gn?m.group===gn:true));
+
+function standingsAll(){
+  const ids=comp.entries.map(e=>e.id);
+  if(comp.finalRanking&&comp.finalRanking.length){
+    const base=tableOf(ids,groupMs()),by={};base.forEach(r=>by[r.id]=r);
+    const seen=new Set(),out=[];
+    comp.finalRanking.forEach(id=>{if(by[id]&&!seen.has(id)){seen.add(id);out.push({...by[id]})}});
+    base.forEach(r=>{if(!seen.has(r.id))out.push({...r})});
+    out.forEach((r,t)=>r.rank=t+1);return out;
+  }
+  if(comp.system==='groups'&&comp.groups?.length){
+    const out=[];comp.groups.forEach(gr=>{const t=tableOf(gr.ids,groupMs(gr.name));t.forEach(r=>{r.grp=gr.name;out.push(r)})});
+    out.forEach((r,t)=>r.rank=t+1);return out;
+  }
+  return tableOf(ids,idx().filter(([m])=>!isPO(m)));
+}
+const _std=window.standings;
+window.standings=function(){return own()?standingsAll():_std.apply(this,arguments)};
+
+/* ---------- Жеребе ---------- */
+function groupsFor(n){return n<=6?1:n<=8?2:n<=11?3:4}
+function shuffle2(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function rrRounds(ids){ // шеңбер әдісі
+  let b=[...ids];if(b.length%2)b.push(null);const n=b.length,out=[];
+  for(let r=0;r<n-1;r++){const pr=[];for(let k=0;k<n/2;k++){const x=b[k],y=b[n-1-k];if(x&&y)pr.push([x,y])}out.push(pr);b=[b[0],b[n-1],...b.slice(1,n-1)]}
+  return out;
+}
+function hasResults(){return comp.matches.some((m,i)=>m.b&&calc(m,i).done)}
+const prevDraw=window.makeDraw;
+window.makeDraw=function(){
+  if(!comp||!own())return prevDraw.apply(this,arguments);
+  const n=comp.entries.length;
+  if(n<2)return alert('Жеребе үшін кемінде 2 команда/қатысушы керек.');
+  if(comp.matches.length&&hasResults())return alert('Нәтижесі бар жеребені қайта құруға болмайды. Кеш келген қатысушы бұрынғы жеребені бұзбай қосылады — «Тіркеу» батырмасын басыңыз.');
+  comp.matches=[];comp.scores={};comp.groups=[];comp.finalRanking=null;comp.champion=null;comp.phase=null;comp.swissRound=0;comp.playoffRound=0;
+  const sys=comp.system||'groups';
+  if(sys==='groups'){
+    const G=groupsFor(n),sh=shuffle2(comp.entries.map(e=>e.id)),names='ABCD'.split('');
+    comp.groups=names.slice(0,G).map(nme=>({name:nme,ids:[]}));
+    sh.forEach((id,k)=>comp.groups[k%G].ids.push(id));
+    const di=g('groupNum');if(di)di.value=G;
+    comp.groups.forEach(gr=>rrRounds(gr.ids).forEach((pr,r)=>pr.forEach(([a,b])=>comp.matches.push({id:uid(),round:r+1,stage:'Топтық кезең · '+gr.name+' тобы',group:gr.name,a,b}))));
+    comp.groupCount=G;
+  }else if(sys==='round'){
+    rrRounds(shuffle2(comp.entries.map(e=>e.id))).forEach((pr,r)=>pr.forEach(([a,b])=>comp.matches.push({id:uid(),round:r+1,stage:'Айналмалы жүйе',a,b})));
+  }else if(sys==='swiss'){
+    return swissNext(true);
+  }else if(sys==='ko'){
+    const ids=shuffle2(comp.entries.map(e=>e.id));let size=1;while(size<ids.length)size*=2;
+    const slots=Array(size).fill(null);let k=0;
+    for(let t=0;t<size&&k<ids.length;t+=2){slots[t]=ids[k++]} // жоғарғы орындар бос өтетіндей
+    for(let t=1;t<size&&k<ids.length;t+=2){slots[t]=ids[k++]}
+    for(let t=0;t<size;t+=2){const a=slots[t]||slots[t+1],b=slots[t]&&slots[t+1]?slots[t+1]:null;comp.matches.push({id:uid(),round:1,stage:koName(size),a,b,bye:!b})}
+    comp.playoffRound=1;comp.phase='KO';
+  }
+  persist();renderAll();
+};
+function koName(n){return n<=2?'Плей-офф · Финал':n===4?'Плей-офф · Жартылай финал':n===8?'Плей-офф · 1/4 финал':'Плей-офф · 1/'+(n/2)+' финал'}
+
+/* ---------- Швейцар жүйесі (тоғызқұмалақ т.б.) ---------- */
+function swissNext(first){
+  const total=Math.max(1,Math.min(15,Number(g('roundNum')?.value)||(comp.sport==='togyz'?7:5)));
+  const cur=Number(comp.swissRound||0);
+  if(!first){
+    if(cur>=total)return alert('Барлық тур аяқталды.');
+    const pend=idx().filter(([m,i])=>m.round===cur&&m.b&&!calc(m,i).done);
+    if(pend.length)return alert('Алдымен '+cur+'-турдың барлық нәтижесін енгізіңіз ('+pend.length+' ойын қалды).');
+  }
+  const ids=comp.entries.map(e=>e.id);
+  const tb=tableOf(ids,idx().filter(([m])=>!isPO(m)));
+  const sc={};tb.forEach(r=>sc[r.id]=r.pts);
+  const order=tb.map(r=>r.id);
+  const pk=new Set();comp.matches.forEach(m=>{if(m.b){pk.add(m.a+'|'+m.b);pk.add(m.b+'|'+m.a)}});
+  const byes=new Set(comp.matches.filter(m=>!m.b).map(m=>m.a));
+  let pool=[...order],bye=null;
+  if(pool.length%2){bye=[...pool].reverse().find(id=>!byes.has(id))||pool[pool.length-1];pool=pool.filter(id=>id!==bye)}
+  let nodes=0;const LIM=400000;
+  function dfs(rem){if(!rem.length)return[];if(++nodes>LIM)return null;const a=rem[0];
+    const cand=rem.slice(1).filter(b=>!pk.has(a+'|'+b)).sort((x,y)=>Math.abs(sc[a]-sc[x])-Math.abs(sc[a]-sc[y]));
+    for(const b of cand){const r=dfs(rem.filter(x=>x!==a&&x!==b));if(r)return[[a,b],...r];if(nodes>LIM)return null}return null}
+  const found=dfs(pool);
+  if(!found)return alert('Қайталанбайтын жұптау табылмады. Бұрынғы нәтижелер сақталды; төреші шешім қабылдауы керек.');
+  const rnd=cur+1;
+  if(bye)comp.matches.push({id:uid(),round:rnd,stage:'Швейцариялық жүйе',a:bye,b:null,bye:true});
+  found.forEach(([a,b])=>comp.matches.push({id:uid(),round:rnd,stage:'Швейцариялық жүйе',a,b}));
+  comp.swissRound=rnd;persist();renderAll();
+}
+const prevSwiss=window.makeNextSwissRound;
+window.makeNextSwissRound=function(first){if(!own())return prevSwiss.apply(this,arguments);return swissNext(!!first)};
+
+/* ---------- Плей-офф ---------- */
+function winnerOf(m,i){const c=calc(m,i);return c.w>0?m.a:c.w<0?m.b:null}
+function loserOf(m,i){const c=calc(m,i);return c.w>0?m.b:c.w<0?m.a:null}
+function stageMs(name){return idx().filter(([m])=>m.stage===name)}
+function pushPO(rnd,stage,a,b){comp.matches.push({id:uid(),round:rnd,stage,a,b:b||null,bye:!b})}
+function rrAdd(rnd,stage,ids){rrRounds(ids).forEach((pr,r)=>pr.forEach(([a,b])=>pushPO(rnd+r,stage,a,b)))}
+function groupTops(){return comp.groups.map(gr=>tableOf(gr.ids,groupMs(gr.name)).map(r=>r.id))}
+const allDone=ms=>ms.length&&ms.every(([m,i])=>!m.b||calc(m,i).done);
+
+window.advancePlayoff=function(){
+  if(!own())return;
+  if(!comp.groups?.length)return alert('Топтық жеребе құрылмаған.');
+  if(comp.groups.length===1)return alert('6 командаға дейін бір айналмалы топ: плей-офф жоқ, орын кестеге сай беріледі.');
+  if(comp.matches.some(isPO))return alert('Плей-офф бұрын құрылған.');
+  const gm=groupMs();if(!allDone(gm))return alert('Топтық кезеңнің барлық ойынының нәтижесін енгізіңіз.');
+  const T=groupTops(),G=T.length;
+  if(G===2){pushPO(1,'Плей-офф · Жартылай финал',T[0][0],T[1][1]);pushPO(1,'Плей-офф · Жартылай финал',T[1][0],T[0][1]);comp.phase='SF2'}
+  else if(G===3){pushPO(1,'Плей-офф · Жартылай финал',T[0][0],T[2][1]);pushPO(1,'Плей-офф · Жартылай финал',T[2][0],T[1][1]);pushPO(1,'Плей-офф · Жартылай финал',T[1][0],T[0][1]);comp.phase='SF3'}
+  else{pushPO(1,'Плей-офф · 1/4 финал',T[0][0],T[3][1]);pushPO(1,'Плей-офф · 1/4 финал',T[3][0],T[0][1]);pushPO(1,'Плей-офф · 1/4 финал',T[1][0],T[2][1]);pushPO(1,'Плей-офф · 1/4 финал',T[2][0],T[1][1]);comp.phase='QF'}
+  comp.playoffRound=1;persist();renderAll();
+};
+function finish(order){comp.finalRanking=order.filter(Boolean);comp.champion=comp.finalRanking[0]||null;comp.phase='done'}
+window.generateNextKnockout=function(){
+  if(!own())return;
+  const ph=comp.phase;
+  if(ph==='KO'){ // жай ойын-шығу
+    const cur=comp.playoffRound,ms=idx().filter(([m])=>isPO(m)&&m.round===cur);
+    if(!allDone(ms))return alert('Осы кезеңнің барлық нәтижесін енгізіңіз.');
+    const w=ms.map(([m,i])=>m.b?winnerOf(m,i):m.a);
+    if(w.length===1){const [m,i]=ms[0];finish([w[0],loserOf(m,i)||null]);persist();renderAll();return}
+    for(let k=0;k<w.length;k+=2)pushPO(cur+1,koName(w.length),w[k],w[k+1]||null);
+    comp.playoffRound=cur+1;persist();renderAll();return;
+  }
+  const S=n=>stageMs(n),W=n=>S(n).map(([m,i])=>winnerOf(m,i)),L=n=>S(n).map(([m,i])=>loserOf(m,i));
+  const need=n=>{const s=S(n);if(!allDone(s)){alert('Осы кезеңнің барлық нәтижесін енгізіңіз.');return false}return true};
+  const rk=(id)=>id;
+  if(ph==='SF2'){
+    if(!need('Плей-офф · Жартылай финал'))return;
+    const w=W('Плей-офф · Жартылай финал'),l=L('Плей-офф · Жартылай финал');
+    pushPO(2,'Плей-офф · Финал',w[0],w[1]);pushPO(2,'Плей-офф · 3-4 орын',l[0],l[1]);comp.phase='F2';comp.playoffRound=2;
+  }else if(ph==='F2'){
+    if(!need('Плей-офф · Финал')||!need('Плей-офф · 3-4 орын'))return;
+    const f=S('Плей-офф · Финал')[0],t=S('Плей-офф · 3-4 орын')[0];
+    finish([winnerOf(...f),loserOf(...f),winnerOf(...t),loserOf(...t)]);
+  }else if(ph==='SF3'){
+    if(!need('Плей-офф · Жартылай финал'))return;
+    rrAdd(2,'Плей-офф · 1–3 орын (айналмалы)',W('Плей-офф · Жартылай финал'));rrAdd(2,'Плей-офф · 4–6 орын (айналмалы)',L('Плей-офф · Жартылай финал'));
+    comp.phase='RR3';comp.playoffRound=2;
+  }else if(ph==='RR3'){
+    const a='Плей-офф · 1–3 орын (айналмалы)',b='Плей-офф · 4–6 орын (айналмалы)';
+    if(!need(a)||!need(b))return;
+    const ids=[...new Set(stageMs(a).flatMap(([m])=>[m.a,m.b]))],ids2=[...new Set(stageMs(b).flatMap(([m])=>[m.a,m.b]))];
+    finish([...tableOf(ids,stageMs(a)).map(r=>r.id),...tableOf(ids2,stageMs(b)).map(r=>r.id)]);
+  }else if(ph==='QF'){
+    if(!need('Плей-офф · 1/4 финал'))return;
+    const w=W('Плей-офф · 1/4 финал'),l=L('Плей-офф · 1/4 финал');
+    pushPO(2,'Плей-офф · Жартылай финал',w[0],w[3]);pushPO(2,'Плей-офф · Жартылай финал',w[1],w[2]);
+    pushPO(2,'Плей-офф · 5–8 орын жартылай финал',l[0],l[3]);pushPO(2,'Плей-офф · 5–8 орын жартылай финал',l[1],l[2]);
+    comp.phase='SF4';comp.playoffRound=2;
+  }else if(ph==='SF4'){
+    if(!need('Плей-офф · Жартылай финал')||!need('Плей-офф · 5–8 орын жартылай финал'))return;
+    const w=W('Плей-офф · Жартылай финал'),l=L('Плей-офф · Жартылай финал'),w5=W('Плей-офф · 5–8 орын жартылай финал'),l5=L('Плей-офф · 5–8 орын жартылай финал');
+    pushPO(3,'Плей-офф · Финал',w[0],w[1]);pushPO(3,'Плей-офф · 3-4 орын',l[0],l[1]);pushPO(3,'Плей-офф · 5-6 орын',w5[0],w5[1]);pushPO(3,'Плей-офф · 7-8 орын',l5[0],l5[1]);
+    comp.phase='F4';comp.playoffRound=3;
+  }else if(ph==='F4'){
+    const ns=['Плей-офф · Финал','Плей-офф · 3-4 орын','Плей-офф · 5-6 орын','Плей-офф · 7-8 орын'];
+    if(!ns.every(need))return;
+    const o=[];ns.forEach(n=>{const [m,i]=S(n)[0];o.push(winnerOf(m,i),loserOf(m,i))});finish(o);
+  }else return alert('Алдымен «Топтан плей-офф құру» батырмасын басыңыз.');
+  persist();renderAll();
+};
+
+/* ---------- Нәтиже енгізу ---------- */
+function ensure(i){comp.scores=comp.scores||{};comp.scores[i]=comp.scores[i]||{};return comp.scores[i]}
+window.uS=(i,f,v)=>{const s=ensure(i);if(v==='')delete s[f];else s[f]=(f==='penWinner'||f==='winner')?v:Number(v);persist();renderAll()};
+window.uSet=(i,k,f,v)=>{const s=ensure(i);s.sets=s.sets||[];s.sets[k]=s.sets[k]||{};if(v==='')delete s.sets[k][f];else s.sets[k][f]=Number(v);persist();renderAll()};
+window.uTT=(i,k,v)=>{const s=ensure(i);s.r=s.r||[];s.r[k]=v;persist();renderAll()};
+window.uTg=(i,k,v)=>{const s=ensure(i);s.b=s.b||[];s.b[k]=v;persist();renderAll()};
+function inputs(m,i){
+  const s=comp.scores?.[i]||{},a=E(nm(m.a)),b=E(nm(m.b)),k=KIND[comp.sport];
+  if(k==='goals'){
+    const lbl=comp.sport==='basketball'?'ұпай':'гол';
+    let h='<div class="grid"><div><label>'+a+' · '+lbl+'</label><input type="number" min="0" value="'+(num(s.a)??'')+'" onchange="uS('+i+',\'a\',this.value)"></div><div><label>'+b+' · '+lbl+'</label><input type="number" min="0" value="'+(num(s.b)??'')+'" onchange="uS('+i+',\'b\',this.value)"></div></div>';
+    if(isPO(m)&&num(s.a)!==null&&num(s.a)===num(s.b))h+='<label>Тең есеп: жеңімпаз (пенальти / қосымша уақыт)</label><select onchange="uS('+i+',\'penWinner\',this.value)"><option value="">Таңдаңыз</option><option value="a"'+(s.penWinner==='a'?' selected':'')+'>'+a+'</option><option value="b"'+(s.penWinner==='b'?' selected':'')+'>'+b+'</option></select>';
+    return h;
+  }
+  if(k==='sets'){
+    const need=(isPO(m)&&isFinalStage(m))?3:2,max=need===3?5:3;let h='<p class="muted"><b>'+(need===3?'Финал: 5 партияға дейін (3 жеңіске дейін)':'3 партияға дейін (2 жеңіске дейін)')+'</b></p><div class="grid">';
+    for(let q=0;q<max;q++){const z=(s.sets||[])[q]||{};h+='<div class="notice"><b>'+(q+1)+'-партия</b><input type="number" min="0" placeholder="'+a+'" value="'+(num(z.a)??'')+'" onchange="uSet('+i+','+q+',\'a\',this.value)"><input type="number" min="0" placeholder="'+b+'" value="'+(num(z.b)??'')+'" onchange="uSet('+i+','+q+',\'b\',this.value)"></div>'}
+    return h+'</div>';
+  }
+  if(k==='tt'){
+    let h='<p class="muted"><b>5 партия, 3 жеңіске дейін</b> · '+a+' (A,B,C) — '+b+' (X,Y,Z)</p><div class="grid">';
+    for(let q=0;q<5;q++){const r=(s.r||[])[q]||'';h+='<div><label>'+TT_PAIRS[q]+'</label><select onchange="uTT('+i+','+q+',this.value)"><option value="">—</option><option value="a"'+(r==='a'?' selected':'')+'>'+a+' жеңді</option><option value="b"'+(r==='b'?' selected':'')+'>'+b+' жеңді</option></select></div>'}
+    return h+'</div>';
+  }
+  if(k==='asyk'){
+    const bes=comp.gender==='Қыздар';
+    return '<p class="muted"><b>'+(bes?'Бес асық':'Асық ату')+'</b>: команда жеңісі (3:0 немесе 2:1) хаттамаға 1 ұпай. Екі команданың ұтқан ойыншылары қосындысы 3.</p><div class="grid"><div><label>'+a+' · ұтқан ойыншы (0–3)</label><input type="number" min="0" max="3" value="'+(num(s.a)??'')+'" onchange="uS('+i+',\'a\',this.value)"></div><div><label>'+b+' · ұтқан ойыншы (0–3)</label><input type="number" min="0" max="3" value="'+(num(s.b)??'')+'" onchange="uS('+i+',\'b\',this.value)"></div><div><label>'+a+' · жиналған ұпай (тай-брейк үшін)</label><input type="number" min="0" value="'+(num(s.ga)??'')+'" onchange="uS('+i+',\'ga\',this.value)"></div><div><label>'+b+' · жиналған ұпай (тай-брейк үшін)</label><input type="number" min="0" value="'+(num(s.gb)??'')+'" onchange="uS('+i+',\'gb\',this.value)"></div></div>';
+  }
+  if(k==='togyz'){
+    let h='<p class="muted"><b>4 тақта</b> (2 ұл + 2 қыз) · команда жеңісі 2, тең 1, жеңіліс 0 ұпай</p><div class="grid">';
+    for(let q=0;q<4;q++){const r=(s.b||[])[q]||'';h+='<div><label>'+(q+1)+'-тақта'+(q>=2?' (қыздар)':' (ұлдар)')+'</label><select onchange="uTg('+i+','+q+',this.value)"><option value="">—</option><option value="a"'+(r==='a'?' selected':'')+'>'+a+' жеңді</option><option value="d"'+(r==='d'?' selected':'')+'>Тең</option><option value="b"'+(r==='b'?' selected':'')+'>'+b+' жеңді</option></select></div>'}
+    return h+'</div>';
+  }
+  return '';
+}
+const prevRR=window.renderResults;
+window.renderResults=function(){
+  if(!own())return prevRR.apply(this,arguments);
+  const el=g('results');if(!el)return;
+  if(!comp.matches.length){el.innerHTML='<p class="muted">Алдымен жеребе құрыңыз.</p>';return}
+  const stages=[];comp.matches.forEach((m,i)=>{let s=stages.find(x=>x.n===m.stage);if(!s){s={n:m.stage,l:[]};stages.push(s)}s.l.push([m,i])});
+  el.innerHTML=stages.map(st=>{
+    const pend=st.l.filter(([m,i])=>m.b&&!calc(m,i).done).length;
+    const open=pend>0&&(isPO(st.l[0][0])||comp.matches.length<40||st.l.length<=12);
+    return '<details'+(open?' open':'')+'><summary><b>'+E(st.n||'Ойындар')+'</b> · '+st.l.length+' ойын'+(pend?' · <span style="color:#b45309">қалды: '+pend+'</span>':' · <span style="color:#0a7a3d">толық ✓</span>')+'</summary>'+
+    st.l.map(([m,i])=>{
+      if(!m.b)return '<div class="match-card"><b>'+E(nm(m.a))+' — бос тур</b></div>';
+      const c=calc(m,i);
+      return '<div class="match-card"><b>'+(m.round?m.round+'-тур · ':'')+E(nm(m.a))+' — '+E(nm(m.b))+'</b>'+inputs(m,i)+'<p class="muted">'+(c.done?'Нәтиже тіркелді':(c.note||'Нәтиже толық емес'))+'</p></div>'}).join('')+'</details>'}).join('');
+};
+
+/* ---------- Кесте мен қорытынды көрінісі ---------- */
+const prevRF=window.renderFixtures;
+window.renderFixtures=function(){
+  if(!own())return prevRF.apply(this,arguments);
+  const el=g('fixtures');if(!el)return;
+  if(!comp.matches.length){el.innerHTML='<p class="muted">Жеребе әлі құрылмаған.</p>';return}
+  let html='';
+  const sys=comp.system||'groups',n=comp.entries.length;
+  if(sys==='groups'&&comp.groups?.length){
+    html+='<div class="notice"><b>Жүйе:</b> '+n+' команда → '+comp.groups.length+' топ'+(comp.groups.length===1?' (айналмалы жүйе)':'')+' · әр топтан 1–2 орын плей-оффқа. '+comp.groups.map(gr=>'<br><b>'+gr.name+' тобы:</b> '+gr.ids.map(id=>E(nm(id))).join(', ')).join('')+'</div>';
+  }
+  const stages=[];comp.matches.forEach(m=>{let s=stages.find(x=>x.n===m.stage);if(!s){s={n:m.stage,l:[]};stages.push(s)}s.l.push(m)});
+  html+=stages.map(st=>'<details'+(comp.matches.length<=60?' open':'')+'><summary><b>'+E(st.n)+'</b> ('+st.l.length+')</summary><table><tr><th>Тур</th><th>А жағы</th><th>В жағы</th></tr>'+st.l.map(m=>'<tr><td>'+(m.round||'')+'</td><td>'+E(nm(m.a))+'</td><td>'+(m.b?E(nm(m.b)):'Бос тур')+'</td></tr>').join('')+'</table></details>').join('');
+  const act=[];
+  if(sys==='groups'&&comp.groups?.length>1&&!comp.matches.some(isPO))act.push('<button class="alt" onclick="advancePlayoff()">Топтан плей-офф құру</button>');
+  if(comp.matches.some(isPO)&&comp.phase!=='done')act.push('<button onclick="generateNextKnockout()">Келесі кезеңді құру</button>');
+  if(sys==='swiss'&&comp.swissRound<Math.max(1,Number(g('roundNum')?.value)||7))act.push('<button onclick="makeNextSwissRound()">Келесі турдың жеребесін құру</button>');
+  if(act.length)html+='<div class="actions">'+act.join('')+'</div>';
+  el.innerHTML=html;
+};
+const prevRS=window.renderStandings;
+window.renderStandings=function(){
+  if(!own())return prevRS.apply(this,arguments);
+  const el=g('standings');if(!el)return;
+  const k=KIND[comp.sport],ext=k==='sets'?'Партия':k==='goals'?'Доп/ұпай':k==='togyz'?'Тақта ұпайы':k==='asyk'?'Ойыншы':'Партия';
+  const exv=r=>k==='sets'?r.sf+':'+r.sa:k==='goals'?r.gf+':'+r.ga:k==='togyz'?r.sf+':'+r.sa:k==='asyk'?r.sf+':'+r.sa:r.sf+':'+r.sa;
+  const tbl=(rows,title)=>(title?'<h3>'+E(title)+'</h3>':'')+'<table><tr><th>Орын</th><th>Команда / қатысушы</th><th>Ойын</th><th>Жеңіс</th>'+(k==='goals'||k==='togyz'?'<th>Тең</th>':'')+'<th>Ұтылыс</th><th>Ұпай</th><th>'+ext+'</th></tr>'+rows.map(r=>'<tr><td><b>'+r.rank+'</b></td><td>'+E(r.name)+'<br><small>'+E(r.school)+'</small></td><td>'+r.played+'</td><td>'+r.w+'</td>'+(k==='goals'||k==='togyz'?'<td>'+r.d+'</td>':'')+'<td>'+r.l+'</td><td><b>'+r.pts+'</b>'+(r.lot?' <small title="Барлық тай-брейк тең — жеребе">⚠</small>':'')+'</td><td>'+exv(r)+'</td></tr>').join('')+'</table>';
+  let html='';
+  if(comp.finalRanking?.length){html+='<div class="notice"><b>🏆 Қорытынды орындар</b></div>'+tbl(standingsAll())}
+  if(comp.system==='groups'&&comp.groups?.length){html+=comp.groups.map(gr=>tbl(tableOf(gr.ids,groupMs(gr.name)),gr.name+' тобы')).join('')}
+  else if(!comp.finalRanking?.length)html+=tbl(standingsAll());
+  el.innerHTML=html||'<p class="muted">Нәтиже әлі жоқ.</p>';
+};
+/* G=1 немесе айналмалы/швейцар жүйеде нәтижелер толған соң қорытынды орындар кестеден алынады */
+const prevPersist=window.persist;
+})();
+
 </script>
 </body></html>
