@@ -1137,6 +1137,7 @@ const minFor=()=>{const r=reg();return r.min??(FBMIN[comp.age]||8)};
 function genderOptions(sportId,kind){
   const r=REG[sportId]||{};
   if(kind==='team'&&r.mode==='mixed')return ['Аралас'];
+  if(sportId==='athletics')return ['Аралас'];
   return ['Ұлдар','Қыздар'];
 }
 function refreshGender(){
@@ -1148,7 +1149,7 @@ function refreshGender(){
   let hint=g('genderHint');
   if(!hint){hint=document.createElement('small');hint.id='genderHint';hint.className='muted';sel.parentElement.appendChild(hint)}
   const s=g('sport').value;
-  hint.textContent=opts.length===1?'Аралас команда: ереже бойынша ұлдар мен қыздар бірге ойнайды.':(s==='asyk'?'Ұлдар — асық ату, қыздар — бес асық. Бөлек жарыс.':'Ұлдар мен қыздар бөлек ойнайды: бір жарысқа тек таңдалған жыныс тіркеледі.');
+  hint.textContent=opts.length===1?(g('sport').value==='athletics'?'Кросс командасы: 5 ұл + 5 қыз. Ұлдар мен қыздардың есебі бөлек жүргізіледі.':'Аралас команда: ереже бойынша ұлдар мен қыздар бірге ойнайды.'):(s==='asyk'?'Ұлдар — асық ату, қыздар — бес асық. Бөлек жарыс.':'Ұлдар мен қыздар бөлек ойнайды: бір жарысқа тек таңдалған жыныс тіркеледі.');
 }
 const _us=window.updateSport;
 window.updateSport=function(){_us();refreshGender()};
@@ -1731,6 +1732,124 @@ window.renderStandings=function(){
 };
 /* G=1 немесе айналмалы/швейцар жүйеде нәтижелер толған соң қорытынды орындар кестеден алынады */
 const prevPersist=window.persist;
+})();
+
+
+/* ===== v28 · Жеңіл атлетикалық кросс (ҰМЛ ережесі бойынша) ===== */
+(function(){
+'use strict';
+const g=id=>document.getElementById(id);
+const E=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const isA=()=>comp&&comp.sport==='athletics';
+const SEX=['Ұлдар','Қыздар'];
+const ageNo=()=>/^\s*5/.test(comp.age||'')?1:/^\s*7/.test(comp.age||'')?2:3;
+function events(sex){
+  const a=ageNo(),boy=sex==='Ұлдар';
+  const L=a===1?['30 м жүгіру','500 м жүгіру','Ұзындыққа секіру (жүгіріп келіп)','Доп лақтыру (150 г)']
+    :a===2?['60 м жүгіру',boy?'1000 м жүгіру':'600 м жүгіру','Ұзындыққа секіру (жүгіріп келіп)','Доп лақтыру (150 г)']
+    :['100 м жүгіру',boy?'1500 м жүгіру':'800 м жүгіру','Ұзындыққа секіру (жүгіріп келіп)',boy?'Граната лақтыру (700 г)':'Граната лақтыру (500 г)'];
+  return [{id:'sprint',n:L[0],t:'time'},{id:'run',n:L[1],t:'time'},{id:'long',n:L[2],t:'dist'},{id:'throw',n:L[3],t:'dist'},{id:'relay',n:'4×100 м эстафета',t:'time',relay:true}];
+}
+function val(v,t){
+  let x=String(v??'').trim().replace(',','.');if(!x)return null;
+  if(/^\d+:\d{1,2}(\.\d+)?$/.test(x)){const [m,s]=x.split(':');return Number(m)*60+Number(s)}
+  if(!/^\d+(\.\d+)?$/.test(x))return null;
+  return Number(x);
+}
+const teamOf=e=>(e.team||e.className||e.school||'').trim();
+const athletes=sex=>comp.entries.filter(e=>(e.gender||'Ұлдар')===sex);
+const teams=()=>[...new Set(comp.entries.map(teamOf).filter(Boolean))];
+const teamsOf=sex=>[...new Set(athletes(sex).map(teamOf).filter(Boolean))];
+function res(e,sex,ev){return comp.athleticsResults?.[e.id]?.[sex+'|'+ev.id]}
+function rel(sex,team){return comp.athRelay?.[sex+'|'+team]}
+/* Бір түр бойынша орын мен ұпай: P қатысушы → 1-орын P ұпай, ... соңғы 1 ұпай (тең орын тең ұпай) */
+function rankEvent(sex,ev){
+  let list;
+  if(ev.relay)list=teamsOf(sex).map(t=>({key:t,team:t,raw:rel(sex,t)}));
+  else list=athletes(sex).map(e=>({key:e.id,e,team:teamOf(e),raw:res(e,sex,ev)}));
+  list.forEach(x=>x.v=val(x.raw,ev.t));
+  const ok=list.filter(x=>x.v!==null&&(ev.t==='time'?x.v>0:x.v>=0));
+  ok.sort((a,b)=>ev.t==='time'?a.v-b.v:b.v-a.v);
+  const P=ok.length;let r=0;
+  ok.forEach((x,i)=>{if(i===0||x.v!==ok[i-1].v)r=i+1;x.rank=r;x.pts=ev.relay?2*(P-r+1):(P-r+1)});
+  return {ok,P,list};
+}
+function teamRows(sex){
+  const evs=events(sex),T=teamsOf(sex);
+  const tab={};T.forEach(t=>tab[t]={team:t,per:{},total:0,n:athletes(sex).filter(e=>teamOf(e)===t).length,warn:[]});
+  evs.forEach(ev=>{
+    const rk=rankEvent(sex,ev);
+    if(ev.relay){rk.ok.forEach(x=>{tab[x.team].per[ev.id]=x.pts})}
+    else T.forEach(t=>{
+      const mine=rk.ok.filter(x=>x.team===t).sort((a,b)=>b.pts-a.pts);
+      if(mine.length){tab[t].per[ev.id]=mine.slice(0,2).reduce((s,x)=>s+x.pts,0);if(mine.length<2)tab[t].warn.push(ev.n+': 1 спортшы ғана')}
+      else if(rk.P)tab[t].warn.push(ev.n+': нәтиже жоқ');
+    });
+  });
+  const rows=Object.values(tab);
+  rows.forEach(r=>r.total=Object.values(r.per).reduce((s,x)=>s+x,0));
+  rows.sort((a,b)=>b.total-a.total);
+  let k=0;rows.forEach((r,i)=>{if(i===0||r.total!==rows[i-1].total)k=i+1;r.rank=k});
+  rows.forEach(r=>{const tie=rows.filter(o=>o.total===r.total&&o!==r).length>0;r.tie=tie});
+  return rows;
+}
+/* ---------- Нәтиже енгізу ---------- */
+window.athSet=(id,key,v)=>{comp.athleticsResults=comp.athleticsResults||{};comp.athleticsResults[id]=comp.athleticsResults[id]||{};if(String(v).trim()==='')delete comp.athleticsResults[id][key];else comp.athleticsResults[id][key]=String(v).trim();persist();renderResults();renderStandings()};
+window.athRel=(key,v)=>{comp.athRelay=comp.athRelay||{};if(String(v).trim()==='')delete comp.athRelay[key];else comp.athRelay[key]=String(v).trim();persist();renderResults();renderStandings()};
+window.athPick=(sex,evid)=>{comp.athSex=sex;comp.athEv=evid;persist();renderResults()};
+const prevRR=window.renderResults;
+window.renderResults=function(){
+  if(!isA())return prevRR.apply(this,arguments);
+  const el=g('results');if(!el)return;
+  if(!comp.entries.length){el.innerHTML='<p class="muted">Алдымен спортшыларды тіркеңіз.</p>';return}
+  const sex=comp.athSex||'Ұлдар',evs=events(sex),ev=evs.find(x=>x.id===comp.athEv)||evs[0];
+  let h='<div class="notice"><b>Нәтижені енгізу:</b> уақыт — <code>12.5</code> немесе <code>4:36.18</code> (мин:сек); қашықтық — метрмен (мысалы <code>3.45</code>). Жүгіруде аз уақыт, секіру мен лақтыруда көп қашықтық жақсы.</div>';
+  h+='<div class="grid"><div><label>Жарыс тобы</label><select onchange="athPick(this.value,null)">'+SEX.map(s=>'<option'+(s===sex?' selected':'')+'>'+s+'</option>').join('')+'</select></div><div><label>Түрі</label><select onchange="athPick(\''+sex+'\',this.value)">'+evs.map(x=>'<option value="'+x.id+'"'+(x.id===ev.id?' selected':'')+'>'+E(x.n)+'</option>').join('')+'</select></div></div>';
+  const rk=rankEvent(sex,ev),by={};rk.ok.forEach(x=>by[x.key]=x);
+  if(ev.relay){
+    h+='<table><tr><th>Команда</th><th>Нәтиже (уақыт)</th><th>Орын</th><th>Ұпай (×2)</th></tr>'+teamsOf(sex).map(t=>{const x=by[t];return '<tr><td>'+E(t)+'</td><td><input value="'+E(rel(sex,t)||'')+'" onchange="athRel(\''+E(sex+'|'+t).replace(/'/g,'&#39;')+'\',this.value)"></td><td>'+(x?x.rank:'')+'</td><td>'+(x?x.pts:'')+'</td></tr>'}).join('')+'</table>';
+  }else{
+    const A=athletes(sex);
+    h+=A.length?'<table><tr><th>Спортшы</th><th>Команда</th><th>Нәтиже</th><th>Орын</th><th>Ұпай</th></tr>'+A.map(e=>{const x=by[e.id],bad=res(e,sex,ev)&&val(res(e,sex,ev),ev.t)===null;return '<tr><td>'+E(e.name)+'</td><td>'+E(teamOf(e))+'</td><td><input value="'+E(res(e,sex,ev)||'')+'"'+(bad?' style="border-color:#c0392b"':'')+' onchange="athSet(\''+e.id+'\',\''+sex+'|'+ev.id+'\',this.value)"></td><td>'+(x?x.rank:'')+'</td><td>'+(x?x.pts:'')+'</td></tr>'}).join('')+'</table>':'<p class="muted">Бұл топта спортшы тіркелмеген.</p>';
+  }
+  el.innerHTML=h+'<p class="muted">Қатысқандар: '+rk.P+' · 1-орын '+rk.P*(ev.relay?2:1)+' ұпай. Команда ұпайы = командадан 2 спортшының ұпайы қосындысы.</p>';
+};
+const prevRF=window.renderFixtures;
+window.renderFixtures=function(){
+  if(!isA())return prevRF.apply(this,arguments);
+  const el=g('fixtures');if(!el)return;
+  let h='<div class="notice"><b>Кросс бағдарламасы ('+E(comp.age||'')+'):</b>'+SEX.map(s=>'<br>'+s+': '+events(s).map(x=>E(x.n)).join(' · ')).join('')+'</div>';
+  const T=teams();
+  h+='<table><tr><th>Команда</th><th>Ұл</th><th>Қыз</th><th>Күйі</th></tr>'+T.map(t=>{const b=comp.entries.filter(e=>teamOf(e)===t&&e.gender==='Ұлдар').length,q=comp.entries.filter(e=>teamOf(e)===t&&e.gender==='Қыздар').length;const ok=b>=2&&q>=2;return '<tr><td>'+E(t)+'</td><td>'+b+' / 5</td><td>'+q+' / 5</td><td>'+(b===5&&q===5?'толық ✓':ok?'толық емес (ереже: 5+5; әр түрде 2 спортшы міндетті)':'<span style="color:#c0392b">әр түрде 2 спортшы жетпейді</span>')+'</td></tr>'}).join('')+'</table>';
+  el.innerHTML=h;
+};
+const prevRS=window.renderStandings;
+window.renderStandings=function(){
+  if(!isA())return prevRS.apply(this,arguments);
+  const el=g('standings');if(!el)return;
+  el.innerHTML=SEX.map(sex=>{
+    const evs=events(sex),rows=teamRows(sex);
+    if(!rows.length)return '<h3>'+sex+'</h3><p class="muted">Қатысушы жоқ.</p>';
+    let h='<h3>'+sex+' · командалық есеп</h3><table><tr><th>Орын</th><th>Команда</th>'+evs.map(x=>'<th>'+E(x.n)+'</th>').join('')+'<th>Барлығы</th></tr>'+rows.map(r=>'<tr><td><b>'+r.rank+'</b></td><td>'+E(r.team)+(r.warn.length?'<br><small style="color:#b45309">'+E(r.warn.join('; '))+'</small>':'')+'</td>'+evs.map(x=>'<td>'+(r.per[x.id]??'')+'</td>').join('')+'<td><b>'+r.total+'</b>'+(r.tie?' <small title="Ұпай тең. Тай-брейк ережеде көрсетілмеген (PDF-те көрсетілмеген)">⚠</small>':'')+'</td></tr>').join('')+'</table>';
+    h+=evs.filter(x=>!x.relay).map(ev=>{const rk=rankEvent(sex,ev);return rk.P?'<details><summary>'+sex+' · '+E(ev.n)+' — жеке нәтижелер ('+rk.P+')</summary><table><tr><th>Орын</th><th>Спортшы</th><th>Команда</th><th>Нәтиже</th><th>Ұпай</th></tr>'+rk.ok.map(x=>'<tr><td>'+x.rank+'</td><td>'+E(x.e.name)+'</td><td>'+E(x.team)+'</td><td>'+E(x.raw)+'</td><td>'+x.pts+'</td></tr>').join('')+'</table></details>':''}).join('');
+    return h}).join('');
+};
+/* ---------- Word ---------- */
+function protocolHtml(){
+  let h='';
+  SEX.forEach(sex=>{
+    const evs=events(sex);
+    h+='<h3>'+sex+' · командалық қорытынды</h3><table><tr><th>Орын</th><th>Команда</th>'+evs.map(x=>'<th>'+E(x.n)+'</th>').join('')+'<th>Барлығы</th></tr>'+teamRows(sex).map(r=>'<tr><td>'+r.rank+'</td><td>'+E(r.team)+'</td>'+evs.map(x=>'<td>'+(r.per[x.id]??'')+'</td>').join('')+'<td><b>'+r.total+'</b></td></tr>').join('')+'</table>';
+    evs.forEach(ev=>{const rk=rankEvent(sex,ev);if(!rk.P)return;
+      h+='<h3>'+sex+' · '+E(ev.n)+'</h3><table><tr><th>Орын</th><th>'+(ev.relay?'Команда':'Спортшы')+'</th><th>Команда</th><th>Нәтиже</th><th>Ұпай</th></tr>'+rk.ok.map(x=>'<tr><td>'+x.rank+'</td><td>'+E(ev.relay?x.team:x.e.name)+'</td><td>'+E(x.team)+'</td><td>'+E(x.raw)+'</td><td>'+x.pts+'</td></tr>').join('')+'</table>'});
+  });
+  return h;
+}
+const prevFinal=window.downloadFinalProtocol,prevMatch=window.downloadMatchProtocol,prevSched=window.downloadSchedule;
+window.downloadFinalProtocol=function(){if(!isA())return prevFinal.apply(this,arguments);word('ЖЕҢІЛ АТЛЕТИКАЛЫҚ КРОСС · ҚОРЫТЫНДЫ ХАТТАМА',protocolHtml(),'UML_kross_qorytyndy.doc')};
+window.downloadMatchProtocol=function(){if(!isA())return prevMatch.apply(this,arguments);word('ЖЕҢІЛ АТЛЕТИКАЛЫҚ КРОСС · ТҮРЛЕР БОЙЫНША ХАТТАМА',protocolHtml(),'UML_kross_turler.doc')};
+window.downloadSchedule=function(){if(!isA())return prevSched.apply(this,arguments);word('СТАРТТЫҚ ТІЗІМ',SEX.map(sex=>'<h3>'+sex+'</h3><table><tr><th>№</th><th>Спортшы</th><th>Команда</th></tr>'+athletes(sex).map((e,i)=>'<tr><td>'+(i+1)+'</td><td>'+E(e.name)+'</td><td>'+E(teamOf(e))+'</td></tr>').join('')+'</table>').join(''),'UML_start.doc')};
+window.__umlAthTeamRows=teamRows;window.__umlAthRank=rankEvent;window.__umlAthEvents=events;
 })();
 
 </script>
