@@ -1929,4 +1929,14 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 })();
 
 </script>
+<script>
+/* v29: жеке шахмат нәтижесін (individualResults) қорытынды хаттамада есептеу */
+(function(){const prev=window.__umlCalc;if(!prev)return;
+window.__umlCalc=function(m,i){
+ if(typeof comp!=='undefined'&&comp&&comp.sport==='chess'&&comp.kind!=='team'&&m&&m.b){
+  const w=(comp.individualResults&&comp.individualResults[m.id]||{}).winner;
+  if(['a','b','draw'].includes(w))return {done:true,res:w==='a'?1:w==='b'?-1:0,w:w==='a'?1:w==='b'?-1:0,sa:w==='a'?1:w==='draw'?.5:0,sb:w==='b'?1:w==='draw'?.5:0,pa:w==='a'?1:w==='draw'?.5:0,pb:w==='b'?1:w==='draw'?.5:0,ga:0,gb:0,note:''};
+  return {done:false,w:0,pa:0,pb:0,ga:0,gb:0,sa:0,sb:0,note:''};}
+ return prev(m,i)};})();
+</script>
 </body></html>
