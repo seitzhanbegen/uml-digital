@@ -1930,13 +1930,41 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 </script>
 <script>
-/* v29: жеке шахмат нәтижесін (individualResults) қорытынды хаттамада есептеу */
-(function(){const prev=window.__umlCalc;if(!prev)return;
+/* v29: жеке шахмат нәтижесі, тур саны сақталуы, артық турды жою */
+(function(){
+const prev=window.__umlCalc;
 window.__umlCalc=function(m,i){
  if(typeof comp!=='undefined'&&comp&&comp.sport==='chess'&&comp.kind!=='team'&&m&&m.b){
   const w=(comp.individualResults&&comp.individualResults[m.id]||{}).winner;
-  if(['a','b','draw'].includes(w))return {done:true,res:w==='a'?1:w==='b'?-1:0,w:w==='a'?1:w==='b'?-1:0,sa:w==='a'?1:w==='draw'?.5:0,sb:w==='b'?1:w==='draw'?.5:0,pa:w==='a'?1:w==='draw'?.5:0,pb:w==='b'?1:w==='draw'?.5:0,ga:0,gb:0,note:''};
-  return {done:false,w:0,pa:0,pb:0,ga:0,gb:0,sa:0,sb:0,note:''};}
- return prev(m,i)};})();
+  if(['a','b','draw'].includes(w)){const sa=w==='a'?1:w==='draw'?.5:0,sb=w==='b'?1:w==='draw'?.5:0;
+   return {done:true,complete:true,res:w==='a'?1:w==='b'?-1:0,w:w==='a'?1:w==='b'?-1:0,sa:sa,sb:sb,pa:sa,pb:sb,ga:0,gb:0,note:''};}
+  return {done:false,complete:false,w:0,pa:0,pb:0,ga:0,gb:0,sa:0,sb:0,note:''};}
+ return prev(m,i)};
+const rn=()=>document.getElementById('roundNum');
+const isSwiss=()=>comp&&comp.system==='swiss';
+function syncRounds(){const el=rn();if(!el||!comp)return;if(comp.rounds)el.value=comp.rounds}
+const oc=window.openCompetition;
+window.openCompetition=function(id){const r=oc.apply(this,arguments);syncRounds();if(typeof renderAll==='function')try{renderAll()}catch(e){}return r};
+document.addEventListener('change',e=>{if(e.target&&e.target.id==='roundNum'&&comp){const v=Math.max(1,Math.min(15,Number(e.target.value)||0));if(v){comp.rounds=v;e.target.value=v;persist();renderAll()}}});
+function lock(fn){const o=window[fn];if(typeof o!=='function')return;window[fn]=function(){if(comp&&isSwiss()&&!comp.rounds&&rn()){comp.rounds=Math.max(1,Math.min(15,Number(rn().value)||5));persist()}
+ if(fn==='makeNextSwissRound'&&comp&&comp.rounds&&(comp.swissRound||0)>=comp.rounds){alert('Тур саны ('+comp.rounds+') толды. Көбірек тур керек болса, «Тур саны» өрісін өзгертіңіз.');return}
+ return o.apply(this,arguments)}}
+lock('makeDraw');lock('makeNextSwissRound');
+window.umlDropEmptyLastRound=function(){if(!comp||!isSwiss())return;const last=comp.swissRound||0;if(!last)return;
+ const ms=comp.matches.filter(m=>m.round===last&&m.stage==='Швейцариялық жүйе');
+ const has=m=>{const c=window.__umlCalc(m,comp.matches.indexOf(m));return c&&c.done};
+ if(ms.some(has))return alert('Бұл турда нәтиже енгізілген, жоюға болмайды.');
+ if(!confirm(last+'-турды (нәтижесіз) жою керек пе?'))return;
+ const set=new Set(ms);const ids=ms.map(m=>m.id).filter(Boolean);comp.matches=comp.matches.filter(m=>!set.has(m));
+ ['individualResults','teamResults','tieBreaks'].forEach(k=>{if(comp[k])ids.forEach(id=>delete comp[k][id])});
+ comp.swissRound=last-1;if(!comp.rounds||comp.rounds>comp.swissRound&&comp.rounds===last)comp.rounds=comp.swissRound;
+ persist();syncRounds();renderAll()};
+const rf=window.renderFixtures;
+window.renderFixtures=function(){rf.apply(this,arguments);const el=document.getElementById('fixtures');if(!el||!comp||!isSwiss()||!comp.swissRound)return;
+ const last=comp.swissRound,ms=comp.matches.filter(m=>m.round===last&&m.b&&m.stage==='Швейцариялық жүйе');
+ if(ms.length&&!ms.some(m=>{const c=window.__umlCalc(m,comp.matches.indexOf(m));return c&&c.done})){
+  const d=document.createElement('div');d.className='actions';d.innerHTML='<button class="alt" onclick="umlDropEmptyLastRound()">'+last+'-турды жою (нәтижесіз)</button>';el.appendChild(d)}
+ if(!comp.rounds){const n=document.createElement('div');n.className='notice';n.innerHTML='Жарыс тур саны сақталмаған. «Тур саны» өрісіне керекті санды енгізіңіз — ол сақталады.';el.insertBefore(n,el.firstChild)}};
+})();
 </script>
 </body></html>
