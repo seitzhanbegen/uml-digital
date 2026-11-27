@@ -1967,4 +1967,56 @@ window.renderFixtures=function(){rf.apply(this,arguments);const el=document.getE
  if(!comp.rounds){const n=document.createElement('div');n.className='notice';n.innerHTML='Жарыс тур саны сақталмаған. «Тур саны» өрісіне керекті санды енгізіңіз — ол сақталады.';el.insertBefore(n,el.firstChild)}};
 })();
 </script>
+<script>
+/* v30: бұлттық синхрондау (ноутбук ↔ телефон). Код арқылы қорғалған. */
+(function(){
+const URL_='https://azogthtishzihcilfmrs.supabase.co',KEY='sb_publishable_YH0AnkPlcRiH84hEVP7sGA_05VMMAzc';
+const LS={get:k=>{try{return localStorage.getItem(k)}catch(e){return null}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}},del:k=>{try{localStorage.removeItem(k)}catch(e){}}};
+let code=LS.get('uml_sync_code')||'',ver=Number(LS.get('uml_sync_ver')||0),dirty=LS.get('uml_sync_dirty')==='1',busy=false,timer=null,status='',conflict=null;
+const rpc=async(fn,body)=>{const r=await fetch(URL_+'/rest/v1/rpc/'+fn,{method:'POST',headers:{apikey:KEY,Authorization:'Bearer '+KEY,'Content-Type':'application/json'},body:JSON.stringify(body)});if(!r.ok)throw new Error('HTTP '+r.status);return r.json()};
+const $=id=>document.getElementById(id);
+function ui(){let b=$('umlSyncBtn');if(!b){b=document.createElement('button');b.id='umlSyncBtn';b.type='button';b.style.cssText='position:fixed;right:12px;bottom:12px;z-index:9999;border:0;border-radius:24px;padding:10px 16px;font:600 14px Inter,system-ui,sans-serif;box-shadow:0 4px 18px rgba(0,0,0,.25);cursor:pointer;background:#0e7aa8;color:#fff';b.onclick=panel;document.body.appendChild(b)}
+ b.textContent=!code?'☁ Синхрондау':(conflict?'⚠ Қайшылық':busy?'☁ Жіберілуде…':dirty?'☁ Күтуде':status==='off'?'☁ Желі жоқ':'☁ Синхрондалды ✓');
+ b.style.background=conflict?'#c0392b':(!code?'#0e7aa8':dirty||status==='off'?'#c98a0a':'#12906f')}
+function panel(){let p=$('umlSyncPanel');if(p){p.remove();return}
+ p=document.createElement('div');p.id='umlSyncPanel';p.style.cssText='position:fixed;right:12px;bottom:60px;z-index:10000;width:min(360px,92vw);background:#fff;color:#0b1f2e;border-radius:16px;padding:16px;box-shadow:0 10px 40px rgba(0,0,0,.3);font:14px Inter,system-ui,sans-serif';
+ let h='<b style="font-size:16px">Бұлттық синхрондау</b><p style="margin:8px 0;color:#4d6a80">Бір кодпен ноутбук пен телефондағы жарыстар бір-бірімен жаңарып тұрады. Код — тек сізде.</p>';
+ if(code){h+='<p>Күйі: '+(conflict?'қайшылық':dirty?'жіберілмеген өзгерістер бар':'синхрондалған')+' · нұсқа '+ver+'</p><button id="umlNow" style="padding:8px 12px;margin:2px">Қазір синхрондау</button> <button id="umlOut" style="padding:8px 12px;margin:2px">Кодты өшіру</button>'}
+ else h+='<input id="umlCode" placeholder="Синхрондау коды" autocomplete="off" style="width:100%;padding:10px;border:1px solid #9bb;border-radius:10px;margin:6px 0"><button id="umlIn" style="padding:8px 14px">Қосу</button>';
+ h+='<p id="umlMsg" style="color:#c0392b;min-height:18px"></p>';p.innerHTML=h;document.body.appendChild(p);
+ const msg=t=>{$('umlMsg').textContent=t};
+ if($('umlIn'))$('umlIn').onclick=async()=>{const c=$('umlCode').value.trim();if(!c)return;try{const r=await rpc('uml_version',{p_code:c});if(r.error){msg('Код дұрыс емес');return}code=c;LS.set('uml_sync_code',c);p.remove();await first()}catch(e){msg('Желі қатесі: '+e.message)}};
+ if($('umlNow'))$('umlNow').onclick=async()=>{p.remove();await pull(true)};
+ if($('umlOut'))$('umlOut').onclick=()=>{if(confirm('Кодты осы құрылғыдан өшіру керек пе? Деректер өшпейді.')){code='';ver=0;dirty=false;['uml_sync_code','uml_sync_ver','uml_sync_dirty'].forEach(LS.del);p.remove();ui()}}}
+const local=()=>{try{return JSON.parse(LS.get('uml_universal_archive')||'[]')}catch(e){return[]}};
+function apply(data){archive=data;LS.set('uml_universal_archive',JSON.stringify(archive));try{renderArchive()}catch(e){}
+ if(typeof comp!=='undefined'&&comp&&document.getElementById('competition')&&document.getElementById('competition').classList.contains('on')){const n=archive.find(x=>x.id===comp.id);if(n){comp=n;try{if(window.openCompetition)openCompetition(n.id)}catch(e){}}}}
+const size=a=>JSON.stringify(a).length;
+function union(a,b){const m=new Map();[...a,...b].forEach(x=>{const o=m.get(x.id);if(!o||size(x)>size(o))m.set(x.id,x)});return[...m.values()]}
+async function first(){busy=true;ui();try{const r=await rpc('uml_load',{p_code:code});if(r.error)throw new Error(r.error);const cloud=r.data||[],loc=local();ver=r.version;LS.set('uml_sync_ver',ver);
+  if(!cloud.length&&loc.length){await push(true)}
+  else if(cloud.length&&!loc.length){apply(cloud)}
+  else if(cloud.length&&loc.length&&loc.every(x=>String(x.id).startsWith('2026112')&&!(x.matches||[]).length&&!(x.entries||[]).length)){apply(cloud)}
+  else if(cloud.length&&loc.length){const same=JSON.stringify(cloud)===JSON.stringify(loc);if(!same){const ch=prompt('Бұлтта да, осы құрылғыда да жарыстар бар.\n1 — Бұлттағыны алу (осындағы ауыстырылады)\n2 — Осындағыны бұлтқа жүктеу (бұлттағы ауыстырылады)\n3 — Біріктіру (екеуінің жарыстары қосылады)\nНөмірін жазыңыз:','3');if(ch==='1')apply(cloud);else if(ch==='2')await push(true);else{apply(union(cloud,loc));await push(false)}}}
+ }catch(e){status='off';alert('Синхрондау қатесі: '+e.message)}busy=false;ui()}
+async function push(force){if(!code||busy&&!force)return;busy=true;ui();try{const r=await rpc('uml_save',{p_code:code,p_data:local(),p_base:ver,p_force:!!force});
+  if(r.conflict){conflict={cloudVer:r.version};busy=false;ui();resolve();return}
+  if(r.error)throw new Error(r.error);ver=r.version;LS.set('uml_sync_ver',ver);dirty=false;LS.set('uml_sync_dirty','0');status='ok';conflict=null}catch(e){status='off'}busy=false;ui()}
+function resolve(){const ch=prompt('Басқа құрылғыда жарыс жаңарған (бұлттағы нұсқа жаңа).\n1 — Бұлттағыны алу (осы құрылғыдағы соңғы өзгерістер жоғалады)\n2 — Осындағыны жіберу (бұлттағы ауыстырылады, ескісі тарихта қалады)\n3 — Біріктіру (екеуінің жарыстары қосылады)\nНөмірі:','3');
+  (async()=>{try{if(ch==='1'){const r=await rpc('uml_load',{p_code:code});apply(r.data||[]);ver=r.version;LS.set('uml_sync_ver',ver);dirty=false;LS.set('uml_sync_dirty','0');conflict=null}
+   else if(ch==='2'){await push(true);conflict=null}
+   else if(ch==='3'){const r=await rpc('uml_load',{p_code:code});apply(union(r.data||[],local()));ver=r.version;LS.set('uml_sync_ver',ver);await push(false)}}catch(e){status='off'}ui()})()}
+async function pull(manual){if(!code||busy)return;try{const v=await rpc('uml_version',{p_code:code});if(v.error)return;status='ok';
+  if(v.version>ver){if(dirty){conflict={cloudVer:v.version};ui();if(manual)resolve();return}
+   const ae=document.activeElement;if(!manual&&ae&&/INPUT|SELECT|TEXTAREA/.test(ae.tagName))return;
+   const r=await rpc('uml_load',{p_code:code});apply(r.data||[]);ver=r.version;LS.set('uml_sync_ver',ver)}
+  else if(dirty)await push(false);
+  else if(manual)alert('Бәрі жаңа: нұсқа '+ver)}catch(e){status='off'}ui()}
+const op=window.persist;
+window.persist=function(){const r=op.apply(this,arguments);if(code){dirty=true;LS.set('uml_sync_dirty','1');ui();clearTimeout(timer);timer=setTimeout(()=>push(false),1200)}return r};
+window.addEventListener('online',()=>pull());document.addEventListener('visibilitychange',()=>{if(!document.hidden)pull()});
+setInterval(()=>pull(),20000);
+window.addEventListener('DOMContentLoaded',()=>{ui();if(code)pull()});if(document.readyState!=='loading'){ui();if(code)pull()}
+})();
+</script>
 </body></html>
