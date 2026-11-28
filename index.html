@@ -2019,4 +2019,198 @@ setInterval(()=>pull(),20000);
 window.addEventListener('DOMContentLoaded',()=>{ui();if(code)pull()});if(document.readyState!=='loading'){ui();if(code)pull()}
 })();
 </script>
+<script>
+/* v31: «Жас төреші» (пилот). Әдепкіде өшіп тұрады; тек жеке шахматқа арналған. Бұрынғы архивке оқушы тікелей тиіспейді. */
+(function(){
+'use strict';
+const URL_='https://azogthtishzihcilfmrs.supabase.co',KEY='sb_publishable_YH0AnkPlcRiH84hEVP7sGA_05VMMAzc';
+const LS={get:k=>{try{return localStorage.getItem(k)}catch(e){return null}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}},del:k=>{try{localStorage.removeItem(k)}catch(e){}}};
+const $=id=>document.getElementById(id);
+const h=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const rpc=async(fn,body)=>{const ac=typeof AbortController!=='undefined'?new AbortController():null;const t=ac?setTimeout(()=>ac.abort(),15000):null;
+ try{const r=await fetch(URL_+'/rest/v1/rpc/'+fn,{method:'POST',signal:ac?ac.signal:undefined,headers:{apikey:KEY,Authorization:'Bearer '+KEY,'Content-Type':'application/json'},body:JSON.stringify(body)});
+  if(!r.ok)throw new Error('HTTP '+r.status);return await r.json()}finally{if(t)clearTimeout(t)}};
+const norm=s=>String(s||'').toLowerCase().replace(/\s+/g,' ').trim();
+const normCls=s=>String(s||'').toLowerCase().replace(/[\s.\-«»"']/g,'');
+const RES=['a','b','draw'];
+
+/* ---- Деңгейлер (пилот мәндері; пилоттан кейін нақтыланады) ---- */
+const LEVELS=[{n:'Көмекші',min:0,rate:0},{n:'Жас төреші',min:5,rate:.8},{n:'Үздік төреші',min:15,rate:.9}];
+function levelOf(st){const done=(st.confirmed||0)+(st.corrected||0),rate=done?(st.confirmed||0)/done:0;let lv=0;LEVELS.forEach((L,i)=>{if(done>=L.min&&rate>=L.rate)lv=i});
+ const nx=LEVELS[lv+1]||null;return{lv,name:LEVELS[lv].n,done,rate,next:nx}}
+const pct=r=>Math.round(r*100)+' %';
+function genCode(){const A='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';const b=new Uint8Array(8);(window.crypto||window.msCrypto).getRandomValues(b);let s='';for(const x of b)s+=A[x%A.length];return s.slice(0,4)+'-'+s.slice(4)}
+
+/* ================== МҰҒАЛІМ ПАНЕЛІ ================== */
+const eligible=()=>typeof comp!=='undefined'&&comp&&comp.sport==='chess'&&comp.kind==='individual';
+const tcode=()=>LS.get('uml_sync_code')||'';
+let roster=[],newCode=null,msg='',busy=false,published=false;
+const key=()=>String(comp.id);
+const entryOf=id=>(comp.entries||[]).find(e=>e.id===id);
+const rounds=()=>[...new Set((comp.matches||[]).filter(m=>m.b).map(m=>m.round))].sort((a,b)=>a-b);
+const lastRound=()=>{const r=rounds();return r.length?r[r.length-1]:0};
+const IR=m=>(comp.individualResults&&comp.individualResults[m.id])||{};
+function gradeRange(){const a=String(comp.age||'');if(/5\s*[–-]\s*6/.test(a))return[7,8];if(/7\s*[–-]\s*8/.test(a))return[9,11];if(/9\s*[–-]\s*11/.test(a))return[9,11];return[7,11]}
+function judgeProblem(j){if(!j.active)return'өшірілген';if(j.grade==null)return'сыныбы белгісіз';const[lo,hi]=gradeRange();
+ if(j.grade<lo||j.grade>hi)return'бұл санатқа сынып ережесі бойынша жарамайды ('+lo+(hi>lo?'–'+hi:'')+'-сынып керек)';
+ if((comp.entries||[]).some(e=>norm(e.name)===norm(j.name)))return'осы жарыстың қатысушысы';return''}
+function matchAllows(j,m){const jc=normCls(j.class);if(!jc)return true;return![m.a,m.b].some(id=>{const e=entryOf(id);return e&&normCls(e.className)===jc})}
+const picked=()=>roster.filter(j=>(comp.judgePick||{})[j.id]&&!judgeProblem(j));
+function lockedM(m){return!!IR(m).locked}
+function hasOwn(m){const r=IR(m);return!!r.winner&&r.source!=='judge'}
+
+function assignRound(round){comp.judgeAssign=comp.judgeAssign||{};const pk=picked(),byId={};pk.forEach(j=>byId[j.id]=j);const load={};pk.forEach(j=>load[j.id]=0);
+ const ms=comp.matches.filter(m=>m.round===round&&m.b&&!lockedM(m)&&!hasOwn(m));
+ const need=[];
+ ms.forEach(m=>{const cur=comp.judgeAssign[m.id],j=cur&&byId[cur];if(j&&matchAllows(j,m)){load[cur]++}else{delete comp.judgeAssign[m.id];need.push(m)}});
+ let skipped=0;
+ need.forEach(m=>{const c=pk.filter(j=>matchAllows(j,m)).sort((x,y)=>load[x.id]-load[y.id]);if(!c.length){skipped++;return}comp.judgeAssign[m.id]=c[0].id;load[c[0].id]++});
+ return{total:ms.length,skipped}}
+
+async function refreshRoster(){if(!tcode())return;try{const r=await rpc('uml_t_judges',{p_code:tcode()});if(r&&r.ok)roster=r.judges||[];else if(r&&r.error==='bad_code')msg='Синхрондау коды дұрыс емес.'}catch(e){msg='Желі қатесі: төрешілер тізімі жүктелмеді.'}renderPanel()}
+
+async function publish(){const round=lastRound();if(!round)return alert('Алдымен жеребе құрыңыз.');if(!tcode())return alert('Алдымен ☁ Синхрондау кодын енгізіңіз.');
+ if(!picked().length)return alert('Тізімнен осы жарысқа жарайтын төрешілерді белгілеңіз (✓).');
+ busy=true;msg='';renderPanel();
+ try{const a=assignRound(round);
+  const items=comp.matches.filter(m=>m.b&&comp.judgeAssign&&comp.judgeAssign[m.id]).map(m=>({id:m.id,round:m.round,a:(entryOf(m.a)||{}).name||'',b:(entryOf(m.b)||{}).name||'',judge:comp.judgeAssign[m.id]}));
+  const r=await rpc('uml_t_publish',{p_code:tcode(),p_comp:key(),p_title:comp.cname||'Жарыс',p_matches:items});
+  if(!r||!r.ok)throw new Error((r&&r.error)||'белгісіз қате');
+  published=true;comp.judgePublished=true;persist();
+  msg=r.count+' ойын төрешілерге берілді'+(a.skipped?'; '+a.skipped+' ойынға жарайтын төреші табылмады — оны өзіңіз енгізесіз.':'.');
+ }catch(e){msg='Қате: '+e.message}
+ busy=false;renderAll()}
+
+function applyResults(list){if(!eligible())return;if(typeof chessEnsureStores==='function')chessEnsureStores();let changed=false;
+ for(const x of list||[]){const m=(comp.matches||[]).find(z=>z.id===x.id);if(!m||!m.b)continue;const cur=(comp.individualResults&&comp.individualResults[m.id])||{};
+  const fin=x.status!=='provisional';const want=fin?x.final:x.result;if(!RES.includes(want))continue;
+  if(cur.winner&&cur.source!=='judge')continue;
+  if(cur.source==='judge'&&!fin&&cur.winner&&cur.winner!==cur.submitted)continue;
+  const next=Object.assign({},cur,{winner:want,source:'judge',judge:x.judge||cur.judge||'',submitted:x.result,status:fin?'confirmed':'provisional',locked:fin});
+  if(JSON.stringify(next)!==JSON.stringify(cur)){comp.individualResults=comp.individualResults||{};comp.individualResults[m.id]=next;changed=true}}
+ if(changed){persist();renderAll()}return changed}
+
+async function pull(silent){if(!eligible()||!comp.judgeMode||!tcode())return;
+ try{const r=await rpc('uml_t_pull',{p_code:tcode(),p_comp:key()});if(!r||!r.ok){if(!silent)msg='Қате: '+((r&&r.error)||'жауап жоқ');return}
+  const ch=applyResults(r.results);if(!silent){msg=ch?'Нәтижелер жаңартылды.':'Жаңа нәтиже жоқ.';renderPanel()}await refreshRoster()}
+ catch(e){if(!silent){msg='Желі қатесі: '+e.message;renderPanel()}}}
+
+async function confirmRound(){const sel=$('jRound'),round=sel?Number(sel.value):lastRound();if(!round)return;
+ const ms=comp.matches.filter(m=>m.round===round&&m.b);const open=ms.filter(m=>typeof chessMatchDone==='function'&&!chessMatchDone(m));
+ if(open.length)return alert(round+'-турда '+open.length+' ойынның нәтижесі енгізілмеген. Алдымен бәрін енгізіңіз.');
+ const items=ms.filter(m=>{const r=IR(m);return r.source==='judge'&&r.status==='provisional'&&RES.includes(r.winner)}).map(m=>({id:m.id,final:IR(m).winner}));
+ if(!items.length)return alert('Бұл турда бекітілетін төреші нәтижесі жоқ.');
+ if(!confirm(round+'-тур: '+items.length+' нәтижені бекітесіз бе? Бекітілген нәтиже құлыпталады.'))return;
+ busy=true;msg='';renderPanel();
+ try{const r=await rpc('uml_t_confirm',{p_code:tcode(),p_comp:key(),p_items:items});if(!r||!r.ok)throw new Error((r&&r.error)||'белгісіз қате');
+  const p=await rpc('uml_t_pull',{p_code:tcode(),p_comp:key()});if(p&&p.ok)applyResults(p.results);
+  msg=round+'-тур бекітілді: '+r.confirmed+' өзгеріссіз, '+r.corrected+' түзетілген.'}
+ catch(e){msg='Қате: '+e.message}
+ busy=false;await refreshRoster();renderAll()}
+
+async function unlockMatch(m){if(!confirm('Бұл нәтиже бекітілген. Ашып өзгерту керек пе? (журналға жазылады)')){renderAll();return}
+ try{const r=await rpc('uml_t_reopen',{p_code:tcode(),p_comp:key(),p_match:m.id});if(!r||!r.ok)throw new Error((r&&r.error)||'белгісіз қате');
+  const cur=IR(m);comp.individualResults[m.id]=Object.assign({},cur,{locked:false,status:'provisional'});persist();renderAll();alert('Нәтиже ашылды. Енді жаңа нәтижені таңдаңыз.')}
+ catch(e){alert('Нәтижені ашу мүмкін болмады: '+e.message);renderAll()}}
+
+async function addJudge(){const name=($('jName').value||'').trim(),grade=Number($('jGrade').value),cls=($('jCls').value||'').trim();
+ if(!name)return alert('Оқушының аты-жөнін жазыңыз.');if(!(grade>=5&&grade<=11))return alert('Сыныбын таңдаңыз.');if(!tcode())return alert('Алдымен ☁ Синхрондау кодын енгізіңіз.');
+ busy=true;msg='';renderPanel();
+ try{let r=null,code='';for(let i=0;i<4;i++){code=genCode();r=await rpc('uml_t_judge_save',{p_code:tcode(),p_id:null,p_name:name,p_grade:grade,p_class:cls||null,p_active:true,p_judge_code:code});if(!(r&&r.error==='code_taken'))break}
+  if(!r||!r.ok)throw new Error((r&&r.error)||'белгісіз қате');newCode={name,code};comp.judgePick=comp.judgePick||{};comp.judgePick[r.id]=true;persist();if($('jName')){$('jName').value='';$('jCls').value='';$('jGrade').value=''}await refreshRoster()}
+ catch(e){msg='Қате: '+e.message}busy=false;renderPanel()}
+async function resetCode(id){const jj=roster.find(x=>x.id===id);const name=jj?jj.name:'төреші';if(!confirm('«'+name+'» үшін жаңа код беру керек пе? Ескі код істемей қалады.'))return;
+ try{let r=null,code='';for(let i=0;i<4;i++){code=genCode();r=await rpc('uml_t_judge_save',{p_code:tcode(),p_id:id,p_name:null,p_grade:null,p_class:null,p_active:null,p_judge_code:code});if(!(r&&r.error==='code_taken'))break}
+  if(!r||!r.ok)throw new Error((r&&r.error)||'белгісіз қате');newCode={name,code};msg=''}catch(e){msg='Қате: '+e.message}renderPanel()}
+async function setActive(id,v){try{const r=await rpc('uml_t_judge_save',{p_code:tcode(),p_id:id,p_name:null,p_grade:null,p_class:null,p_active:v,p_judge_code:null});if(!r||!r.ok)throw new Error((r&&r.error)||'белгісіз қате');await refreshRoster()}catch(e){msg='Қате: '+e.message;renderPanel()}}
+function pick(id,v){comp.judgePick=comp.judgePick||{};comp.judgePick[id]=!!v;persist();renderPanel()}
+function enable(){if(!tcode()){msg='Алдымен оң жақ төменгі «☁ Синхрондау» батырмасы арқылы кодыңызды енгізіңіз.';renderPanel();return}
+ comp.judgeMode=true;persist();msg='';refreshRoster();renderPanel()}
+function disable(){const n=Object.values(comp.individualResults||{}).filter(r=>r&&r.source==='judge'&&r.status==='provisional').length;
+ if(!confirm('Режимді өшіресіз бе?'+(n?' '+n+' уақытша төреші нәтижесі бар: олар жарыс нәтижесінде қалады, бірақ бекітілмейді.':'')))return;comp.judgeMode=false;persist();renderAll()}
+
+let draft={n:'',g:'',c:''};
+const statLabel={provisional:'уақытша',confirmed:'бекітілген',corrected:'бекітілген (түзетілген)'};
+function renderPanel(){let card=$('judgeCard');const st=$('standings'),host=st&&st.closest('.card');
+ if(!card){if(!host)return;card=document.createElement('div');card.className='card';card.id='judgeCard';host.parentNode.insertBefore(card,host)}
+ if($('jName'))draft={n:$('jName').value,g:$('jGrade').value,c:$('jCls').value};
+ if(!eligible()){card.style.display='none';return}card.style.display='';
+ if(!comp.judgeMode){card.innerHTML='<h2>5. Жас төреші (пилот)</h2><p class="muted">Оқушы төрешілер өз телефонынан жеке кодпен тек өзіне берілген ойынның нәтижесін енгізеді. Сіз әр турды бір батырмамен бекітесіз. Режим осы жарыс үшін өшіп тұр, қосылмайынша ештеңе өзгермейді.</p>'+(msg?'<p class="notice">'+h(msg)+'</p>':'')+'<div class="actions"><button onclick="__umlJ.enable()">Жас төреші режимін қосу</button></div>';return}
+ const[lo,hi]=gradeRange();
+ let html='<h2>5. Жас төреші (пилот)</h2><p class="muted">Ереже: осы жарысты '+lo+(hi>lo?'–'+hi:'')+'-сынып оқушылары төрелейді; төреші жарыс қатысушысы болмайды және өз сыныбының ойынына берілмейді. Нәтиже бірден «уақытша» болады, жеребе жалғаса береді; тур соңында сіз бекітесіз.</p>';
+ if(msg)html+='<p class="notice">'+h(msg)+'</p>';
+ if(newCode)html+='<div class="notice" style="border:2px solid #12906f"><b>«'+h(newCode.name)+'» коды: <span style="font-size:22px;letter-spacing:2px">'+h(newCode.code)+'</span></b><br>Оқушыға беріңіз. Бұл код тек қазір көрінеді (жаңарсаңыз, жоғалады; керек болса «Жаңа код» беріңіз).<div class="actions"><button class="alt" onclick="__umlJ.hideCode()">Жасыру</button></div></div>';
+ html+='<h3>Төрешілер тізімі</h3>';
+ if(!roster.length)html+='<p class="muted">Әзірге төреші жоқ. Төменнен қосыңыз.</p>';
+ else html+='<table><tr><th>Осы жарыста</th><th>Аты-жөні</th><th>Сынып</th><th>Деңгей</th><th>Төрелеген</th><th>Бекітілу</th><th>Күйі</th><th></th></tr>'+roster.map(j=>{const lv=levelOf(j),pr=judgeProblem(j);
+  return '<tr><td><input type="checkbox" '+((comp.judgePick||{})[j.id]?'checked':'')+(pr?' disabled':'')+' onchange="__umlJ.pick(\''+h(j.id)+'\',this.checked)"></td><td>'+h(j.name)+'</td><td>'+h(j.class||'')+(j.grade?' ('+j.grade+')':'')+'</td><td>'+h(lv.name)+'</td><td>'+lv.done+(j.provisional?' (+'+j.provisional+' уақытша)':'')+'</td><td>'+(lv.done?pct(lv.rate):'—')+'</td><td>'+(pr?'<small style="color:#c0392b">'+h(pr)+'</small>':'<small>жарайды</small>')+'</td><td><button class="alt" onclick="__umlJ.reset(\''+h(j.id)+'\')">Жаңа код</button> <button class="alt" onclick="__umlJ.active(\''+h(j.id)+'\','+(j.active?'false':'true')+')">'+(j.active?'Өшіру':'Қосу')+'</button></td></tr>'}).join('')+'</table>';
+ html+='<div class="grid" style="margin-top:10px"><div><label>Төреші оқушының аты-жөні</label><input id="jName" placeholder="Толық аты-жөні"></div><div><label>Сыныбы (нөмірі)</label><select id="jGrade"><option value="">—</option>'+[5,6,7,8,9,10,11].map(n=>'<option>'+n+'</option>').join('')+'</select></div><div><label>Сынып әрпі (мысалы, 8А)</label><input id="jCls" placeholder="8А"></div></div><div class="actions"><button onclick="__umlJ.add()" '+(busy?'disabled':'')+'>Төреші қосу және код беру</button></div>';
+ const rs=rounds(),cr=lastRound();
+ html+='<h3>Ойындарды төрешілерге беру</h3><div class="actions"><button onclick="__umlJ.publish()" '+(busy?'disabled':'')+'>'+(cr?cr+'-турды төрешілерге беру':'Алдымен жеребе құрыңыз')+'</button><button class="alt" onclick="__umlJ.pull()" '+(busy?'disabled':'')+'>Нәтижелерді алу</button></div>';
+ if(rs.length){html+='<table><tr><th>Тур</th><th>Ойын</th><th>Төреші</th><th>Нәтиже</th><th>Күйі</th></tr>'+(comp.matches||[]).filter(m=>m.b).map(m=>{const r=IR(m),a=entryOf(m.a)||{},b=entryOf(m.b)||{},jid=(comp.judgeAssign||{})[m.id],j=roster.find(x=>x.id===jid);
+   const wtxt=r.winner==='a'?h(a.name)+' жеңді':r.winner==='b'?h(b.name)+' жеңді':r.winner==='draw'?'Тең':'—';
+   const src=r.source==='judge'?(r.locked?(statLabel[r.status]||'бекітілген')+' 🔒':'уақытша'):(r.winner?'мұғалім':'күтілуде');
+   return '<tr><td>'+m.round+'</td><td>'+h(a.name)+' — '+h(b.name)+'</td><td>'+h(j?j.name:(r.judge||'—'))+'</td><td>'+wtxt+'</td><td>'+src+'</td></tr>'}).join('')+'</table>';
+  html+='<div class="actions"><select id="jRound" style="max-width:160px">'+rs.map(n=>'<option value="'+n+'"'+(n===cr?' selected':'')+'>'+n+'-тур</option>').join('')+'</select><button onclick="__umlJ.confirmRound()" '+(busy?'disabled':'')+'>Турды бекіту</button><button class="alt" onclick="__umlJ.disable()">Режимді өшіру</button></div>'}
+ else html+='<div class="actions"><button class="alt" onclick="__umlJ.disable()">Режимді өшіру</button></div>';
+ card.innerHTML=html;if($('jName')){$('jName').value=draft.n;$('jGrade').value=draft.g;$('jCls').value=draft.c}}
+
+/* бұрынғы функцияларға қосымша ілмектер (олардың мінез-құлқын өзгертпейді, тек режим қосулы жарыстарда ғана жұмыс істейді) */
+const ra=window.renderAll;window.renderAll=function(){const r=ra.apply(this,arguments);try{renderPanel()}catch(e){console.error('judge panel',e)}return r};
+const oc=window.openCompetition;window.openCompetition=function(){const r=oc.apply(this,arguments);try{msg='';newCode=null;roster=[];published=!!(comp&&comp.judgePublished);renderPanel();if(eligible()&&comp.judgeMode)refreshRoster()}catch(e){console.error(e)}return r};
+const os=window.setScore;window.setScore=function(i,k,v){if(eligible()&&comp.judgeMode){const m=comp.matches[i];if(m&&IR(m).locked){unlockMatch(m);return}}return os.apply(this,arguments)};
+const odf=window.downloadFinalProtocol;window.downloadFinalProtocol=function(){if(eligible()&&comp.judgeMode){const n=Object.values(comp.individualResults||{}).filter(r=>r&&r.source==='judge'&&r.status==='provisional').length;
+ if(n){alert('Қорытынды хаттама шықпайды: '+n+' төреші нәтижесі бекітілмеген. «Турды бекіту» батырмасын басыңыз.');return}}return odf.apply(this,arguments)};
+setInterval(()=>{try{if(document.hidden||!eligible()||!comp.judgeMode||!comp.judgePublished)return;const s=$('competition');if(!s||!s.classList.contains('on'))return;const ae=document.activeElement;if(ae&&/INPUT|SELECT|TEXTAREA/.test(ae.tagName))return;pull(true)}catch(e){}},20000);
+
+window.__umlJ={enable,disable,add:addJudge,reset:resetCode,active:setActive,pick,publish,pull:()=>pull(false),confirmRound,hideCode:()=>{newCode=null;renderPanel()},
+ _levelOf:levelOf,_assign:assignRound,_apply:applyResults,_problem:judgeProblem,_state:()=>({roster,msg,newCode})};
+
+/* ================== ТӨРЕШІ ЭКРАНЫ (оқушы) ================== */
+let J={code:LS.get('uml_judge_code')||'',info:null,pick:{},msg:'',tab:'games',busy:false,sent:''};
+let jTimer=null;
+function jStyle(){if($('jStyle'))return;const s=document.createElement('style');s.id='jStyle';s.textContent='#jRoot{position:fixed;inset:0;z-index:20000;background:#eef4f8;color:#0b1f2e;overflow:auto;font:16px/1.45 Inter,system-ui,sans-serif;-webkit-text-size-adjust:100%}#jRoot *{box-sizing:border-box}.jWrap{max-width:560px;margin:0 auto;padding:14px 14px 90px}.jBar{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-bottom:12px}.jBar b{font-size:19px}.jB{border:0;border-radius:12px;padding:12px 16px;font:600 15px inherit;background:#0e7aa8;color:#fff;cursor:pointer;min-height:44px}.jB.alt{background:#fff;color:#0b1f2e;border:1px solid #b7c9d6}.jB[disabled]{opacity:.5}.jCard{background:#fff;border-radius:16px;padding:14px;margin:10px 0;box-shadow:0 2px 10px rgba(0,0,0,.07)}.jIn{width:100%;padding:14px;border:1px solid #9bb;border-radius:12px;font:600 20px inherit;letter-spacing:2px;text-transform:uppercase}.jOpt{display:flex;gap:8px;margin:10px 0 6px}.jOpt button{flex:1;border:2px solid #b7c9d6;background:#fff;border-radius:12px;padding:10px 6px;font:600 14px inherit;min-height:52px;cursor:pointer;color:#0b1f2e}.jOpt button.on{border-color:#0e7aa8;background:#e3f3fa}.jOpt button[disabled]{opacity:.55;cursor:default}.jChip{display:inline-block;border-radius:20px;padding:3px 10px;font-size:13px;font-weight:600;background:#e8eef3}.jChip.ok{background:#d6f1e6;color:#0b6b4c}.jChip.wait{background:#fff0cc;color:#7a5600}.jErr{color:#c0392b;min-height:20px;font-weight:600}.jTabs{display:flex;gap:6px;margin:10px 0}.jTabs button{flex:1}.jLv{background:linear-gradient(135deg,#0b3d5c,#0e7aa8);color:#fff;border-radius:20px;padding:20px}.jLv,.jLv *{color:#fff!important}.jLv h2{margin:0 0 4px;font-size:24px}.jBarOut{height:10px;background:rgba(255,255,255,.25);border-radius:6px;overflow:hidden;margin:10px 0}.jBarIn{height:100%;background:#7fe0b4}';document.head.appendChild(s)}
+function jRoot(){let r=$('jRoot');if(!r){r=document.createElement('div');r.id='jRoot';document.body.appendChild(r)}return r}
+function openJudge(){window.__umlJudgeMode=true;jStyle();jRoot();if(J.code)loadJ();else renderJ();if(!jTimer)jTimer=setInterval(()=>{if(!document.hidden&&J.info&&$('jRoot')&&!J.busy)loadJ(true)},20000)}
+function closeJudge(){window.__umlJudgeMode=false;const r=$('jRoot');if(r)r.remove();if(jTimer){clearInterval(jTimer);jTimer=null}}
+async function loadJ(silent){try{const r=await rpc('uml_j_info',{p_code:J.code});if(r&&r.error){J.info=null;J.code='';LS.del('uml_judge_code');J.msg='Код дұрыс емес немесе өшірілген. Мұғалімнен жаңа код сұраңыз.'}
+  else if(r&&r.ok){J.info=r;LS.set('uml_judge_code',J.code);if(!silent)J.msg=''}}catch(e){if(!silent)J.msg='Желі жоқ. Интернетті тексеріп, қайта көріңіз.'}renderJ()}
+async function loginJ(){const v=($('jCode').value||'').trim();if(!v){J.msg='Кодты жазыңыз.';return renderJ()}J.code=v;J.msg='';J.busy=true;renderJ();await loadJ();J.busy=false;renderJ()}
+function logoutJ(){J={code:'',info:null,pick:{},msg:'',tab:'games',busy:false,sent:''};LS.del('uml_judge_code');renderJ()}
+const mk=m=>m.comp+'|'+m.id;
+const KEYS=[];const kidx=k=>{let i=KEYS.indexOf(k);if(i<0){KEYS.push(k);i=KEYS.length-1}return i};
+function chooseJ(i,v){const k=KEYS[i];if(k===undefined)return;J.pick[k]=v;renderJ()}
+async function sendJ(i){const k=KEYS[i];if(k===undefined)return;const m=(J.info.matches||[]).find(x=>mk(x)===k);const v=J.pick[k];if(!m||!RES.includes(v))return;
+ const nm=v==='a'?m.a+' жеңді':v==='b'?m.b+' жеңді':'Тең ойын';if(!confirm('Жіберу: '+m.a+' — '+m.b+'\nНәтиже: '+nm+'\n\nДұрыс па?'))return;
+ J.busy=true;J.msg='';renderJ();
+ try{const r=await rpc('uml_j_submit',{p_code:J.code,p_comp:m.comp,p_match:m.id,p_result:v});
+  if(r&&r.ok){delete J.pick[k];J.msg='Жіберілді ✓ Мұғалім тур соңында бекітеді.'}
+  else if(r&&r.error==='locked')J.msg='Бұл нәтиже бекітілген, өзгерту мүмкін емес.';
+  else if(r&&r.error==='not_assigned')J.msg='Бұл ойын сізге берілмеген.';
+  else J.msg='Жіберілмеді ('+((r&&r.error)||'қате')+').'}
+ catch(e){J.msg='Желі жоқ — жіберілмеді. Қайта көріңіз.'}
+ await loadJ(true);J.busy=false;renderJ()}
+function renderJ(){const r=jRoot();let o='<div class="jWrap"><div class="jBar"><b>🧑‍⚖️ Жас төреші</b><span><button class="jB alt" onclick="__umlJ.jClose()">Жабу</button></span></div>';
+ if(!J.info){o+='<div class="jCard"><p>Мұғалім берген төреші кодын жазыңыз:</p><input id="jCode" class="jIn" placeholder="XXXX-XXXX" value="'+h(J.code)+'" autocomplete="off" autocapitalize="characters"><p class="jErr">'+h(J.msg)+'</p><button class="jB" onclick="__umlJ.jLogin()" '+(J.busy?'disabled':'')+'>Кіру</button></div></div>';r.innerHTML=o;return}
+ const inf=J.info,st=inf.stats||{},lv=levelOf(st);
+ o+='<div class="jCard"><b>'+h(inf.judge.name)+'</b> · '+h(inf.judge.class||'')+' <span class="jChip ok">'+h(lv.name)+'</span><div class="jTabs"><button class="jB '+(J.tab==='games'?'':'alt')+'" onclick="__umlJ.jTab(\'games\')">Ойындарым</button><button class="jB '+(J.tab==='card'?'':'alt')+'" onclick="__umlJ.jTab(\'card\')">Карточкам</button></div><p class="jErr">'+h(J.msg)+'</p></div>';
+ if(J.tab==='card'){const nx=lv.next;let need='';if(nx){const d=Math.max(0,nx.min-lv.done);need='Келесі деңгей «'+nx.n+'»: бекітілген '+nx.min+' ойын және бекітілу пайызы '+Math.round(nx.rate*100)+' %-дан кем емес'+(d?' (тағы '+d+' ойын керек)':'')+'. Шарттар — пилот мәні.'}else need='Ең жоғары деңгейге жеттіңіз!';
+  o+='<div class="jLv"><div>Жас төреші картасы</div><h2>'+h(inf.judge.name)+'</h2><div>'+h(inf.judge.class||'')+'</div><h2 style="margin-top:14px">'+h(lv.name)+'</h2><div>Төрелеген (бекітілген) ойын: <b>'+lv.done+'</b>'+(st.provisional?' · күтуде: '+st.provisional:'')+'</div><div>Бекітілу пайызы: <b>'+(lv.done?pct(lv.rate):'—')+'</b></div>'+(nx?'<div class="jBarOut"><div class="jBarIn" style="width:'+Math.min(100,Math.round(lv.done/nx.min*100))+'%"></div></div>':'')+'<small>'+h(need)+'</small></div>'}
+ else{const ms=inf.matches||[];if(!ms.length)o+='<div class="jCard">Әзірге сізге ойын берілмеген. Мұғалім ойындарды бергенде осында шығады.</div>';
+  const groups={};ms.forEach(m=>{(groups[m.title||'Жарыс']=groups[m.title||'Жарыс']||[]).push(m)});
+  Object.keys(groups).forEach(t=>{o+='<div class="jCard"><b>'+h(t)+'</b>';groups[t].forEach(m=>{const k=mk(m),ki=kidx(k),fin=m.status==='confirmed'||m.status==='corrected',cur=J.pick[k]||m.result||'',lock=fin;
+   o+='<div style="border-top:1px solid #dfe8ee;margin-top:10px;padding-top:8px"><div>'+(m.round?m.round+'-тур · ':'')+'<b>'+h(m.a)+'</b> — <b>'+h(m.b)+'</b></div><div class="jOpt"><button class="'+(cur==='a'?'on':'')+'" '+(lock?'disabled':'')+' onclick="__umlJ.jPick('+ki+',\'a\')">'+h(m.a)+' жеңді</button><button class="'+(cur==='draw'?'on':'')+'" '+(lock?'disabled':'')+' onclick="__umlJ.jPick('+ki+',\'draw\')">Тең</button><button class="'+(cur==='b'?'on':'')+'" '+(lock?'disabled':'')+' onclick="__umlJ.jPick('+ki+',\'b\')">'+h(m.b)+' жеңді</button></div>';
+   if(fin)o+='<span class="jChip ok">Бекітілген 🔒</span>';
+   else{if(J.pick[k]&&J.pick[k]!==m.result)o+='<button class="jB" onclick="__umlJ.jSend('+ki+')" '+(J.busy?'disabled':'')+'>Жіберу</button>';else if(m.result)o+='<span class="jChip wait">Жіберілді · мұғалім бекітеді</span>';else o+='<span class="jChip">Нәтиже күтілуде</span>'}
+   o+='</div>'});o+='</div>'})}
+ o+='<div style="margin-top:14px"><button class="jB alt" onclick="__umlJ.jRefresh()">Жаңарту</button> <button class="jB alt" onclick="__umlJ.jLogout()">Шығу (кодты өшіру)</button></div></div>';r.innerHTML=o}
+Object.assign(window.__umlJ,{jClose:closeJudge,jLogin:loginJ,jLogout:logoutJ,jTab:t=>{J.tab=t;renderJ()},jPick:chooseJ,jSend:sendJ,jRefresh:()=>{J.msg='';loadJ()},openJudge,_J:()=>J});
+
+/* кіру батырмасы (оқушылар үшін) */
+function btn(){if($('jEnter'))return;const b=document.createElement('button');b.id='jEnter';b.type='button';b.textContent='🧑‍⚖️ Төреші';b.style.cssText='position:fixed;left:12px;bottom:12px;z-index:9998;border:0;border-radius:24px;padding:10px 16px;font:600 14px Inter,system-ui,sans-serif;box-shadow:0 4px 18px rgba(0,0,0,.25);cursor:pointer;background:#5b3fa8;color:#fff';b.onclick=openJudge;document.body.appendChild(b)}
+const start=()=>{btn();if(/[?&]judge\b/.test(location.search)||location.hash==='#judge')openJudge()};
+if(document.readyState!=='loading')start();else document.addEventListener('DOMContentLoaded',start);
+})();
+
+</script>
 </body></html>
